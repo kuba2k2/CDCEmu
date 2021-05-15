@@ -8,14 +8,14 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
 #include <SPI.h>
 #include <mcp2515.h>
 #include <avr/io.h>
-#include "PacketInCDChangerCommand.cpp"
-#include "PacketInRadioFrequency.cpp"
-#include "PacketInRadioStatus.cpp"
-#include "PacketOutCurrentDisk.cpp"
-#include "PacketOutCurrentDiskNumber.cpp"
-#include "PacketOutCurrentDiskTrackCount.cpp"
-#include "PacketOutCurrentTrack.cpp"
-#include "PacketOutStatus.cpp"
+#include "PacketInCDChangerCommand.h"
+#include "PacketInRadioFrequency.h"
+#include "PacketInRadioStatus.h"
+#include "PacketOutCurrentDisk.h"
+#include "PacketOutCurrentDiskNumber.h"
+#include "PacketOutCurrentDiskTrackCount.h"
+#include "PacketOutCurrentTrack.h"
+#include "PacketOutStatus.h"
 
 MCP2515 mcp2515(10);
 
