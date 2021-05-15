@@ -16,14 +16,34 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
 #include "PacketOutCurrentTrack.h"
 #include "PacketOutStatus.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+    #ifdef ARDUINO_attiny
+        #include <SoftwareSerial.h>
+        SoftwareSerial serial(3, 4);
+    #else
+        #define serial Serial
+    #endif
+    #define serial_begin serial.begin
+    #define print serial.print
+    #define println serial.println
+#else
+    #define serial_begin
+    #define print
+    #define println
+#endif
+
 MCP2515 mcp2515(10);
 
 struct can_frame can_msg;
 
 void setup() {
+    serial_begin(9600);
     mcp2515.reset();
     mcp2515.setBitrate(CAN_125KBPS, MCP_8MHZ);
     mcp2515.setNormalMode();
+    println("Initialized");
 }
 
 boolean radioEnabled = false;
@@ -42,49 +62,49 @@ int radioFrequency = 0;
 
 void processPacket(struct can_frame msg) {
     uint8_t id = msg.can_id;
-    /*if (id == PacketInRadioFrequency::ID) {
+    if (id == PacketInRadioFrequency::ID) {
         PacketInRadioFrequency packet = PacketInRadioFrequency(msg);
         if (packet.radioFrequency() != radioFrequency) {
             radioFrequency = packet.radioFrequency();
-            Serial.print("Radio frequency ");
-            Serial.print(radioFrequency / 100);
-            Serial.println(" MHz");
+            print("Radio frequency ");
+            print(radioFrequency / 100);
+            println(" MHz");
         }
-    }*/
-    /*if (id == PacketInCDChangerCommand::ID) {
+    }
+    if (id == PacketInCDChangerCommand::ID) {
         PacketInCDChangerCommand packet = PacketInCDChangerCommand(msg);
         if (packet.radioEnabled() != radioEnabled) {
             radioEnabled = !radioEnabled;
-            Serial.print("Radio enabled");
-            Serial.println(radioEnabled);
+            print("Radio enabled");
+            println(radioEnabled);
         }
         if (packet.goToTrack() != 0 && packet.goToTrack() != trackNumber) {
             trackNumber = packet.goToTrack();
-            Serial.print("Go to track ");
-            Serial.println(trackNumber);
+            print("Go to track ");
+            println(trackNumber);
         }
         if (packet.goToDisk() != 0 && packet.goToDisk() != diskNumber) {
             diskNumber = packet.goToDisk();
-            Serial.print("Go to disk ");
-            Serial.println(diskNumber);
+            print("Go to disk ");
+            println(diskNumber);
         }
         if (packet.trackPrevious()) {
-            Serial.println("Go to previous track");
+            println("Go to previous track");
             trackNumber--;
         }
         if (packet.trackNext()) {
-            Serial.println("Go to next track");
+            println("Go to next track");
             trackNumber++;
         }
         if (packet.trackBackToStart()) {
-            Serial.println("Back to start");
+            println("Back to start");
         }
         if (packet.trackPlaying() != trackPlaying) {
             trackPlaying = !trackPlaying;
-            Serial.print("Track playing ");
-            Serial.println(trackPlaying);
+            print("Track playing ");
+            println(trackPlaying);
         }
-    }*/
+    }
     //else if (id == )
 }
 
