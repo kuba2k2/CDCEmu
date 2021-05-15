@@ -5,8 +5,7 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
     return (((value) >> (bit)) ^ (uint8_t)pow(2, count));
 }
 
-#include <SPI.h>
-#include <mcp2515.h>
+#include "mcp2515.h"
 #include <avr/io.h>
 #include "PacketInCDChangerCommand.h"
 #include "PacketInRadioFrequency.h"
@@ -22,14 +21,9 @@ MCP2515 mcp2515(10);
 struct can_frame can_msg;
 
 void setup() {
-    Serial.begin(115200);
-    SPIClass::begin();
-
     mcp2515.reset();
     mcp2515.setBitrate(CAN_125KBPS, MCP_8MHZ);
     mcp2515.setNormalMode();
-
-    //Serial.println("Initialized");
 }
 
 boolean radioEnabled = false;
@@ -57,7 +51,7 @@ void processPacket(struct can_frame msg) {
             Serial.println(" MHz");
         }
     }*/
-    if (id == PacketInCDChangerCommand::ID) {
+    /*if (id == PacketInCDChangerCommand::ID) {
         PacketInCDChangerCommand packet = PacketInCDChangerCommand(msg);
         if (packet.radioEnabled() != radioEnabled) {
             radioEnabled = !radioEnabled;
@@ -90,7 +84,7 @@ void processPacket(struct can_frame msg) {
             Serial.print("Track playing ");
             Serial.println(trackPlaying);
         }
-    }
+    }*/
     //else if (id == )
 }
 
