@@ -1,3 +1,9 @@
+#ifdef ATTINY_CORE
+    #include <pins_arduino.h>
+    #define USE_SOFTWARE_SERIAL 0
+    #define DISABLE_UART 1
+#endif
+
 #include <Arduino.h>
 #include <math.h>
 
@@ -19,7 +25,7 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
 #define DEBUG
 
 #ifdef DEBUG
-    #ifdef ARDUINO_attiny
+    #ifndef Serial
         #include <SoftwareSerial.h>
         SoftwareSerial serial(3, 4);
     #else
@@ -32,18 +38,22 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
     #define serial_begin
     #define print
     #define println
+    #define HEX 16
 #endif
 
-MCP2515 mcp2515(10);
+MCP2515 mcp2515(3);
 
 struct can_frame can_msg;
 
 void setup() {
     serial_begin(9600);
-    mcp2515.reset();
-    mcp2515.setBitrate(CAN_125KBPS, MCP_8MHZ);
-    mcp2515.setNormalMode();
-    println("Initialized");
+    print("reset(): ");
+    println(mcp2515.reset(), HEX);
+    print("setBitrate(): ");
+    println(mcp2515.setBitrate(CAN_125KBPS), HEX);
+    print("setNormalMode(): ");
+    println(mcp2515.setNormalMode(), HEX);
+    // println("Initialized");
 }
 
 boolean radioEnabled = false;

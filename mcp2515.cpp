@@ -22,17 +22,13 @@ MCP2515::MCP2515(const uint8_t _CS)
 }
 
 void MCP2515::startSPI() {
-    #ifdef SPI_HAS_TRANSACTION
     SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
-    #endif
     digitalWrite(SPICS, LOW);
 }
 
 void MCP2515::endSPI() {
     digitalWrite(SPICS, HIGH);
-    #ifdef SPI_HAS_TRANSACTION
     SPI.endTransaction();
-    #endif
 }
 
 MCP2515::ERROR MCP2515::reset(void)

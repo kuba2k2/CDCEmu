@@ -1,11 +1,7 @@
 #ifndef _MCP2515_H_
 #define _MCP2515_H_
 
-#ifdef ARDUINO_attiny
-#include <tinySPI.h>
-#else
 #include <SPI.h>
-#endif
 #include "can.h"
 
 /*
