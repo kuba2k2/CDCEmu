@@ -1,3 +1,5 @@
+#include "config.h"
+
 #ifdef ATTINY_CORE
     #include <pins_arduino.h>
     #define USE_SOFTWARE_SERIAL 0
@@ -21,37 +23,20 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
 #include "PacketOutCurrentTrack.h"
 #include "PacketOutStatus.h"
 
-#define DEBUG
-
-#ifdef DEBUG
-    #ifndef Serial
-        #include <SoftwareSerial.h>
-        SoftwareSerial serial(3, 4);
-    #else
-        #define serial Serial
-    #endif
-    #define serial_begin serial.begin
-    #define print serial.print
-    #define println serial.println
+#if DEBUG
+    #include "uart.h"
 #else
-    #define serial_begin
     #define print
-    #define println
-    #define HEX 16
 #endif
 
-MCP2515 mcp2515(3);
+MCP2515 mcp2515(MCP_CS_PIN);
 
 struct can_frame can_msg;
 
 void setup() {
-    serial_begin(9600);
-    print("reset(): ");
-    println(mcp2515.reset(), HEX);
-    print("setBitrate(): ");
-    println(mcp2515.setBitrate(CAN_125KBPS), HEX);
-    print("setNormalMode(): ");
-    println(mcp2515.setNormalMode(), HEX);
+    print("reset(): %d\n", mcp2515.reset());
+    print("setBitrate(): %d\n", mcp2515.setBitrate(CAN_125KBPS));
+    print("setNormalMode(): %d\n", mcp2515.setNormalMode());
     // println("Initialized");
 }
 
@@ -75,43 +60,37 @@ void processPacket(struct can_frame msg) {
         PacketInRadioFrequency packet = PacketInRadioFrequency(msg);
         if (packet.radioFrequency() != radioFrequency) {
             radioFrequency = packet.radioFrequency();
-            print("Radio frequency ");
-            print(radioFrequency / 100);
-            println(" MHz");
+            print("Radio frequency %.2f MHz\n", radioFrequency / 100.0);
         }
     }
     if (id == PacketInCDChangerCommand::ID) {
         PacketInCDChangerCommand packet = PacketInCDChangerCommand(msg);
         if (packet.radioEnabled() != radioEnabled) {
             radioEnabled = !radioEnabled;
-            print("Radio enabled");
-            println(radioEnabled);
+            print("Radio enabled %d\n", radioEnabled);
         }
         if (packet.goToTrack() != 0 && packet.goToTrack() != trackNumber) {
             trackNumber = packet.goToTrack();
-            print("Go to track ");
-            println(trackNumber);
+            print("Go to track %d\n", trackNumber);
         }
         if (packet.goToDisk() != 0 && packet.goToDisk() != diskNumber) {
             diskNumber = packet.goToDisk();
-            print("Go to disk ");
-            println(diskNumber);
+            print("Go to disk %d\n", diskNumber);
         }
         if (packet.trackPrevious()) {
-            println("Go to previous track");
+            print("Go to previous track\n");
             trackNumber--;
         }
         if (packet.trackNext()) {
-            println("Go to next track");
+            print("Go to next track\n");
             trackNumber++;
         }
         if (packet.trackBackToStart()) {
-            println("Back to start");
+            print("Back to start\n");
         }
         if (packet.trackPlaying() != trackPlaying) {
             trackPlaying = !trackPlaying;
-            print("Track playing ");
-            println(trackPlaying);
+            print("Track playing %d\n", trackPlaying);
         }
     }
     //else if (id == )
