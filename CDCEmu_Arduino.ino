@@ -12,7 +12,6 @@ uint8_t bitReadCount(uint8_t value, uint8_t bit, uint8_t count)  {
 }
 
 #include "mcp2515.h"
-#include <avr/io.h>
 #include "PacketInCDChangerCommand.h"
 #include "PacketInRadioFrequency.h"
 #include "PacketInRadioStatus.h"
