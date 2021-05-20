@@ -1,4 +1,4 @@
-SRCS=i2cmaster.S
+SRCS=pcf8574.cpp
 
 all:
 	${CC} -c ${CFLAGS} ${SRCS}

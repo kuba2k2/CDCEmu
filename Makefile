@@ -5,12 +5,14 @@ export OBJCOPY=avr-objcopy
 export SIZE=avr-size
 
 TARGET=main
-SUBDIRS=i2c
+SUBDIRS=i2c pcf8574
 SRCS=main.cpp
 
 OBJS=$(patsubst %,%/*.o, ${SUBDIRS})
-INCLUDES=$(patsubst %, -I%, ${SUBDIRS})
-export CFLAGS=-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${MCU} -DF_CPU=${F_CPU} -I.${INCLUDES} -include config.h
+INCLUDES=$(patsubst %,-I${CURDIR}/%, ${SUBDIRS})
+INCLUDES+=-I${CURDIR}
+INCLUDES+=-include config.h
+export CFLAGS=-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${MCU} -DF_CPU=${F_CPU} ${INCLUDES}
 
 all: $(SUBDIRS)
 	mkdir -p .out
