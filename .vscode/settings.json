@@ -1,0 +1,8 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "binaryPath": "c:\\Windows\\system32\\cmd.exe",
+            "binaryArgs": ["/C", "make", "flash"]
+        }
+    ]
+}

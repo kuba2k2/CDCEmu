@@ -21,8 +21,8 @@
 #define UART_BAUD_RATE   115200L
 
 
-#define PU_RX B,4
-#define PU_TX B,4
+#define PU_RX PORTB,4
+#define PU_TX PORTB,4
 #define PU_BAUD_RATE UART_BAUD_RATE
 
 #endif
