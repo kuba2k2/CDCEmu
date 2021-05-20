@@ -5,7 +5,7 @@ export OBJCOPY=avr-objcopy
 export SIZE=avr-size
 
 TARGET=main
-SUBDIRS=i2c pcf8574
+SUBDIRS=i2c pcf8574 uart
 SRCS=main.cpp
 
 OBJS=$(patsubst %,%/*.o, ${SUBDIRS})
