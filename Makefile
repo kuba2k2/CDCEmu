@@ -5,16 +5,16 @@ export OBJCOPY=avr-objcopy
 export SIZE=avr-size
 
 TARGET=main
-SUBDIRS=
+SUBDIRS=i2c
 SRCS=main.cpp
 
 OBJS=$(patsubst %,%/*.o, ${SUBDIRS})
 INCLUDES=$(patsubst %, -I%, ${SUBDIRS})
-export CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} -I. ${INCLUDES} -include config.h
+export CFLAGS=-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${MCU} -DF_CPU=${F_CPU} -I.${INCLUDES} -include config.h
 
 all: $(SUBDIRS)
 	mkdir -p .out
-	${CC} ${CFLAGS} -o .out/${TARGET}.o ${OBJS} ${SRCS}
+	${CC} ${CFLAGS} -Wl,--gc-sections -o .out/${TARGET}.o ${OBJS} ${SRCS}
 	${OBJCOPY} -j .text -j .data -O ihex .out/${TARGET}.o .out/${TARGET}.hex
 	${SIZE} -C --mcu=${MCU} .out/${TARGET}.o
 
