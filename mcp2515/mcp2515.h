@@ -3,6 +3,7 @@
 
 #include <tinySPI.h>
 #include "mcp_config.h"
+#include "mcp_messages.h"
 
 void mcp_init();
 bool mcp_reset();

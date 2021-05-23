@@ -1,8 +1,6 @@
 #ifndef MCP_PRIVATE_H
 #define MCP_PRIVATE_H
 
-#include "mcp_config.h"
-
 void mcp_cs_set();
 void mcp_cs_unset();
 void mcp_command(const uint8_t command);
