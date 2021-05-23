@@ -25,5 +25,7 @@ struct can_message {
 #define CAN_EFF_MASK 0x1FFFFFFFUL /* extended frame format (EFF) */
 
 bool mcp_send(const struct can_message *msg);
+bool mcp_can_receive();
+bool mcp_receive(struct can_message *msg);
 
 #endif
