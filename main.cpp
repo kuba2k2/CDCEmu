@@ -3,11 +3,14 @@
 
 #include <pcf8574.h>
 #include <uart.h>
+#include <tinySPI.h>
 
 int main() {
     print("Hello world %d\n", 1234);
     prints("5678");
     printc('c');
+    spi_begin();
+    spi_end();
     i2c_init();
     while (1) {
         if (purx_dataready()) {
