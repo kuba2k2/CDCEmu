@@ -3,8 +3,11 @@
 
 #define DEBUG           0
 
+#define MCP_CS_DDR      DDRB
 #define MCP_CS_PORT     PORTB
 #define MCP_CS_PIN      3
+#define MCP_CLOCK       MCP_8MHZ
+#define MCP_SPEED       MCP_125KBPS
 
 #define SCL_PORT        PORTB
 #define SCL_PIN         3
