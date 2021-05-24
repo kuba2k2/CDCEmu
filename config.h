@@ -20,4 +20,9 @@
 
 #define PCF_ADDR        0x22
 
+#define TIMERS          8
+#define TIMER_CS        (1<<CS02) // prescaler 4, clk/256
+#define TIMER_OVF_CNT   24        // total 6250 ticks, 100ms
+#define TIMER_TICK_CNT  106
+
 #endif

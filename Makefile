@@ -6,7 +6,7 @@ export SIZE=avr-size
 
 TARGET=main
 SUBDIRS=i2c pcf8574 uart spi mcp2515
-SRCS=main.cpp
+SRCS=main.cpp timers.cpp
 
 OBJS=$(patsubst %,%/*.o, ${SUBDIRS})
 INCLUDES=$(patsubst %,-I${CURDIR}/%, ${SUBDIRS})
