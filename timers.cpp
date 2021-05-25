@@ -32,6 +32,10 @@ void timer_start() {
     timer_reset_all();
 }
 
+void timer_reset(uint8_t num) {
+    timers[num] = 0;
+}
+
 void timer_reset_all() {
     TCNT0 = 0;
     TOVF0 = 0;
