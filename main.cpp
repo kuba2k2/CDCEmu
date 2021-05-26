@@ -6,6 +6,8 @@
 #include <mcp2515.h>
 #include <timers.h>
 
+#include "packets.h"
+
 struct can_message msg;
 
 #define TIMER_CURRENT_DISK      0
@@ -24,36 +26,29 @@ uint8_t data[8] = {false, false, 1, 1, 0x00, 0x00, 0x00, 0x00};
 
 uint8_t packets[] = {
     // 0x162, DLC 7, 2 data bytes
-    0x71, 0x62, 0b10100000, 0b00000010, 0x06, 0, 0x00, 0x06, 0x00, 2,
-        // msg[1] |= data[0] & 1 << 0
-        DATA_RADIO_PLAYING | (1<<3), 1 | (0<<3),
-        // msg[3] |= data[2] & 15 << 0
-        DATA_DISK_NUM | (0b1111<<3), 3 | (0<<3),
+    PACKET_DEF(0x162, 7, 2, /* data */ 0b10100000, 0b00000010, 0x06, 0, 0x00, 0x06, 0x00),
+    PACKET_DATA(DATA_RADIO_PLAYING, 0x01, 1, 0),
+    PACKET_DATA(DATA_DISK_NUM, 0x0F, 3, 0),
 
     // 0x1A2, DLC 5, 0 data bytes
-    0x51, 0xA2, TRACK_MAX, 0x58, 0x00, 0x00, 0x00, 0,
+    PACKET_DEF(0x1A2, 5, 0, /* data */ TRACK_MAX, 0x58, 0x00, 0x00, 0x00),
 
     // 0x1E2, DLC 7, 1 data byte
-    0x71, 0xE2, 0, 0x05, 0x00, 1, 1, 0x00, 0x00, 1,
-        // msg[0] |= data[3] & 0xff << 0
-        DATA_TRACK_NUM, 0 | (0<<3),
+    PACKET_DEF(0x1E2, 7, 1, /* data */ 0, 0x05, 0x00, 1, 1, 0x00, 0x00),
+    PACKET_DATA(DATA_TRACK_NUM, 0, 0, 0),
 
     // 0x1A0, DLC 2, 0 data bytes
-    0x21, 0xA0, 0b10010010, 0b00000000, 0,
+    PACKET_DEF(0x1A0, 2, 0, /* data */ 0b10010010, 0b00000000),
 };
 
 #define META_SIZE       3
 #define META_COUNT      4
 
 uint8_t packets_meta[META_SIZE * META_COUNT] = {
-    // packet 0x162 (packets[0x00]), timer 0, every 100ms, flag data[0]
-    0x00, (TIMER_CURRENT_DISK<<5) | T_MS(100), DATA_RADIO_ENABLED,
-    // packet 0x1A2 (packets[0x0e]), timer 1, every 500ms, flag data[1]
-    0x0e, (TIMER_TRACK_COUNT<<5) | T_MS(500), DATA_RADIO_PLAYING,
-    // packet 0x1E2 (packets[0x16]), timer 2, every 500ms, flag data[1]
-    0x16, (TIMER_TRACK_NUM<<5) | T_MS(500), DATA_RADIO_PLAYING,
-    // packet 0x1A0 (packets[0x22]), timer 3, every 500ms, flag data[1]
-    0x22, (TIMER_STATUS<<5) | T_MS(500), DATA_RADIO_PLAYING,
+    PACKET_META(/* 0x162 */ 0x00, TIMER_CURRENT_DISK, 100, DATA_RADIO_ENABLED),
+    PACKET_META(/* 0x1A2 */ 0x0e, TIMER_TRACK_COUNT, 500, DATA_RADIO_PLAYING),
+    PACKET_META(/* 0x1E2 */ 0x16, TIMER_TRACK_NUM, 500, DATA_RADIO_PLAYING),
+    PACKET_META(/* 0x1A0 */ 0x22, TIMER_STATUS, 500, DATA_RADIO_PLAYING),
 };
 
 void radio_enable() {
