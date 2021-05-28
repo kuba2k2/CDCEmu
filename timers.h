@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#define TIMERS          8
+#define TIMER_OVF_CNT   24        // total 6250 ticks, 100ms
+#define TIMER_TICK_CNT  106
+
 #define T_MS(x)     (x/100)
 
 void timer_start();
