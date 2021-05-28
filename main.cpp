@@ -125,6 +125,7 @@ void cdc_command_parse(const uint8_t cmd[8]) {
 }
 
 int main() {
+    SW_UART_Enable();
     timer_start();
 
     spi_begin();
@@ -192,8 +193,9 @@ int main() {
             }
         }
 
-        if (purx_dataready()) {
-            char c = pu_read();
+        if (READ_FLAG(SW_UART_status, SW_UART_RX_BUFFER_FULL)) {
+            char c = SW_UART_Receive();
+            while( READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL) ){}
             printc(c);
         }
         _delay_ms(1);

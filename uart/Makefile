@@ -1,4 +1,4 @@
-SRCS=picoUART.cpp pu_print.c rxISR.cpp uart.cpp
+SRCS=single_wire_UART.c
 
 all:
 	${CC} -c ${CFLAGS} ${SRCS}

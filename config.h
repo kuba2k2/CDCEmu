@@ -14,10 +14,6 @@
 #define SDA_PORT        PORTB
 #define SDA_PIN         1
 
-#define PU_RX           B,4
-#define PU_TX           B,4
-#define PU_BAUD_RATE    115200L
-
 #define PCF_ADDR        0x22
 
 #endif
