@@ -59,7 +59,9 @@ static volatile uint8_t UART_counter;     //!< Holds the counter used in the tim
 static volatile uint8_t   UART_Tx_data;     //!< Byte holding data being transmitted.
 static volatile uint8_t   UART_Rx_data;     //!< Byte holding data being received.
 static volatile uint8_t   UART_Tx_buffer;   //!< Transmission buffer.
-static volatile uint8_t   UART_Rx_buffer;   //!< Reception buffer.
+volatile uint8_t    UART_Rx_buffer[UART_RX_BUFFER_SIZE];    //!< Reception buffer.
+volatile uint8_t    UART_Rx_head;           //!< RX buffer writing head
+volatile uint8_t    UART_Rx_tail;           //!< RX buffer reading tail
 
 
 /*! \brief  Enable the UART.
@@ -142,26 +144,6 @@ void uart_putc(const char c)
 }
 
 
-/*! \brief  Receive one byte.
- *
- *  This function receives one byte of data
- *  by accessing the Rx buffer.
- *
- *  \note   The SW_UART_RX_BUFFER_FULL flag
- *          must be one when this function
- *          is called.
- *
- *  \return Data received.
- */
-char uart_getc(void)
-{
-  uint8_t data;
-  data = UART_Rx_buffer;
-  CLEAR_FLAG( SW_UART_status, SW_UART_RX_BUFFER_FULL );
-  return data;
-}
-
-
 /*! \brief  External interrupt service routine
  *
  *  The falling edge in the beginning of the
@@ -234,15 +216,17 @@ ISR(SW_UART_TIMER_COMPARE_INTERRUPT_VECTOR)
         SET_FLAG( SW_UART_status, SW_UART_FRAME_ERROR );
         //Disable timer and stop reception?
       }
-
-      //Set overflow error if RX_buffer is not received before new data is ready.
-      if( READ_FLAG(SW_UART_status, SW_UART_RX_BUFFER_FULL))
+      else
       {
-        SET_FLAG(SW_UART_status, SW_UART_RX_BUFFER_OVERFLOW);
+        uint8_t i = (UART_Rx_head + 1) % UART_RX_BUFFER_SIZE;
+
+        if (i != UART_Rx_tail)
+        {
+          UART_Rx_buffer[UART_Rx_head] = UART_Rx_data;
+          UART_Rx_head = i;
+        }
       }
 
-      UART_Rx_buffer = UART_Rx_data;
-      SET_FLAG( SW_UART_status, SW_UART_RX_BUFFER_FULL );
       CLEAR_UART_EXTERNAL_INTERRUPT_FLAG();
       ENABLE_UART_EXTERNAL_INTERRUPT();   //Get ready to receive new byte.
     }

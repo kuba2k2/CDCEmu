@@ -193,9 +193,9 @@ int main() {
             }
         }
 
-        if (READ_FLAG(SW_UART_status, SW_UART_RX_BUFFER_FULL)) {
+        if (uart_available()) {
             char c = uart_getc();
-            while( READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL) ){}
+            while (uart_busy());
             uart_putc(c);
         }
         _delay_ms(1);

@@ -33,6 +33,9 @@
   #define TRUE !FALSE
 #endif
 
+#ifndef UART_RX_BUFFER_SIZE
+#define UART_RX_BUFFER_SIZE     4
+#endif
 // Baud rate settings (WAIT_ONE - PRESCALER):
 //  Baud Rate     1MHz      2Mhz      4MHz      8MHz
 //     4800     207 - 1    51 - 8   103 - 8   (207 - 8)
@@ -123,6 +126,9 @@
 
 
 extern volatile uint8_t SW_UART_status;         //!< Byte holding status flags.
+extern volatile uint8_t UART_Rx_buffer[];       //!< Reception buffer.
+extern volatile uint8_t UART_Rx_head;           //!< RX buffer writing head
+extern volatile uint8_t UART_Rx_tail;           //!< RX buffer reading tail
 
 //Use this to put the UART_counter in a dedicated register. Remember to comment out the previous declarations (also in the
 //declaration in single_wire_UART.c) of the counter variable and to lock register 15 when this is used. This is done under

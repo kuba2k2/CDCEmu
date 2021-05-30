@@ -16,4 +16,5 @@
 
 #define PCF_ADDR        0x22
 
+#define UART_RX_BUFFER_SIZE     16
 #endif
