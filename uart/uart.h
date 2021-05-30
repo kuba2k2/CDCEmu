@@ -24,11 +24,4 @@ void uart_puts(const char* str)
   }
 }
 
-#if DEBUG
-    #include <stdio.h>
-    #define print printf
-#else
-    #define print
-#endif
-
 #endif
