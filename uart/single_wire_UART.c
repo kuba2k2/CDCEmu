@@ -74,7 +74,7 @@ static volatile uint8_t   UART_Rx_buffer;   //!< Reception buffer.
  *  \note   The UART can be stopped by disabling the
  *          timer and external interrupt.
  */
-void SW_UART_Enable(void)
+void uart_enable(void)
 {
   //Tri-state communication pin.
   INITIALIZE_UART_PIN();
@@ -96,7 +96,7 @@ void SW_UART_Enable(void)
  *  interrupt and the external interrupt.
  */
 /*
-void SW_UART_Disable()
+void uart_disable()
 {
   SW_UART_status = 0x00;
   DISABLE_UART_TIMER_INTERRUPT();
@@ -118,10 +118,10 @@ void SW_UART_Disable()
  *
  *  \param  data  Data to be sent.
  */
-void SW_UART_Transmit(uint8_t data)
+void uart_putc(const char c)
 {
   SET_FLAG( SW_UART_status, SW_UART_TX_BUFFER_FULL );
-  UART_Tx_buffer = data;
+  UART_Tx_buffer = c;
 
   //Start transmission if no ongoing communication.
   if( UART_counter == UART_STATE_IDLE )
@@ -153,7 +153,7 @@ void SW_UART_Transmit(uint8_t data)
  *
  *  \return Data received.
  */
-uint8_t SW_UART_Receive(void)
+char uart_getc(void)
 {
   uint8_t data;
   data = UART_Rx_buffer;

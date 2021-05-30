@@ -3,17 +3,23 @@
 
 extern "C" {
     #include "single_wire_UART.h"
+
+    void uart_enable();
+    void uart_disable();
+    void uart_putc(const char c);
+    char uart_getc();
 }
 
-#define printc SW_UART_Transmit
+//void uart_puts(const char * str);
+//void uart_gets(char * str, uint8_t num);
 
-void prints(char* str)
+void uart_puts(const char* str)
 {
   while( *str != '\0' )
   {
     if( !READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL) )
     {
-      SW_UART_Transmit((uint8_t) *str++);
+      uart_putc(*str++);
     }
   }
 }

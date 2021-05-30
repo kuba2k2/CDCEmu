@@ -138,10 +138,3 @@ extern volatile uint8_t SW_UART_status;         //!< Byte holding status flags.
 //(set to 0x1E here). Comment out the previos declarations (also in the declaration in single_wire_UART.c) of the status variable
 //when the GPIO register is used.
 //__io __no_init static volatile uint8_t SW_UART_status @ 0x1E;
-
-
-/* Global UART functions. */
-void    SW_UART_Enable(void);       //!< Enable the UART.
-void    SW_UART_Disable(void);      //!< Disable the UART.
-void    SW_UART_Transmit(uint8_t);  //!< Transmit one byte.
-uint8_t SW_UART_Receive(void);      //!< Receive one byte.

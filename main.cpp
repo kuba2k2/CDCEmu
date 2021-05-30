@@ -54,22 +54,22 @@ uint8_t packets_meta[META_SIZE * META_COUNT] = {
 void radio_enable() {
     data[DATA_RADIO_ENABLED] = true;
     timer_reset(TIMER_CURRENT_DISK);
-    prints("radio_enable\n");
+    uart_puts("radio_enable\n");
 }
 
 void radio_disable() {
     data[DATA_RADIO_ENABLED] = false;
-    prints("radio_disable\n");
+    uart_puts("radio_disable\n");
 }
 
 void radio_play() {
     data[DATA_RADIO_PLAYING] = true;
-    prints("radio_play\n");
+    uart_puts("radio_play\n");
 }
 
 void radio_pause() {
     data[DATA_RADIO_PLAYING] = false;
-    prints("radio_pause\n");
+    uart_puts("radio_pause\n");
 }
 
 void track_previous(uint8_t skip_to) {
@@ -77,7 +77,7 @@ void track_previous(uint8_t skip_to) {
         data[DATA_TRACK_NUM]--;
     if (skip_to)
         data[DATA_TRACK_NUM] = skip_to;
-    prints("track_previous\n");
+    uart_puts("track_previous\n");
 }
 
 void track_next(uint8_t skip_to) {
@@ -85,7 +85,7 @@ void track_next(uint8_t skip_to) {
         data[DATA_TRACK_NUM]++;
     if (skip_to)
         data[DATA_TRACK_NUM] = skip_to;
-    prints("track_next\n");
+    uart_puts("track_next\n");
 }
 
 void cdc_command_parse(const uint8_t cmd[8]) {
@@ -125,23 +125,23 @@ void cdc_command_parse(const uint8_t cmd[8]) {
 }
 
 int main() {
-    SW_UART_Enable();
+    uart_enable();
     timer_start();
 
     spi_begin();
     mcp_init();
-    prints("mcp_reset: ");
-    printc(mcp_reset() ? '1' : '0');
-    prints(" mcp_set_bitrate: ");
-    printc(mcp_set_bitrate() ? '1' : '0');
+    uart_puts("mcp_reset: ");
+    uart_putc(mcp_reset() ? '1' : '0');
+    uart_puts(" mcp_set_bitrate: ");
+    uart_putc(mcp_set_bitrate() ? '1' : '0');
 
     mcp_set_filter_mask(0, false, 0x7FF); // enable both filter masks
     mcp_set_filter_mask(1, false, 0x7FF);
     mcp_set_filter(0, false, 0x131); // accept CDC command message
 
-    prints(" mcp_mode_normal: ");
-    printc(mcp_mode_normal() ? '1' : '0');
-    printc('\n');
+    uart_puts(" mcp_mode_normal: ");
+    uart_putc(mcp_mode_normal() ? '1' : '0');
+    uart_putc('\n');
     //spi_end();
 
     //i2c_init();
@@ -194,9 +194,9 @@ int main() {
         }
 
         if (READ_FLAG(SW_UART_status, SW_UART_RX_BUFFER_FULL)) {
-            char c = SW_UART_Receive();
+            char c = uart_getc();
             while( READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL) ){}
-            printc(c);
+            uart_putc(c);
         }
         _delay_ms(1);
     }
