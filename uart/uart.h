@@ -12,6 +12,8 @@ extern "C" {
 uint8_t uart_readable();
 uint8_t uart_writable();
 char uart_peek();
+void uart_rx_flush();
+
 char uart_getc();
 void uart_putc(const char c);
 void uart_gets(char * str, uint8_t num);

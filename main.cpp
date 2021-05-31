@@ -14,6 +14,7 @@ struct can_message msg;
 #define TIMER_TRACK_COUNT       1
 #define TIMER_TRACK_NUM         2
 #define TIMER_STATUS            3
+#define TIMER_BUFFER_FLUSH      4
 
 #define TRACK_MAX       100
 
@@ -151,6 +152,8 @@ int main() {
                 cdc_command_parse(msg.data);
         }
 
+        uint8_t readable = uart_readable();
+
         for (uint8_t i = 0; i < META_COUNT; i++) {
             uint8_t *meta = packets_meta + META_SIZE * i;
             uint8_t timer = meta[1] >> 5;
@@ -193,10 +196,15 @@ int main() {
             }
         }
 
-        if (uart_readable()) {
-            char c = uart_getc();
-            uart_putc(c);
+        // flush any leftover bytes
+        if (timer_check(TIMER_BUFFER_FLUSH, T_MS(1000))) {
+            if (readable && uart_rx_count) {
+                uart_rx_flush();
+                readable = 0;
+            }
+            uart_rx_count = readable;
         }
+
         _delay_ms(1);
     }
     return 0;

@@ -46,6 +46,16 @@ char uart_peek() {
 }
 
 
+/*! \brief  Flush the Rx buffer.
+ *
+ *  This function clears the Rx buffer
+ *  of any data it contains.
+ */
+void uart_rx_flush() {
+    UART_Rx_head = UART_Rx_tail;
+}
+
+
 /*! \brief  Receive one byte.
  *
  *  This function receives one byte of data
