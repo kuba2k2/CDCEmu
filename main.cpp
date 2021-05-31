@@ -27,7 +27,7 @@ uint8_t uart_rx_count = 0;
 
 uint8_t data[8] = {false, false, 1, 1, 0x00, 0x00, 0x00, 0x00};
 
-uint8_t packets[] = {
+const PROGMEM uint8_t packets[] = {
     // 0x162, DLC 7, 2 data bytes
     PACKET_DEF(0x162, 7, 2, /* data */ 0b10100000, 0b00000010, 0x06, 0, 0x00, 0x06, 0x00),
     PACKET_DATA(DATA_RADIO_PLAYING, 0x01, 1, 0),
@@ -47,7 +47,7 @@ uint8_t packets[] = {
 #define META_SIZE       3
 #define META_COUNT      4
 
-uint8_t packets_meta[META_SIZE * META_COUNT] = {
+const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
     PACKET_META(/* 0x162 */ 0x00, TIMER_CURRENT_DISK, 100, DATA_RADIO_ENABLED),
     PACKET_META(/* 0x1A2 */ 0x0e, TIMER_TRACK_COUNT, 500, DATA_RADIO_PLAYING),
     PACKET_META(/* 0x1E2 */ 0x16, TIMER_TRACK_NUM, 500, DATA_RADIO_PLAYING),
@@ -160,7 +160,6 @@ int main() {
             char command[3];
             uart_gets(command, 2);
             command[2] = 0;
-            uart_puts(command);
             if (!strcmp_P(command, PSTR("MA"))) {
                 uart_puts_P("bt paused");
             }
@@ -174,34 +173,40 @@ int main() {
             uart_getc();
 
         for (uint8_t i = 0; i < META_COUNT; i++) {
-            uint8_t *meta = packets_meta + META_SIZE * i;
-            uint8_t timer = meta[1] >> 5;
-            uint8_t delay = meta[1] & 0b11111;
+            uint8_t *meta = (uint8_t*)packets_meta + META_SIZE * i;
+            uint8_t timer_meta = pgm_read_byte(&meta[1]);
+            uint8_t timer = timer_meta >> 5;
+            uint8_t delay = timer_meta & 0b11111;
             // check the specified timer
             if (!timer_check(timer, delay))
                 continue;
             // check the flag data byte
-            if (meta[2] != 0xff && !data[meta[2]])
+            uint8_t flag = pgm_read_byte(&meta[2]);
+            if (flag != 0xff && !data[flag])
                 continue;
             // get a pointer to the packet data
-            uint8_t *packet = packets + meta[0];
+            uint8_t addr = pgm_read_byte(&meta[0]);
+            uint8_t *packet = (uint8_t*)packets + addr;
+
+            uint8_t id_hi = pgm_read_byte(&packet[0]);
+            uint8_t id_lo = pgm_read_byte(&packet[1]);
 
             // set the ID and DLC
-            msg.can_id = ((packet[0] << 8) | packet[1]) & 0x7ff;
-            msg.can_dlc = packet[0] >> 4;
+            msg.can_id = ((id_hi << 8) | id_lo) & 0x7ff;
+            msg.can_dlc = id_hi >> 4;
 
             // set all default message payload bytes
             for (uint8_t j = 0; j < msg.can_dlc; j++) {
-                msg.data[j] = packet[2 + j];
+                msg.data[j] = pgm_read_byte(packet + 2 + j);
             }
             // get a pointer to the data byte part
             packet += 2 + msg.can_dlc;
 
-            uint8_t db_count = packet[0];
+            uint8_t db_count = pgm_read_byte(&packet[0]);
             // set all configured data bytes
             for (uint8_t j = 0; j < db_count; j++) {
-                uint8_t src = packet[1 + j*2];
-                uint8_t dst = packet[2 + j*2];
+                uint8_t src = pgm_read_byte(packet + 1 + j*2);
+                uint8_t dst = pgm_read_byte(packet + 2 + j*2);
                 uint8_t src_byte = src & 0b111;
                 uint8_t src_mask = (src>>3) ? (src>>3) : 0xff;
                 uint8_t dst_byte = dst & 0b111;
