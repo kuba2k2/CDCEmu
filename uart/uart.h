@@ -9,7 +9,7 @@ extern "C" {
     void uart_putc(const char c);
 }
 
-uint8_t uart_available();
+uint8_t uart_readable();
 char uart_peek();
 char uart_getc();
 //void uart_puts(const char * str);

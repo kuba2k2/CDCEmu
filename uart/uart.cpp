@@ -11,7 +11,7 @@ extern "C" {
  *
  *  \return Number of characters available.
  */
-uint8_t uart_available() {
+uint8_t uart_readable() {
     return (UART_RX_BUFFER_SIZE + UART_Rx_head - UART_Rx_tail) % UART_RX_BUFFER_SIZE;
 }
 

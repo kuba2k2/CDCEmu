@@ -193,7 +193,7 @@ int main() {
             }
         }
 
-        if (uart_available()) {
+        if (uart_readable()) {
             char c = uart_getc();
             while (uart_busy());
             uart_putc(c);
