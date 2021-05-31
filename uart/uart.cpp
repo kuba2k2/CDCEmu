@@ -83,10 +83,44 @@ void uart_putc(const char c) {
 }
 
 
-void uart_puts(const char* str)
-{
-    while( *str != '\0' )
-    {
+/*! \brief  Receive num bytes.
+ *
+ *  This function receives num bytes of data,
+ *  putting them in the str pointer.
+ *
+ *  If no data is available in the Rx buffer,
+ *  the function waits until any byte is received.
+ */
+void uart_gets(char * str, uint8_t num) {
+    uint8_t i = 0;
+    while (i < num) {
+        *str++ = uart_getc();
+        i++;
+    }
+}
+
+
+/*! \brief  Transmit a string.
+ *
+ *  This function transmits the str until
+ *  a terminating character is encountered.
+ */
+void uart_puts(const char * str) {
+    while (*str) {
         uart_putc(*str++);
+    }
+}
+
+
+/*! \brief  Transmit a string.
+ *
+ *  This function transmits the str (contained
+ *  in the program memory) until a terminating
+ *  character is encountered.
+ */
+void uart_puts_p(const char * str) {
+    char c;
+    while (c = pgm_read_byte(str++)) {
+        uart_putc(c);
     }
 }

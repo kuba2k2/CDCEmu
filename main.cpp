@@ -54,22 +54,22 @@ uint8_t packets_meta[META_SIZE * META_COUNT] = {
 void radio_enable() {
     data[DATA_RADIO_ENABLED] = true;
     timer_reset(TIMER_CURRENT_DISK);
-    uart_puts("radio_enable\n");
+    uart_puts_P("radio_enable\n");
 }
 
 void radio_disable() {
     data[DATA_RADIO_ENABLED] = false;
-    uart_puts("radio_disable\n");
+    uart_puts_P("radio_disable\n");
 }
 
 void radio_play() {
     data[DATA_RADIO_PLAYING] = true;
-    uart_puts("radio_play\n");
+    uart_puts_P("radio_play\n");
 }
 
 void radio_pause() {
     data[DATA_RADIO_PLAYING] = false;
-    uart_puts("radio_pause\n");
+    uart_puts_P("radio_pause\n");
 }
 
 void track_previous(uint8_t skip_to) {
@@ -77,7 +77,7 @@ void track_previous(uint8_t skip_to) {
         data[DATA_TRACK_NUM]--;
     if (skip_to)
         data[DATA_TRACK_NUM] = skip_to;
-    uart_puts("track_previous\n");
+    uart_puts_P("track_previous\n");
 }
 
 void track_next(uint8_t skip_to) {
@@ -85,7 +85,7 @@ void track_next(uint8_t skip_to) {
         data[DATA_TRACK_NUM]++;
     if (skip_to)
         data[DATA_TRACK_NUM] = skip_to;
-    uart_puts("track_next\n");
+    uart_puts_P("track_next\n");
 }
 
 void cdc_command_parse(const uint8_t cmd[8]) {
@@ -130,16 +130,16 @@ int main() {
 
     spi_begin();
     mcp_init();
-    uart_puts("mcp_reset: ");
+    uart_puts_P("mcp_reset: ");
     uart_putc(mcp_reset() ? '1' : '0');
-    uart_puts(" mcp_set_bitrate: ");
+    uart_puts_P(" mcp_set_bitrate: ");
     uart_putc(mcp_set_bitrate() ? '1' : '0');
 
     mcp_set_filter_mask(0, false, 0x7FF); // enable both filter masks
     mcp_set_filter_mask(1, false, 0x7FF);
     mcp_set_filter(0, false, 0x131); // accept CDC command message
 
-    uart_puts(" mcp_mode_normal: ");
+    uart_puts_P(" mcp_mode_normal: ");
     uart_putc(mcp_mode_normal() ? '1' : '0');
     uart_putc('\n');
     //spi_end();
