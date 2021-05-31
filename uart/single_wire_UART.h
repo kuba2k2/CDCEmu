@@ -118,9 +118,6 @@
 #define CLEAR_UART_EXTERNAL_INTERRUPT_FLAG()    (GIFR = (1<<PCIF))
 
 /* Status register defines. */
-#define SW_UART_TX_BUFFER_FULL        4     //!< Set if data is ready to be sent from the Tx buffer.
-#define SW_UART_RX_BUFFER_FULL        5     //!< Set if data is ready to be received from the Rx buffer.
-#define SW_UART_RX_BUFFER_OVERFLOW    6     //!< Set if receive buffer is overflowed. Indicates data loss.
 #define SW_UART_FRAME_ERROR           7     //!< Set if a frame error has occured.
 
 /* Flag macros. */
