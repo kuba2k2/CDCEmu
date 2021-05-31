@@ -10,6 +10,8 @@
 
 struct can_message msg;
 
+uint8_t uart_rx_count = 0;
+
 #define TIMER_CURRENT_DISK      0
 #define TIMER_TRACK_COUNT       1
 #define TIMER_TRACK_NUM         2
@@ -153,6 +155,23 @@ int main() {
         }
 
         uint8_t readable = uart_readable();
+
+        if (readable >= 2) {
+            char command[3];
+            uart_gets(command, 2);
+            command[2] = 0;
+            uart_puts(command);
+            if (!strcmp_P(command, PSTR("MA"))) {
+                uart_puts_P("bt paused");
+            }
+            else if (!strcmp_P(command, PSTR("MB"))) {
+                uart_puts_P("bt playing");
+            }
+        }
+
+        // discard any newline characters
+        if (uart_peek() == '\r' || uart_peek() == '\n')
+            uart_getc();
 
         for (uint8_t i = 0; i < META_COUNT; i++) {
             uint8_t *meta = packets_meta + META_SIZE * i;
