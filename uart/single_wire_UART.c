@@ -31,8 +31,8 @@
  * $Date: 2007-03-29 13:17:03 +0200 (to, 29 mar 2007) $  \n
  ******************************************************************************/
 
-#include <avr/io.h>              //Device specific register/Bit definitions.
-#include <avr/interrupt.h>              //The __enable_interrupt() intrinsic.
+#include <avr/io.h>             //Device specific register/Bit definitions.
+#include <avr/interrupt.h>      //The __enable_interrupt() intrinsic.
 #include "stdint.h"             //Integer types.
 #include "single_wire_UART.h"   //UART settings and device spesific.
 
@@ -58,7 +58,9 @@ static volatile uint8_t UART_counter;     //!< Holds the counter used in the tim
 /* Communication parameters. */
 static volatile uint8_t   UART_Tx_data;     //!< Byte holding data being transmitted.
 static volatile uint8_t   UART_Rx_data;     //!< Byte holding data being received.
-static volatile uint8_t   UART_Tx_buffer;   //!< Transmission buffer.
+volatile uint8_t    UART_Tx_buffer[UART_TX_BUFFER_SIZE];    //!< Transmission buffer.
+volatile uint8_t    UART_Tx_head;           //!< TX buffer writing head
+volatile uint8_t    UART_Tx_tail;           //!< TX buffer reading tail
 volatile uint8_t    UART_Rx_buffer[UART_RX_BUFFER_SIZE];    //!< Reception buffer.
 volatile uint8_t    UART_Rx_head;           //!< RX buffer writing head
 volatile uint8_t    UART_Rx_tail;           //!< RX buffer reading tail
@@ -108,39 +110,43 @@ void uart_disable()
 */
 
 
-/*! \brief  Transmit one byte.
+/*! \brief  Initiate the transmission.
  *
- *  This function sends one byte of data by
- *  putting it in the TX data and initialize a
- *  transmission if state is IDLE (UART_counter == 0)
- *
- *  \note   The SW_UART_TX_BUFFER_FULL flag must be
- *          0 when this function is called, or data in
- *          transmit buffer will be lost.
- *
- *  \param  data  Data to be sent.
+ *  This function initializes a transmission if state
+ *  is IDLE (UART_counter == 0). The interrupt handlers
+ *  will then start reading the Tx buffer until all data
+ *  is sent.
  */
-void uart_putc(const char c)
+void uart_transmit()
 {
-  SET_FLAG( SW_UART_status, SW_UART_TX_BUFFER_FULL );
-  UART_Tx_buffer = c;
-
   //Start transmission if no ongoing communication.
   if( UART_counter == UART_STATE_IDLE )
   {
-    //Copy byte from buffer and clear buffer full flag.
-    UART_Tx_data = UART_Tx_buffer;
-    CLEAR_FLAG( SW_UART_status, SW_UART_TX_BUFFER_FULL );
-
+    uart_tx_buffer();
     DISABLE_UART_EXTERNAL_INTERRUPT();
     CLEAR_UART_PIN();                         //Write start bit.
     UART_counter = TRANSMIT_FIRST_DATA;       //Update counter so the 1. data bit is the next bit to be transmitted.
+    STOP_UART_TIMER();                        //Stop timer to reset prescaler.
     CLEAR_UART_TIMER();                       //Clear timer.
     SET_UART_TIMER_COMPARE_START_TRANSMIT();  //Set timer compare value.
     CLEAR_UART_TIMER_INTERRUPT_FLAG();        //Make sure timer interrupt flag is not set.
     ENABLE_UART_TIMER_INTERRUPT();
     START_UART_TIMER();
   }
+}
+
+
+/*! \brief  Fill the TX data.
+ *
+ *  This function puts one byte from the TX buffer
+ *  in the TX data, making it available to be sent
+ *  by the interrupt handlers.
+ */
+void uart_tx_buffer()
+{
+  //Copy byte from the buffer and move the tail.
+  UART_Tx_data = UART_Tx_buffer[UART_Tx_tail];
+  UART_Tx_tail = (UART_Tx_tail + 1) % UART_TX_BUFFER_SIZE;
 }
 
 
@@ -236,18 +242,10 @@ ISR(SW_UART_TIMER_COMPARE_INTERRUPT_VECTOR)
     {
       //Initiate transmission if there is data in TX_buffer. This is done in the
       //same way as in the UART_transmit routine.
-      if( READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL) )
+      if( UART_Tx_head != UART_Tx_tail )
       {
-        UART_Tx_data = UART_Tx_buffer;
-        CLEAR_FLAG( SW_UART_status, SW_UART_TX_BUFFER_FULL );
-        DISABLE_UART_EXTERNAL_INTERRUPT();
-        CLEAR_UART_PIN();                         //Write start bit.
-        UART_counter = TRANSMIT_FIRST_DATA;       //Update counter so the 1. data bit is the next bit to be transmitted.
-        STOP_UART_TIMER();                        //Stop timer to reset prescaler.
-        CLEAR_UART_TIMER();                       //Clear timer.
-        SET_UART_TIMER_COMPARE_START_TRANSMIT();  //Set timer compare value
-        CLEAR_UART_TIMER_INTERRUPT_FLAG();        //Make sure timer interrupt flag is not set.
-        START_UART_TIMER();
+        UART_counter = UART_STATE_IDLE;
+        uart_transmit();
         return;                                   //Exit ISR so the counter is not updated.
       }
 
@@ -315,7 +313,7 @@ ISR(SW_UART_TIMER_COMPARE_INTERRUPT_VECTOR)
     {
       //Check if new data is ready to be sent. If not, set UART state to idle, disable the timer interrupt and
       //enable the external interrupt to make the UART wait for new incoming data.
-      if(!READ_FLAG(SW_UART_status, SW_UART_TX_BUFFER_FULL))
+      if(UART_Tx_head == UART_Tx_tail)
       {
         STOP_UART_TIMER();
         DISABLE_UART_TIMER_INTERRUPT();
@@ -326,8 +324,7 @@ ISR(SW_UART_TIMER_COMPARE_INTERRUPT_VECTOR)
       //Initiate transmission if there is data in TX_buffer.
       else
       {
-        UART_Tx_data = UART_Tx_buffer;
-        CLEAR_FLAG( SW_UART_status, SW_UART_TX_BUFFER_FULL );
+        uart_tx_buffer();
         UART_counter = TRANSMIT_FIRST_DATA - 2; //Need to substract 2 because counter is updated at the end of the ISR.
         DISABLE_UART_EXTERNAL_INTERRUPT();
         //bit_out already set to 0x00.

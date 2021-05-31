@@ -195,7 +195,6 @@ int main() {
 
         if (uart_readable()) {
             char c = uart_getc();
-            while (uart_busy());
             uart_putc(c);
         }
         _delay_ms(1);
