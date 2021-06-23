@@ -19,4 +19,6 @@
 #define UART_RX_BUFFER_SIZE     16
 #define UART_TX_BUFFER_SIZE     16
 
+#define TRACK_MAX       99
+
 #endif

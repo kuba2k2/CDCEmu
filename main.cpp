@@ -1,3 +1,4 @@
+#include "main.h"
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -6,153 +7,30 @@
 #include <mcp2515.h>
 #include <timers.h>
 
-#include "packets.h"
-
-struct can_message msg;
+#include "data.h"
+#include "can.h"
+#include "radio.h"
 
 uint8_t uart_rx_count = 0;
 
-#define TIMER_CURRENT_DISK      0
-#define TIMER_TRACK_COUNT       1
-#define TIMER_TRACK_NUM         2
-#define TIMER_STATUS            3
-#define TIMER_BUFFER_FLUSH      4
-
-#define TRACK_MAX       100
-
-#define DATA_RADIO_ENABLED      0
-#define DATA_RADIO_PLAYING      1
-#define DATA_DISK_NUM           2
-#define DATA_TRACK_NUM          3
-
-uint8_t data[8] = {false, false, 1, 1, 0x00, 0x00, 0x00, 0x00};
-
-const PROGMEM uint8_t packets[] = {
-    // 0x162, DLC 7, 2 data bytes
-    PACKET_DEF(0x162, 7, 2, /* data */ 0b10100000, 0b00000010, 0x06, 0, 0x00, 0x06, 0x00),
-    PACKET_DATA(DATA_RADIO_PLAYING, 0x01, 1, 0),
-    PACKET_DATA(DATA_DISK_NUM, 0x0F, 3, 0),
-
-    // 0x1A2, DLC 5, 0 data bytes
-    PACKET_DEF(0x1A2, 5, 0, /* data */ TRACK_MAX, 0x58, 0x00, 0x00, 0x00),
-
-    // 0x1E2, DLC 7, 1 data byte
-    PACKET_DEF(0x1E2, 7, 1, /* data */ 0, 0x05, 0x00, 1, 1, 0x00, 0x00),
-    PACKET_DATA(DATA_TRACK_NUM, 0, 0, 0),
-
-    // 0x1A0, DLC 2, 0 data bytes
-    PACKET_DEF(0x1A0, 2, 0, /* data */ 0b10010010, 0b00000000),
-};
-
-#define META_SIZE       3
-#define META_COUNT      4
-
-const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
-    PACKET_META(/* 0x162 */ 0x00, TIMER_CURRENT_DISK, 100, DATA_RADIO_ENABLED),
-    PACKET_META(/* 0x1A2 */ 0x0e, TIMER_TRACK_COUNT, 500, DATA_RADIO_PLAYING),
-    PACKET_META(/* 0x1E2 */ 0x16, TIMER_TRACK_NUM, 500, DATA_RADIO_PLAYING),
-    PACKET_META(/* 0x1A0 */ 0x22, TIMER_STATUS, 500, DATA_RADIO_PLAYING),
-};
-
-void radio_enable() {
-    data[DATA_RADIO_ENABLED] = true;
-    timer_reset(TIMER_CURRENT_DISK);
-    uart_puts_P("radio_enable\n");
+void ensure_spi() {
+    spi_begin();
 }
 
-void radio_disable() {
-    data[DATA_RADIO_ENABLED] = false;
-    uart_puts_P("radio_disable\n");
-}
-
-void radio_play() {
-    data[DATA_RADIO_PLAYING] = true;
-    uart_puts_P("radio_play\n");
-}
-
-void radio_pause() {
-    data[DATA_RADIO_PLAYING] = false;
-    uart_puts_P("radio_pause\n");
-}
-
-void track_previous(uint8_t skip_to) {
-    if (data[DATA_TRACK_NUM] > 1)
-        data[DATA_TRACK_NUM]--;
-    if (skip_to)
-        data[DATA_TRACK_NUM] = skip_to;
-    uart_puts_P("track_previous\n");
-}
-
-void track_next(uint8_t skip_to) {
-    if (data[DATA_TRACK_NUM] < TRACK_MAX)
-        data[DATA_TRACK_NUM]++;
-    if (skip_to)
-        data[DATA_TRACK_NUM] = skip_to;
-    uart_puts_P("track_next\n");
-}
-
-void cdc_command_parse(const uint8_t cmd[8]) {
-    // radio enabled (byte 0, bit 7)
-    if (cmd[0] & 1<<7) {
-        if (!data[DATA_RADIO_ENABLED])
-            radio_enable();
-    }
-    else if (data[DATA_RADIO_ENABLED])
-        radio_disable();
-
-    // single track back (byte 0, bit 6)
-    if (cmd[0] & 1<<6)
-        track_previous(0);
-
-    // single track forward (byte 0, bit 5)
-    if (cmd[0] & 1<<5)
-        track_next(0);
-
-    // back to start (byte 0, bit 3)
-    if (cmd[0] & 1<<3)
-        track_previous(0);
-
-    // playing enabled (byte 0, bit 1)
-    if (cmd[0] & 1<<1) {
-        if (!data[DATA_RADIO_PLAYING])
-            radio_play();
-    }
-    else if (data[DATA_RADIO_PLAYING])
-        radio_pause();
-
-    // go to track (byte 4)
-    if (cmd[4] && cmd[4] < data[DATA_TRACK_NUM])
-        track_previous(cmd[4]);
-    if (cmd[4] && cmd[4] > data[DATA_TRACK_NUM])
-        track_next(cmd[4]);
+void ensure_i2c() {
+    i2c_init();
 }
 
 int main() {
     uart_enable();
     timer_start();
+    can_init();
 
-    spi_begin();
-    mcp_init();
-    uart_puts_P("mcp_reset: ");
-    uart_putc(mcp_reset() ? '1' : '0');
-    uart_puts_P(" mcp_set_bitrate: ");
-    uart_putc(mcp_set_bitrate() ? '1' : '0');
-
-    mcp_set_filter_mask(0, false, 0x7FF); // enable both filter masks
-    mcp_set_filter_mask(1, false, 0x7FF);
-    mcp_set_filter(0, false, 0x131); // accept CDC command message
-
-    uart_puts_P(" mcp_mode_normal: ");
-    uart_putc(mcp_mode_normal() ? '1' : '0');
-    uart_putc('\n');
-    //spi_end();
-
-    //i2c_init();
     while (1) {
-        if (mcp_receive(&msg)) {
-            if (msg.can_id == 0x131)
-                cdc_command_parse(msg.data);
-        }
+        can_receive_all();
+        can_send_all();
+
+        radio_tick();
 
         uint8_t readable = uart_readable();
 
@@ -171,54 +49,6 @@ int main() {
         // discard any newline characters
         if (uart_peek() == '\r' || uart_peek() == '\n')
             uart_getc();
-
-        for (uint8_t i = 0; i < META_COUNT; i++) {
-            uint8_t *meta = (uint8_t*)packets_meta + META_SIZE * i;
-            uint8_t timer_meta = pgm_read_byte(&meta[1]);
-            uint8_t timer = timer_meta >> 5;
-            uint8_t delay = timer_meta & 0b11111;
-            // check the specified timer
-            if (!timer_check(timer, delay))
-                continue;
-            // check the flag data byte
-            uint8_t flag = pgm_read_byte(&meta[2]);
-            if (flag != 0xff && !data[flag])
-                continue;
-            // get a pointer to the packet data
-            uint8_t addr = pgm_read_byte(&meta[0]);
-            uint8_t *packet = (uint8_t*)packets + addr;
-
-            uint8_t id_hi = pgm_read_byte(&packet[0]);
-            uint8_t id_lo = pgm_read_byte(&packet[1]);
-
-            // set the ID and DLC
-            msg.can_id = ((id_hi << 8) | id_lo) & 0x7ff;
-            msg.can_dlc = id_hi >> 4;
-
-            // set all default message payload bytes
-            for (uint8_t j = 0; j < msg.can_dlc; j++) {
-                msg.data[j] = pgm_read_byte(packet + 2 + j);
-            }
-            // get a pointer to the data byte part
-            packet += 2 + msg.can_dlc;
-
-            uint8_t db_count = pgm_read_byte(&packet[0]);
-            // set all configured data bytes
-            for (uint8_t j = 0; j < db_count; j++) {
-                uint8_t src = pgm_read_byte(packet + 1 + j*2);
-                uint8_t dst = pgm_read_byte(packet + 2 + j*2);
-                uint8_t src_byte = src & 0b111;
-                uint8_t src_mask = (src>>3) ? (src>>3) : 0xff;
-                uint8_t dst_byte = dst & 0b111;
-                uint8_t dst_rsh = (dst>>3);
-                msg.data[dst_byte] |= (data[src_byte] & src_mask) << dst_rsh;
-            }
-
-            // wait until the TX buffer becomes available (one of three)
-            while (!mcp_send(&msg)) {
-                _delay_ms(1);
-            }
-        }
 
         // flush any leftover bytes
         if (timer_check(TIMER_BUFFER_FLUSH, T_MS(1000))) {
