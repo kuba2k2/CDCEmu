@@ -13,12 +13,23 @@
 
 uint8_t uart_rx_count = 0;
 
+#define IO_SPI  1
+#define IO_I2C  2
+
+uint8_t io_mode = 0;
+
 void ensure_spi() {
-    spi_begin();
+    if (io_mode != IO_SPI) {
+        spi_begin();
+        io_mode = IO_SPI;
+    }
 }
 
 void ensure_i2c() {
-    i2c_init();
+    if (io_mode != IO_I2C) {
+        i2c_init();
+        io_mode = IO_I2C;
+    }
 }
 
 int main() {
