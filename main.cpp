@@ -10,6 +10,7 @@
 #include "data.h"
 #include "can.h"
 #include "radio.h"
+#include "gpio.h"
 
 uint8_t uart_rx_count = 0;
 
@@ -20,6 +21,7 @@ uint8_t io_mode = 0;
 
 void ensure_spi() {
     if (io_mode != IO_SPI) {
+        mcp_init();
         spi_begin();
         io_mode = IO_SPI;
     }
@@ -27,6 +29,7 @@ void ensure_spi() {
 
 void ensure_i2c() {
     if (io_mode != IO_I2C) {
+        spi_end();
         i2c_init();
         io_mode = IO_I2C;
     }
@@ -42,6 +45,8 @@ int main() {
         can_send_all();
 
         radio_tick();
+
+        led_update_all();
 
         uint8_t readable = uart_readable();
 

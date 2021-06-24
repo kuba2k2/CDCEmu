@@ -8,6 +8,7 @@
 #define TIMER_PACKET_1000MS     2
 #define TIMER_BUFFER_FLUSH      3
 #define TIMER_TRACK_TIME        4
+#define TIMER_LEDS              5
 
 #define TIMERS          8
 #define TIMER_OVF_CNT   24        // total 6250 ticks, 100ms

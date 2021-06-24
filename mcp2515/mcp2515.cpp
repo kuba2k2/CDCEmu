@@ -7,6 +7,7 @@
 
 void mcp_init() {
     MCP_CS_DDR |= (1<<MCP_CS_PIN);
+    mcp_cs_unset();
 }
 
 bool mcp_reset() {

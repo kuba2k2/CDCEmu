@@ -118,7 +118,6 @@ const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
 
 bool can_init() {
     ensure_spi();
-    mcp_init();
 
     uart_puts_P("mcp_reset: ");
     uart_putc(mcp_reset() ? '1' : '0');
