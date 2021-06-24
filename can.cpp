@@ -25,6 +25,20 @@ struct cdc_command {
 };
 
 /*
+0x036 - BSI ignition
+00001110 00000000 E0000000 00LIBBBB 00000MMM 00000000 00000000 10100000
+                  │          │││         │
+                  │          │││         │ Ignition mode:
+                  │          │││         │  000 - OFF
+                  │          │││         │  001 - ON
+                  │          │││         │  010 - Power saving mode
+                  │          │││         └─ 011 - ON (first packet only)
+                  │          ││└─ Dashboard brightness
+                  │          │└─ Disable dark mode
+                  │          └─ Dashboard lighting enabled
+                  └─ Economy mode active
+
+
 0x131 - CD changer command
 EBF0SIPX R000000R DDDDDDDD 00000000 TTTTTTTT
 │││ ││││ │      │ │                 │
@@ -108,10 +122,10 @@ const PROGMEM uint8_t packets[] = {
 #define META_COUNT      6
 
 const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
-    PACKET_META(/* 0x162 */ 0x00, TIMER_PACKET_100MS, 100, DATA_RADIO_ENABLED),
-    PACKET_META(/* 0x1A2 */ 0x0e, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
-    PACKET_META(/* 0x1E2 */ 0x16, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
-    PACKET_META(/* 0x1A0 */ 0x26, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
+    PACKET_META(/* 0x162 */ 0x00, TIMER_PACKET_100MS, 100, DATA_IGNITION),
+    PACKET_META(/* 0x1A2 */ 0x0e, TIMER_PACKET_500MS, 500, DATA_RADIO_ENABLED),
+    PACKET_META(/* 0x1E2 */ 0x16, TIMER_PACKET_500MS, 500, DATA_RADIO_ENABLED),
+    PACKET_META(/* 0x1A0 */ 0x26, TIMER_PACKET_500MS, 500, DATA_RADIO_ENABLED),
     PACKET_META(/* 0x531 */ 0x2B, TIMER_PACKET_1000MS, 1000, DATA_RADIO_ENABLED),
     PACKET_META(/* 0x0E2 */ 0x36, TIMER_PACKET_1000MS, 1000, DATA_RADIO_ENABLED),
 };
@@ -127,11 +141,16 @@ bool can_init() {
     mcp_set_filter_mask(0, false, 0x7FF); // enable both filter masks
     mcp_set_filter_mask(1, false, 0x7FF);
     mcp_set_filter(0, false, 0x131); // accept CDC command message
+    mcp_set_filter(1, false, 0x036);
 
     uart_puts_P(" mcp_mode_normal: ");
     uart_putc(mcp_mode_normal() ? '1' : '0');
     uart_putc('\n');
     return true;
+}
+
+void parse_bsi_ignition(const uint8_t cmd[8]) {
+    radio_ignition(cmd[4] & 0b11, cmd[2] >> 7);
 }
 
 void parse_cdc_command(const uint8_t cmd[8]) {
@@ -162,7 +181,9 @@ void parse_cdc_command(const uint8_t cmd[8]) {
 void can_receive_all() {
     ensure_spi();
     if (mcp_receive(&msg)) {
-        if (msg.can_id == 0x131)
+        if (msg.can_id == 0x036)
+            parse_bsi_ignition(msg.data);
+        else if (msg.can_id == 0x131)
             parse_cdc_command(msg.data);
     }
 }

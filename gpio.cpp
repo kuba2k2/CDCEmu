@@ -8,7 +8,7 @@
 #include "timers.h"
 
 #define LED_SIZE        3
-#define LED_COUNT       3
+#define LED_COUNT       4
 
 uint8_t led_timer = 0;
 uint8_t leds[3] = {0, 0, 0};
@@ -16,11 +16,17 @@ uint8_t leds_set = 0;
 
 const PROGMEM uint8_t leds_meta[] = {
     // Red LED - radio enabled: 2000ms, 5%
-    LED_DEF(PIN_LED_RED, LED_INVERTED, 2000, 100, DATA_RADIO_ENABLED, LED_NORMAL, LED_DEFAULT_OFF),
-    // Green LED - radio playing: 1000ms, 50%
-    LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_RADIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
-    // Green LED - radio enabled, not playing: 1000ms, 100%
-    LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_ENABLED, LED_NORMAL, LED_DEFAULT_OFF),
+    LED_DEF(PIN_LED_RED, LED_INVERTED, 2000, 100, DATA_RADIO_ENABLED, LED_NORMAL, LED_NO_DEFAULT),
+    // Red LED - ignition ON: 100%
+    LED_DEF(PIN_LED_RED, LED_NORMAL, 1000, 0, DATA_IGNITION, LED_NORMAL, LED_NO_DEFAULT),
+    // Red LED - ignition ON (Power Save): 600ms, 50%
+    LED_DEF(PIN_LED_RED, LED_NORMAL, 600, 300, DATA_POWERSAVE, LED_NORMAL, LED_DEFAULT_OFF),
+
+    // Green LED - audio playing TODO: 1000ms, 50%
+    // LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_AUDIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
+    // Green LED - radio playing TODO: 100%
+    // LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
+    LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_RADIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
 };
 
 void led_set(uint8_t pin, bool state, bool inverted) {
@@ -81,7 +87,7 @@ void led_update_all() {
         bool is_reset = led_timer < timer;
         uint8_t elapsed = led_timer - timer;
         // enable the led at first round
-        if (timer == 0) {
+        if (timer == 0 || !t_off) {
             led_set(pin, 1, inverted);
         }
         // disable the led when t_on elapses

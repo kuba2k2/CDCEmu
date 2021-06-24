@@ -3,6 +3,16 @@
 #include <uart.h>
 #include "data.h"
 #include "timers.h"
+#include "can.h"
+
+void radio_ignition(uint8_t mode, bool economy) {
+    data[DATA_IGNITION] = !economy && (mode & IGNITION_ON /* ON or ON_FIRST */);
+    data[DATA_POWERSAVE] = mode == IGNITION_POWERSAVE;
+    if (!data[DATA_IGNITION]) {
+        radio_enabled(false);
+        radio_playing(false);
+    }
+}
 
 void radio_enabled(bool radio_enabled) {
     if (radio_enabled == data[DATA_RADIO_ENABLED])

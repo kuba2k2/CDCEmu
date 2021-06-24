@@ -9,6 +9,8 @@
 #define DATA_TRACK_NUM          3
 #define DATA_TRACK_MINUTE       4
 #define DATA_TRACK_SECOND       5
+#define DATA_IGNITION           6
+#define DATA_POWERSAVE          7
 
 extern uint8_t data[8];
 
