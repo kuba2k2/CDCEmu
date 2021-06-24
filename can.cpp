@@ -169,6 +169,7 @@ void can_receive_all() {
 }
 
 void can_send_all() {
+    uint8_t tcntg = timer_read_global();
     uint8_t timers_checked = 0;
     for (uint8_t i = 0; i < META_COUNT; i++) {
         uint8_t *meta = (uint8_t*)packets_meta + META_SIZE * i;
@@ -178,7 +179,7 @@ void can_send_all() {
 
         // check the specified timer
         uint8_t timer_mask = 1<<timer;
-        bool timer_checked = timer_check(timer, delay) || (timers_checked & timer_mask);
+        bool timer_checked = timer_check(timer, delay, tcntg) || (timers_checked & timer_mask);
         if (!timer_checked)
             continue;
         timers_checked |= timer_mask;

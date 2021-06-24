@@ -44,9 +44,17 @@ void timer_reset_all() {
     }
 }
 
+uint8_t timer_read_global() {
+    return TCNTG;
+}
+
 bool timer_check(uint8_t num, uint8_t delay) {
-    if (TCNTG - timers[num] >= delay || TCNTG < timers[num]) {
-        timers[num] = TCNTG;
+    return timer_check(num, delay, TCNTG);
+}
+
+bool timer_check(uint8_t num, uint8_t delay, uint8_t tcntg) {
+    if (tcntg - timers[num] >= delay || tcntg < timers[num]) {
+        timers[num] = tcntg;
         return true;
     }
     return false;
