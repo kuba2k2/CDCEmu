@@ -9,9 +9,6 @@
 #include "timers.h"
 #include "radio.h"
 
-#define META_SIZE       3
-#define META_COUNT      4
-
 struct can_message msg;
 
 struct cdc_command {
@@ -79,30 +76,44 @@ TTTTTTTT 00000101 00000000 MMMMMMMM 0SSSSSSS 00000000 00000000
   └─ Intro mode
 */
 
+// size of PACKET_DEF - 3 + DLC
+// size of PACKET_DATA - 2
 const PROGMEM uint8_t packets[] = {
-    // 0x162, DLC 7, 2 data bytes
+    // 0x162, DLC 7, 2 data bytes - 0x00:0x0D
     PACKET_DEF(0x162, 7, 2, /* data */ 0b10100000, 0b00000010, 0x06, 0, 0x00, 0x06, 0x00),
     PACKET_DATA(DATA_RADIO_PLAYING, 0x01, 1, 0),
     PACKET_DATA(DATA_DISK_NUM, 0x0F, 3, 0),
 
-    // 0x1A2, DLC 5, 0 data bytes
+    // 0x1A2, DLC 5, 0 data bytes - 0x0E:0x15
     PACKET_DEF(0x1A2, 5, 0, /* data */ TRACK_MAX, 0x58, 0x00, 0x00, 0x00),
 
-    // 0x1E2, DLC 7, 3 data bytes
+    // 0x1E2, DLC 7, 3 data bytes - 0x16:0x25
     PACKET_DEF(0x1E2, 7, 3, /* data */ 0, 0x05, 0x00, 0, 0, 0x00, 0x00),
     PACKET_DATA(DATA_TRACK_NUM, 0, 0, 0),
     PACKET_DATA(DATA_TRACK_MINUTE, 0, 3, 0),
     PACKET_DATA(DATA_TRACK_SECOND, 0, 4, 0),
 
-    // 0x1A0, DLC 2, 0 data bytes
+    // 0x1A0, DLC 2, 0 data bytes - 0x26:0x2A
     PACKET_DEF(0x1A0, 2, 0, /* data */ 0b10010010, 0b00000000),
+
+    // 0x531, DLC 8, 0 data bytes - 0x2B:0x35
+    PACKET_DEF(0x531, 8, 0, /* data */ 0x09, 0, 0, 0, 0, 0, 0, 0),
+
+    // 0x0E2, DLC 8, 1 data byte - 0x36:0x42
+    PACKET_DEF(0x0E2, 8, 1, /* data */ 0, 0, 0, 0, 0, 0x03, 0x33, 0x33),
+    PACKET_DATA(DATA_DISK_NUM, 0, 3, 4),
 };
+
+#define META_SIZE       3
+#define META_COUNT      6
 
 const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
     PACKET_META(/* 0x162 */ 0x00, TIMER_PACKET_100MS, 100, DATA_RADIO_ENABLED),
     PACKET_META(/* 0x1A2 */ 0x0e, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
     PACKET_META(/* 0x1E2 */ 0x16, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
     PACKET_META(/* 0x1A0 */ 0x26, TIMER_PACKET_500MS, 500, DATA_RADIO_PLAYING),
+    PACKET_META(/* 0x531 */ 0x2B, TIMER_PACKET_1000MS, 1000, DATA_RADIO_ENABLED),
+    PACKET_META(/* 0x0E2 */ 0x36, TIMER_PACKET_1000MS, 1000, DATA_RADIO_ENABLED),
 };
 
 bool can_init() {
