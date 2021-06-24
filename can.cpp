@@ -173,9 +173,10 @@ void can_send_all() {
     uint8_t timers_checked = 0;
     for (uint8_t i = 0; i < META_COUNT; i++) {
         uint8_t *meta = (uint8_t*)packets_meta + META_SIZE * i;
-        uint8_t timer_meta = pgm_read_byte(&meta[1]);
-        uint8_t timer = timer_meta >> 5;
-        uint8_t delay = timer_meta & 0b11111;
+        uint8_t delay = pgm_read_byte(&meta[1]);
+        uint8_t timer_meta = pgm_read_byte(&meta[2]);
+        uint8_t timer = timer_meta >> 4;
+        uint8_t flag = timer_meta & 0xf;
 
         // check the specified timer
         uint8_t timer_mask = 1<<timer;
@@ -185,8 +186,7 @@ void can_send_all() {
         timers_checked |= timer_mask;
 
         // check the flag data byte
-        uint8_t flag = pgm_read_byte(&meta[2]);
-        if (flag != 0xff && !data[flag])
+        if (flag != 0xf && !data[flag])
             continue;
         // get a pointer to the packet data
         uint8_t addr = pgm_read_byte(&meta[0]);
@@ -209,12 +209,12 @@ void can_send_all() {
         uint8_t db_count = pgm_read_byte(&packet[0]);
         // set all configured data bytes
         for (uint8_t j = 0; j < db_count; j++) {
-            uint8_t src = pgm_read_byte(packet + 1 + j*2);
-            uint8_t dst = pgm_read_byte(packet + 2 + j*2);
-            uint8_t src_byte = src & 0b111;
-            uint8_t src_mask = (src>>3) ? (src>>3) : 0xff;
-            uint8_t dst_byte = dst & 0b111;
-            uint8_t dst_rsh = (dst>>3);
+            uint8_t masks = pgm_read_byte(packet + 1 + j*2);
+            uint8_t bytes = pgm_read_byte(packet + 2 + j*2);
+            uint8_t src_byte = bytes >> 4;
+            uint8_t src_mask = (masks>>3) ? (masks>>3) : 0xff;
+            uint8_t dst_byte = bytes & 0b111;
+            uint8_t dst_rsh = masks & 0b111;
             msg.data[dst_byte] |= (data[src_byte] & src_mask) << dst_rsh;
         }
 
