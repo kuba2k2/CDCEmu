@@ -25,8 +25,10 @@ void radio_enabled(bool radio_enabled) {
     data[DATA_RADIO_ENABLED] = radio_enabled;
     timer_reset(TIMER_PACKET_100MS);
 
-    if (radio_enabled)
+    if (radio_enabled) {
+        data[DATA_IGNITION] = true;
         uart_puts_P("radio enabled\n");
+    }
     else
         uart_puts_P("radio disabled\n");
 }

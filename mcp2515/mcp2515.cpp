@@ -74,10 +74,10 @@ bool mcp_mode_normal() {
 }
 
 void mcp_sleep_wait() {
-    mcp_clear_interrupts();
-
-    // wait to enter the sleep mode (as per the datasheet)
-    while (mcp_get_mode() != MCP_MODE_SLEEP) {
+    // wait to enter the Sleep mode (as per the datasheet)
+    // if the bus is still active the device goes back to Listen-Only mode
+    while (mcp_get_mode() != MCP_MODE_SLEEP && mcp_get_mode() != MCP_MODE_LISTENONLY) {
+        mcp_clear_interrupts();
         mcp_mode_sleep();
         _delay_ms(500);
     }
