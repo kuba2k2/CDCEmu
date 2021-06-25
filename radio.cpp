@@ -1,6 +1,7 @@
 #include "radio.h"
 
 #include <uart.h>
+#include "main.h"
 #include "data.h"
 #include "timers.h"
 #include "can.h"
@@ -11,6 +12,10 @@ void radio_ignition(uint8_t mode, bool economy) {
     if (!data[DATA_IGNITION]) {
         radio_enabled(false);
         radio_playing(false);
+    }
+
+    if (mode == IGNITION_OFF) {
+        enter_sleep();
     }
 }
 

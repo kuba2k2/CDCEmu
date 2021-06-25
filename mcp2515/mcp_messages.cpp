@@ -36,10 +36,6 @@ void mcp_clear_tx_interrupts() {
     mcp_modify_reg(MCP_CANINTF, CANINTF_TX0IF | CANINTF_TX1IF | CANINTF_TX2IF, 0);
 }
 
-void mcp_clear_interrupts() {
-    mcp_write_reg(MCP_CANINTF, 0);
-}
-
 void mcp_clear_merrf() {
     mcp_modify_reg(MCP_CANINTF, CANINTF_MERRF, 0);
 }

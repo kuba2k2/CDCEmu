@@ -65,14 +65,18 @@ void mcp_modify_reg(const uint8_t reg, const uint8_t mask, const uint8_t data) {
     mcp_cs_unset();
 }
 
+void mcp_clear_interrupts() {
+    mcp_write_reg(MCP_CANINTF, 0);
+}
+
 bool mcp_set_mode(const uint8_t mode) {
     mcp_modify_reg(MCP_CANCTRL, CANCTRL_REQOP, mode);
 
     uint8_t tries = 0;
-    while ((mcp_read_reg(MCP_CANSTAT) & CANSTAT_OPMOD) != mode && tries++ < 10) {
-        _delay_ms(1);
+    while ((mcp_read_reg(MCP_CANSTAT) & CANSTAT_OPMOD) != mode && tries++ < 20) {
+        _delay_ms(10);
     }
-    return tries < 10;
+    return tries < 20;
 }
 
 void mcp_prepare_id(uint8_t *buf, const bool extended, const uint32_t can_id) {

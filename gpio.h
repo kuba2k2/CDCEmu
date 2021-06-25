@@ -19,6 +19,6 @@
 #define PIN_LED_GREEN   5
 #define PIN_LED_YELLOW  6
 
-void led_update_all();
+void led_update_all(bool force = false);
 
 #endif

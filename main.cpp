@@ -35,6 +35,16 @@ void ensure_i2c() {
     }
 }
 
+void enter_sleep() {
+    led_update_all(true);
+
+    ensure_spi();
+    mcp_sleep_wait();
+
+    can_receive_all();
+    led_update_all(true);
+}
+
 int main() {
     uart_enable();
     timer_start();

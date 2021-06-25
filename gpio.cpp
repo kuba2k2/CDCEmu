@@ -40,8 +40,8 @@ void led_set(uint8_t pin, bool state, bool inverted) {
     //uart_putc('\n');
 }
 
-void led_update_all() {
-    if (!timer_check(TIMER_LEDS, 1))
+void led_update_all(bool force) {
+    if (!timer_check(TIMER_LEDS, 1) && !force)
         return;
     if (++led_timer >= 100)
         led_timer = 0;

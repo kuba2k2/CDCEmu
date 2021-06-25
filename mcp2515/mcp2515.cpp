@@ -23,7 +23,7 @@ bool mcp_reset() {
     mcp_write_reg(MCP_RXB0CTRL, 0);
     mcp_write_reg(MCP_RXB1CTRL, 0);
 
-    mcp_write_reg(MCP_CANINTE, CANINTF_RX0IF | CANINTF_RX1IF | CANINTF_ERRIF | CANINTF_MERRF);
+    mcp_write_reg(MCP_CANINTE, CANINTF_RX0IF | CANINTF_RX1IF | CANINTF_ERRIF | CANINTF_MERRF | CANINTF_WAKIF);
 
     mcp_modify_reg(MCP_RXB0CTRL, RXBnCTRL_RXM_MASK | RXB0CTRL_BUKT | RXB0CTRL_FILHIT_MASK, RXBnCTRL_RXM_STDEXT | RXB0CTRL_BUKT | RXB0CTRL_FILHIT);
     mcp_modify_reg(MCP_RXB1CTRL, RXBnCTRL_RXM_MASK | RXB1CTRL_FILHIT_MASK, RXBnCTRL_RXM_STDEXT | RXB1CTRL_FILHIT);
@@ -49,6 +49,10 @@ uint8_t mcp_get_status() {
     return ret;
 }
 
+uint8_t mcp_get_mode() {
+    return mcp_read_reg(MCP_CANSTAT) & CANSTAT_OPMOD;
+}
+
 bool mcp_mode_config() {
     return mcp_set_mode(CANCTRL_REQOP_CONFIG);
 }
@@ -67,6 +71,24 @@ bool mcp_mode_loopback() {
 
 bool mcp_mode_normal() {
     return mcp_set_mode(CANCTRL_REQOP_NORMAL);
+}
+
+void mcp_sleep_wait() {
+    mcp_clear_interrupts();
+
+    // wait to enter the sleep mode (as per the datasheet)
+    while (mcp_get_mode() != MCP_MODE_SLEEP) {
+        mcp_mode_sleep();
+        _delay_ms(500);
+    }
+
+    // wait to exit the sleep mode (incoming packets)
+    while (mcp_get_mode() == MCP_MODE_SLEEP) {
+        _delay_ms(100);
+    }
+
+    mcp_clear_interrupts();
+    mcp_mode_normal();
 }
 
 bool mcp_set_config(uint8_t cnf1, uint8_t cnf2, uint8_t cnf3) {

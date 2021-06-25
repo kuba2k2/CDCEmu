@@ -5,5 +5,6 @@
 
 void ensure_spi();
 void ensure_i2c();
+void enter_sleep();
 
 #endif
