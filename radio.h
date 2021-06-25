@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void radio_ignition(uint8_t mode, bool economy);
+void radio_ignition(bool enabled, bool powersave);
 void radio_enabled(bool radio_enabled);
 void radio_playing(bool radio_playing);
 void radio_tick();

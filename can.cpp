@@ -150,7 +150,14 @@ bool can_init() {
 }
 
 void parse_bsi_ignition(const uint8_t cmd[8]) {
-    radio_ignition(cmd[4] & 0b11, cmd[2] >> 7);
+    uint8_t mode = cmd[4] & 0b11;
+    bool ignition = mode & IGNITION_ON;
+    bool powersave = mode == IGNITION_POWERSAVE;
+    bool sleep = mode == IGNITION_OFF;
+    bool economy = cmd[2] >> 7;
+    radio_ignition(!economy && ignition, powersave);
+    if (sleep)
+        enter_sleep();
 }
 
 void parse_cdc_command(const uint8_t cmd[8]) {

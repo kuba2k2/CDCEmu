@@ -6,16 +6,19 @@
 #include "timers.h"
 #include "can.h"
 
-void radio_ignition(uint8_t mode, bool economy) {
-    data[DATA_IGNITION] = !economy && (mode & IGNITION_ON /* ON or ON_FIRST */);
-    data[DATA_POWERSAVE] = mode == IGNITION_POWERSAVE;
-    if (!data[DATA_IGNITION]) {
-        radio_enabled(false);
-        radio_playing(false);
-    }
+void radio_ignition(bool enabled, bool powersave) {
+    if (enabled == data[DATA_IGNITION] && powersave == data[DATA_POWERSAVE])
+        return;
+    data[DATA_IGNITION] = enabled;
+    data[DATA_POWERSAVE] = powersave;
 
-    if (mode == IGNITION_OFF) {
-        enter_sleep();
+    if (enabled) {
+        uart_puts_P("ignition enabled\n");
+    }
+    else {
+        radio_playing(false);
+        radio_enabled(false);
+        uart_puts_P("ignition disabled\n");
     }
 }
 
@@ -26,11 +29,12 @@ void radio_enabled(bool radio_enabled) {
     timer_reset(TIMER_PACKET_100MS);
 
     if (radio_enabled) {
-        data[DATA_IGNITION] = true;
+        radio_ignition(true, false);
         uart_puts_P("radio enabled\n");
     }
-    else
+    else {
         uart_puts_P("radio disabled\n");
+    }
 }
 
 void radio_playing(bool radio_playing) {
