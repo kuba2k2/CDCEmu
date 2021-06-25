@@ -38,10 +38,13 @@ void ensure_i2c() {
 void enter_sleep() {
     led_update_all(true);
 
-    ensure_spi();
-    mcp_sleep_wait();
+    // ensure_spi();
+    // mcp_sleep_wait();
+    while (!data[DATA_IGNITION]) {
+        can_receive_all();
+        _delay_ms(100);
+    }
 
-    can_receive_all();
     led_update_all(true);
 }
 
