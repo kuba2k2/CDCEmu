@@ -135,6 +135,7 @@
 <layer number="153" name="FabDoc1" color="7" fill="1" visible="no" active="no"/>
 <layer number="154" name="FabDoc2" color="7" fill="1" visible="no" active="no"/>
 <layer number="155" name="FabDoc3" color="7" fill="1" visible="no" active="no"/>
+<layer number="156" name="Attributes" color="7" fill="1" visible="no" active="yes"/>
 <layer number="166" name="AntennaArea" color="7" fill="1" visible="no" active="no"/>
 <layer number="168" name="4mmHeightArea" color="7" fill="1" visible="no" active="no"/>
 <layer number="191" name="mNets" color="7" fill="1" visible="no" active="no"/>
@@ -21565,6 +21566,213 @@ DIN A3, landscape with location and doc. field</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="SparkFun-Resistors">
+<description>&lt;h3&gt;SparkFun Resistors&lt;/h3&gt;
+This library contains resistors. Reference designator:R. 
+&lt;br&gt;
+&lt;br&gt;
+We've spent an enormous amount of time creating and checking these footprints and parts, but it is &lt;b&gt; the end user's responsibility&lt;/b&gt; to ensure correctness and suitablity for a given componet or application. 
+&lt;br&gt;
+&lt;br&gt;If you enjoy using this library, please buy one of our products at &lt;a href=" www.sparkfun.com"&gt;SparkFun.com&lt;/a&gt;.
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;Licensing:&lt;/b&gt; Creative Commons ShareAlike 4.0 International - https://creativecommons.org/licenses/by-sa/4.0/ 
+&lt;br&gt;
+&lt;br&gt;
+You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
+<packages>
+<package name="TRIMPOT-PTH-3386U">
+<description>&lt;h3&gt;Trimpot - PTH, Trimpot w/ finger-adjustable knob&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://www.sparkfun.com/products/9806"&gt;Trimpot 10K with Knob&lt;/a&gt; (COM-09806)&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.sparkfun.com/datasheets/Components/General/TSR-3386.pdf"&gt;Datasheet&lt;/a&gt;&lt;/p&gt;</description>
+<circle x="0" y="0.575" radius="4" width="0.127" layer="51"/>
+<wire x1="-4.765" y1="-4.765" x2="-4" y2="-4.765" width="0.2032" layer="21"/>
+<wire x1="4" y1="-4.765" x2="4.765" y2="-4.765" width="0.2032" layer="21"/>
+<wire x1="4.765" y1="-4.765" x2="4.765" y2="4.765" width="0.2032" layer="21"/>
+<wire x1="4.765" y1="4.765" x2="-4.765" y2="4.765" width="0.2032" layer="21"/>
+<wire x1="-4.765" y1="4.765" x2="-4.765" y2="-4.765" width="0.2032" layer="21"/>
+<wire x1="-1.5" y1="2.2" x2="-0.5" y2="2.2" width="0.127" layer="51"/>
+<wire x1="-0.5" y1="2.2" x2="-0.5" y2="-1.8" width="0.127" layer="51"/>
+<wire x1="-0.5" y1="-1.8" x2="0.5" y2="-1.8" width="0.127" layer="51"/>
+<wire x1="0.5" y1="-1.8" x2="0.5" y2="2.2" width="0.127" layer="51"/>
+<wire x1="0.5" y1="2.2" x2="1.5" y2="2.2" width="0.127" layer="51"/>
+<wire x1="0" y1="3.7" x2="-1.5" y2="2.2" width="0.127" layer="51"/>
+<wire x1="1.5" y1="2.2" x2="0" y2="3.7" width="0.127" layer="51"/>
+<wire x1="-4" y1="-4.765" x2="-4" y2="-4.365" width="0.2032" layer="21"/>
+<wire x1="-4" y1="-4.365" x2="4" y2="-4.365" width="0.2032" layer="21"/>
+<wire x1="4" y1="-4.365" x2="4" y2="-4.765" width="0.2032" layer="21"/>
+<pad name="1" x="-2.54" y="-0.015" drill="1.016" diameter="1.8796" shape="square"/>
+<pad name="2" x="0" y="-0.015" drill="1.016" diameter="1.8796"/>
+<pad name="3" x="2.54" y="-0.015" drill="1.016" diameter="1.8796"/>
+<text x="0" y="4.953" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
+<text x="0" y="-4.572" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
+</package>
+<package name="TRIMPOT-SMD-5MM">
+<description>&lt;h3&gt;Trimpot - SMD, 5mm Square, Closed-Frame&lt;/h3&gt;
+&lt;p&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/13613"&gt;IOIO-OTG - V2.2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.vishay.com/docs/51008/ts53.pdf"&gt;Datasheet&lt;/a&gt; (TS53YL502MR10)&lt;/p&gt;</description>
+<wire x1="-2.5" y1="-2.14" x2="-2.5" y2="2.86" width="0.127" layer="51"/>
+<wire x1="-2.5" y1="2.86" x2="2.5" y2="2.86" width="0.127" layer="51"/>
+<wire x1="2.5" y1="2.86" x2="2.5" y2="-2.14" width="0.127" layer="51"/>
+<wire x1="2.5" y1="-2.14" x2="-2.5" y2="-2.14" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="2.96" x2="-2.6" y2="2.96" width="0.2032" layer="21"/>
+<wire x1="-2.6" y1="2.96" x2="-2.6" y2="1.56" width="0.2032" layer="21"/>
+<wire x1="1.409221875" y1="2.96" x2="2.6" y2="2.96" width="0.2032" layer="21"/>
+<wire x1="2.6" y1="2.96" x2="2.6" y2="1.56" width="0.2032" layer="21"/>
+<wire x1="-2.09398125" y1="-2.24" x2="-2.6" y2="-2.24" width="0.2032" layer="21"/>
+<wire x1="-2.6" y1="-2.24" x2="-2.6" y2="-1.54" width="0.2032" layer="21"/>
+<wire x1="2.1" y1="-2.24" x2="2.6" y2="-2.24" width="0.2032" layer="21"/>
+<wire x1="2.6" y1="-2.24" x2="2.6" y2="-1.54" width="0.2032" layer="21"/>
+<smd name="A" x="1.15" y="-2.54" dx="1.3" dy="1.3" layer="1"/>
+<smd name="B" x="0" y="3.2385" dx="2" dy="1.4016" layer="1" rot="R270"/>
+<smd name="C" x="-1.15" y="-2.54" dx="1.3" dy="1.3" layer="1"/>
+<text x="-2.794" y="0" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;Name</text>
+<text x="2.794" y="0" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center">&gt;Value</text>
+</package>
+<package name="TRIMPOT-SMD-3MM-CLOSED">
+<description>&lt;h3&gt;Trimpot - SMD, 3mm Square, Closed-Frame&lt;/h3&gt;
+&lt;p&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/12779"&gt;EasyDriver - Stepper Motor Driver&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.bitechnologies.com/pdfs/22.pdf"&gt;Datasheet&lt;/a&gt; (22AR10KTR)&lt;/p&gt;</description>
+<wire x1="-1" y1="1.6" x2="-1.6" y2="1.6" width="0.2032" layer="21"/>
+<wire x1="-1.6" y1="1.6" x2="-1.6" y2="-1.6" width="0.2032" layer="21"/>
+<wire x1="1" y1="1.6" x2="1.6" y2="1.6" width="0.2032" layer="21"/>
+<wire x1="1.6" y1="1.6" x2="1.6" y2="-1.6" width="0.2032" layer="21"/>
+<smd name="1" x="-0.85" y="-1.65" dx="1" dy="0.9" layer="1"/>
+<smd name="2" x="0" y="1.65" dx="1.1" dy="0.9" layer="1"/>
+<smd name="3" x="0.85" y="-1.65" dx="1" dy="0.9" layer="1"/>
+<text x="-1.778" y="0" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;Name</text>
+<text x="1.778" y="0" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center">&gt;Value</text>
+</package>
+<package name="TRIMPOT-SMD-TC33X">
+<description>&lt;h3&gt;Bourns TC33X Trimpot - SMD, 3mm Square, Open-Frame&lt;/h3&gt;
+&lt;p&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/13899"&gt;Shapeoko&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.bourns.com/docs/Product-Datasheets/TC33.pdf"&gt;Datasheet&lt;/a&gt; (TS53YL502MR10)&lt;/p&gt;</description>
+<circle x="0" y="0" radius="1.15" width="0.1016" layer="51"/>
+<wire x1="-1.45" y1="1.75" x2="-1.45" y2="-1.65" width="0.254" layer="51"/>
+<wire x1="-1.45" y1="-1.65" x2="1.45" y2="-1.65" width="0.254" layer="51"/>
+<wire x1="1.45" y1="-1.65" x2="1.45" y2="1.75" width="0.254" layer="51"/>
+<wire x1="1.45" y1="1.75" x2="-1.45" y2="1.75" width="0.254" layer="51"/>
+<wire x1="-1.45" y1="-0.4" x2="-1.45" y2="1.75" width="0.254" layer="21"/>
+<wire x1="-1.45" y1="1.75" x2="-0.85" y2="1.75" width="0.254" layer="21"/>
+<wire x1="1.45" y1="-0.4" x2="1.45" y2="1.75" width="0.254" layer="21"/>
+<wire x1="1.45" y1="1.75" x2="0.85" y2="1.75" width="0.254" layer="21"/>
+<smd name="1" x="-1" y="-1.825" dx="1.2" dy="1.2" layer="1"/>
+<smd name="2" x="0" y="1.5" dx="1.5" dy="1.6" layer="1"/>
+<smd name="3" x="1" y="-1.825" dx="1.2" dy="1.2" layer="1"/>
+<text x="-1.905" y="0" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;NAME</text>
+<text x="1.905" y="0" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center">&gt;VALUE</text>
+<wire x1="-1.8034" y1="2.5019" x2="1.8034" y2="2.5019" width="0.0508" layer="39"/>
+<wire x1="1.8034" y1="2.5019" x2="1.8034" y2="-2.6289" width="0.0508" layer="39"/>
+<wire x1="1.8034" y1="-2.6289" x2="-1.8034" y2="-2.6289" width="0.0508" layer="39"/>
+<wire x1="-1.8034" y1="-2.6289" x2="-1.8034" y2="2.5019" width="0.0508" layer="39"/>
+</package>
+</packages>
+<symbols>
+<symbol name="TRIMPOT">
+<description>&lt;h3&gt;Trimming Potentiometer (Trimpot)&lt;/h3&gt;
+&lt;p&gt;Three-terminal potentiometers, with an adjustable wiper and two adjustable resistors. A pot can be used to create a configurable voltage divider, or as a variable resistor.&lt;/p&gt;
+&lt;p&gt;"Trimpots" are a subset of potentiometers, usually intended for "set-and-forget" applications. They're often more delicate than standard potentiometers - rated for fewer turns.&lt;/p&gt;</description>
+<pin name="CCW" x="0" y="5.08" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
+<pin name="CW" x="0" y="-5.08" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+<pin name="WIPER" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<wire x1="0" y1="-2.54" x2="-1.016" y2="-2.159" width="0.1524" layer="94"/>
+<wire x1="-1.016" y1="-2.159" x2="1.016" y2="-1.524" width="0.1524" layer="94"/>
+<wire x1="1.016" y1="-1.524" x2="-1.016" y2="-0.889" width="0.1524" layer="94"/>
+<wire x1="-1.016" y1="-0.889" x2="1.016" y2="-0.254" width="0.1524" layer="94"/>
+<wire x1="1.016" y1="-0.254" x2="-1.016" y2="0.381" width="0.1524" layer="94"/>
+<wire x1="-1.016" y1="0.381" x2="1.016" y2="1.016" width="0.1524" layer="94"/>
+<wire x1="1.016" y1="1.016" x2="-1.016" y2="1.651" width="0.1524" layer="94"/>
+<wire x1="-1.016" y1="1.651" x2="1.016" y2="2.286" width="0.1524" layer="94"/>
+<wire x1="1.016" y1="2.286" x2="0" y2="2.54" width="0.1524" layer="94"/>
+<text x="-1.524" y="2.54" size="1.778" layer="95" font="vector" rot="R90">&gt;NAME</text>
+<text x="1.524" y="2.54" size="1.778" layer="96" font="vector" rot="R90" align="top-left">&gt;VALUE</text>
+<polygon width="0.1524" layer="94">
+<vertex x="1.016" y="0"/>
+<vertex x="2.54" y="-1.016"/>
+<vertex x="2.54" y="1.016"/>
+</polygon>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="TRIMPOT" prefix="VR" uservalue="yes">
+<description>&lt;h3&gt;Trimming Potentiometer (Trimpot)&lt;/h3&gt;
+&lt;p&gt;Three-terminal potentiometers, with an adjustable wiper and two adjustable resistors. A pot can be used to create a configurable voltage divider, or as a variable resistor.&lt;/p&gt;
+&lt;p&gt;"Trimpots" are a subset of potentiometers, usually intended for "set-and-forget" applications. They're often more delicate than standard potentiometers - rated for fewer turns.&lt;/p&gt;
+&lt;h4&gt;Variants&lt;/h4&gt;
+&lt;h5&gt;PTH-KNOB - PTH Trimpot w/ finger-adjustable knob&lt;/h5&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href="https://www.sparkfun.com/products/9806"&gt;Trimpot 10K with Knob&lt;/a&gt; (COM-09806)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.sparkfun.com/datasheets/Components/General/TSR-3386.pdf"&gt;Datasheet&lt;/a&gt;
+&lt;/ul&gt;
+&lt;h5&gt;SMD-3MM-CLOSED-FRAME - SMD 3mm Square Closed-Frame Trimpot&lt;/h5&gt;
+&lt;ul&gt;&lt;li&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/12779"&gt;EasyDriver - Stepper Motor Driver&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.bitechnologies.com/pdfs/22.pdf"&gt;Datasheet&lt;/a&gt; (22AR10KTR)&lt;/li&gt;&lt;/ul&gt;
+&lt;h5&gt;SMD-5MM - SMD 5mm Square Closed-Frame Trimpot&lt;/h5&gt;
+&lt;ul&gt;&lt;li&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/13613"&gt;IOIO-OTG - V2.2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.vishay.com/docs/51008/ts53.pdf"&gt;Datasheet&lt;/a&gt; (TS53YL502MR10)&lt;/li&gt;&lt;/ul&gt;
+&lt;h5&gt;SMD-3MM-1/10W-25% - 3mm Square Open-Frame Trimpot&lt;/h5&gt;
+&lt;ul&gt;&lt;li&gt;Used on e.g. &lt;a href="https://www.sparkfun.com/products/13899"&gt;SparkFun Shapeoko&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.bourns.com/docs/Product-Datasheets/TC33.pdf"&gt;Datasheet&lt;/a&gt; (TC33X-2-103E)&lt;/li&gt;&lt;/ul&gt;</description>
+<gates>
+<gate name="R?" symbol="TRIMPOT" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-PTH-10MM-KNOB-1/2W-10%" package="TRIMPOT-PTH-3386U">
+<connects>
+<connect gate="R?" pin="CCW" pad="1"/>
+<connect gate="R?" pin="CW" pad="3"/>
+<connect gate="R?" pin="WIPER" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-09730"/>
+<attribute name="SF_SKU" value="COM-09806"/>
+<attribute name="VALUE" value="10k"/>
+</technology>
+</technologies>
+</device>
+<device name="-SMD-5MM-CLOSED-1/4W-20%" package="TRIMPOT-SMD-5MM">
+<connects>
+<connect gate="R?" pin="CCW" pad="A"/>
+<connect gate="R?" pin="CW" pad="C"/>
+<connect gate="R?" pin="WIPER" pad="B"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-11156"/>
+<attribute name="VALUE" value="5k"/>
+</technology>
+</technologies>
+</device>
+<device name="-SMD-3MM-CLOSED-1/8W-20%" package="TRIMPOT-SMD-3MM-CLOSED">
+<connects>
+<connect gate="R?" pin="CCW" pad="1"/>
+<connect gate="R?" pin="CW" pad="3"/>
+<connect gate="R?" pin="WIPER" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-09285"/>
+<attribute name="VALUE" value="10k"/>
+</technology>
+</technologies>
+</device>
+<device name="-SMD-3MM-OPEN-1/10W-25%" package="TRIMPOT-SMD-TC33X">
+<connects>
+<connect gate="R?" pin="CCW" pad="3"/>
+<connect gate="R?" pin="CW" pad="1"/>
+<connect gate="R?" pin="WIPER" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-12428, RES-08048"/>
+<attribute name="VALUE" value="10k"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -21580,23 +21788,21 @@ DIN A3, landscape with location and doc. field</description>
 <part name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
 <part name="C12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
 <part name="C14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
-<part name="R8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="C5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="47p"/>
 <part name="C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
 <part name="C11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="47p"/>
-<part name="R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="C13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
 <part name="C9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="47p"/>
 <part name="C15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="47p"/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1k"/>
-<part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1k"/>
+<part name="R18" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1k"/>
+<part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1k"/>
 <part name="JP3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:22458/2" value="UART"/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="JP1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:22458/2" value="PWR"/>
@@ -21605,14 +21811,12 @@ DIN A3, landscape with location and doc. field</description>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R17" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
-<part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="C10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
-<part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
 <part name="U3" library="linear" library_urn="urn:adsk.eagle:library:262" deviceset="NE5532" device="D" package3d_urn="urn:adsk.eagle:package:16404/2"/>
 <part name="J2" library="SparkFun-Connectors" deviceset="CONN_03" device="JST-PTH" value="Audio Out"/>
@@ -21652,10 +21856,10 @@ DIN A3, landscape with location and doc. field</description>
 <part name="Q9" library="SparkFun-DiscreteSemi" deviceset="TRANS_NPN" device="-MMBTA42" value="NPN"/>
 <part name="Q7" library="SparkFun-DiscreteSemi" deviceset="TRANS_NPN" device="-MMBTA42" value="NPN"/>
 <part name="Q8" library="SparkFun-DiscreteSemi" deviceset="TRANS_NPN" device="-MMBTA42" value="NPN"/>
-<part name="R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R17" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
-<part name="R18" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="GND17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -21664,18 +21868,24 @@ DIN A3, landscape with location and doc. field</description>
 <part name="SJ2" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ2W" device="" package3d_urn="urn:adsk.eagle:package:15474/1"/>
 <part name="SJ1" library="jumper" library_urn="urn:adsk.eagle:library:252" deviceset="SJ2W" device="" package3d_urn="urn:adsk.eagle:package:15474/1"/>
 <part name="GND21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R22" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.2k"/>
-<part name="C16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
-<part name="C18" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
-<part name="C17" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10n"/>
-<part name="C19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100n"/>
-<part name="C20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
-<part name="R23" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.2k"/>
+<part name="R19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.2k"/>
+<part name="C17" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
+<part name="C19" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
+<part name="C18" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10n"/>
+<part name="C20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100n"/>
+<part name="C21" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="1u"/>
+<part name="R20" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.2k"/>
 <part name="GND22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="Q3" library="SparkFun-DiscreteSemi" deviceset="MOSFET-NCH" device="-AO3404A" value="NCH"/>
 <part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="A3L-LOC" device=""/>
 <part name="J3" library="SparkFun-Connectors" deviceset="CONN_02" device="JST-PTH-2" value="Mic In"/>
+<part name="VR3" library="SparkFun-Resistors" deviceset="TRIMPOT" device="-SMD-3MM-OPEN-1/10W-25%" value="10k"/>
+<part name="VR4" library="SparkFun-Resistors" deviceset="TRIMPOT" device="-SMD-3MM-OPEN-1/10W-25%" value="10k"/>
+<part name="VR1" library="SparkFun-Resistors" deviceset="TRIMPOT" device="-SMD-3MM-OPEN-1/10W-25%" value="10k"/>
+<part name="VR2" library="SparkFun-Resistors" deviceset="TRIMPOT" device="-SMD-3MM-OPEN-1/10W-25%" value="10k"/>
+<part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="100k"/>
+<part name="GND23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -21821,25 +22031,21 @@ using CAN bus</text>
 <attribute name="NAME" x="30.099" y="9.144" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="35.179" y="9.144" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R8" gate="G$1" x="43.18" y="43.18" smashed="yes">
+<instance part="R7" gate="G$1" x="43.18" y="43.18" smashed="yes">
 <attribute name="NAME" x="39.37" y="44.6786" size="1.778" layer="95"/>
 <attribute name="VALUE" x="39.37" y="39.878" size="1.778" layer="96"/>
 </instance>
-<instance part="R9" gate="G$1" x="43.18" y="35.56" smashed="yes">
+<instance part="R8" gate="G$1" x="43.18" y="35.56" smashed="yes">
 <attribute name="NAME" x="39.37" y="37.0586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="39.37" y="32.258" size="1.778" layer="96"/>
 </instance>
-<instance part="R15" gate="G$1" x="43.18" y="15.24" smashed="yes">
+<instance part="R12" gate="G$1" x="43.18" y="15.24" smashed="yes">
 <attribute name="NAME" x="39.37" y="16.7386" size="1.778" layer="95"/>
 <attribute name="VALUE" x="39.37" y="11.938" size="1.778" layer="96"/>
 </instance>
-<instance part="R19" gate="G$1" x="43.18" y="7.62" smashed="yes">
+<instance part="R16" gate="G$1" x="43.18" y="7.62" smashed="yes">
 <attribute name="NAME" x="39.37" y="9.1186" size="1.778" layer="95"/>
 <attribute name="VALUE" x="39.37" y="4.318" size="1.778" layer="96"/>
-</instance>
-<instance part="R7" gate="G$1" x="76.2" y="48.26" smashed="yes" rot="R90">
-<attribute name="NAME" x="74.7014" y="44.45" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="79.502" y="44.45" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="C5" gate="G$1" x="71.12" y="48.26" smashed="yes" rot="R180">
 <attribute name="NAME" x="69.596" y="47.879" size="1.778" layer="95" rot="R180"/>
@@ -21852,10 +22058,6 @@ using CAN bus</text>
 <instance part="C11" gate="G$1" x="71.12" y="20.32" smashed="yes" rot="R180">
 <attribute name="NAME" x="69.596" y="19.939" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="69.596" y="25.019" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="R13" gate="G$1" x="76.2" y="20.32" smashed="yes" rot="R90">
-<attribute name="NAME" x="74.7014" y="16.51" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="79.502" y="16.51" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="C13" gate="G$1" x="101.6" y="10.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="101.219" y="11.684" size="1.778" layer="95" rot="R90"/>
@@ -21878,11 +22080,11 @@ using CAN bus</text>
 <instance part="GND3" gate="1" x="160.02" y="-5.08" smashed="yes">
 <attribute name="VALUE" x="157.48" y="-7.62" size="1.778" layer="96"/>
 </instance>
-<instance part="R21" gate="G$1" x="60.96" y="0" smashed="yes" rot="R90">
+<instance part="R18" gate="G$1" x="60.96" y="0" smashed="yes" rot="R90">
 <attribute name="NAME" x="59.4614" y="-3.81" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="64.262" y="-3.81" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R10" gate="G$1" x="60.96" y="27.94" smashed="yes" rot="R90">
+<instance part="R9" gate="G$1" x="60.96" y="27.94" smashed="yes" rot="R90">
 <attribute name="NAME" x="59.4614" y="24.13" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="64.262" y="24.13" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -21912,11 +22114,11 @@ using CAN bus</text>
 <instance part="GND11" gate="1" x="228.6" y="93.98" smashed="yes">
 <attribute name="VALUE" x="226.06" y="91.44" size="1.778" layer="96"/>
 </instance>
-<instance part="R14" gate="G$1" x="149.86" y="20.32" smashed="yes" rot="R90">
+<instance part="R11" gate="G$1" x="149.86" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="148.3614" y="16.51" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="153.162" y="16.51" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R20" gate="G$1" x="149.86" y="5.08" smashed="yes" rot="R90">
+<instance part="R17" gate="G$1" x="149.86" y="5.08" smashed="yes" rot="R90">
 <attribute name="NAME" x="148.3614" y="1.27" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="153.162" y="1.27" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -21929,17 +22131,9 @@ using CAN bus</text>
 <instance part="P+2" gate="1" x="160.02" y="30.48" smashed="yes">
 <attribute name="VALUE" x="160.02" y="33.02" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="R11" gate="G$1" x="43.18" y="22.86" smashed="yes">
-<attribute name="NAME" x="39.37" y="24.3586" size="1.778" layer="95"/>
-<attribute name="VALUE" x="39.37" y="19.558" size="1.778" layer="96"/>
-</instance>
 <instance part="C10" gate="G$1" x="30.48" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="30.099" y="24.384" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="35.179" y="24.384" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R6" gate="G$1" x="43.18" y="50.8" smashed="yes">
-<attribute name="NAME" x="39.37" y="52.2986" size="1.778" layer="95"/>
-<attribute name="VALUE" x="39.37" y="47.498" size="1.778" layer="96"/>
 </instance>
 <instance part="C4" gate="G$1" x="30.48" y="50.8" smashed="yes" rot="R90">
 <attribute name="NAME" x="30.099" y="52.324" size="1.778" layer="95" rot="R90"/>
@@ -22084,19 +22278,19 @@ using CAN bus</text>
 <attribute name="NAME" x="243.84" y="22.86" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="243.84" y="20.574" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="R16" gate="G$1" x="193.04" y="10.16" smashed="yes">
+<instance part="R13" gate="G$1" x="193.04" y="10.16" smashed="yes">
 <attribute name="NAME" x="189.23" y="11.6586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="189.23" y="6.858" size="1.778" layer="96"/>
 </instance>
-<instance part="R12" gate="G$1" x="193.04" y="22.86" smashed="yes">
+<instance part="R10" gate="G$1" x="193.04" y="22.86" smashed="yes">
 <attribute name="NAME" x="189.23" y="24.3586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="189.23" y="19.558" size="1.778" layer="96"/>
 </instance>
-<instance part="R17" gate="G$1" x="226.06" y="10.16" smashed="yes" rot="R90">
+<instance part="R14" gate="G$1" x="226.06" y="10.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="224.5614" y="6.35" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="229.362" y="6.35" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R18" gate="G$1" x="243.84" y="10.16" smashed="yes" rot="R90">
+<instance part="R15" gate="G$1" x="243.84" y="10.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="242.3414" y="6.35" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="247.142" y="6.35" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -22127,31 +22321,31 @@ using CAN bus</text>
 <instance part="GND21" gate="1" x="35.56" y="-38.1" smashed="yes">
 <attribute name="VALUE" x="33.02" y="-40.64" size="1.778" layer="96"/>
 </instance>
-<instance part="R22" gate="G$1" x="106.68" y="-30.48" smashed="yes">
+<instance part="R19" gate="G$1" x="106.68" y="-30.48" smashed="yes">
 <attribute name="NAME" x="102.87" y="-28.9814" size="1.778" layer="95"/>
 <attribute name="VALUE" x="102.87" y="-33.782" size="1.778" layer="96"/>
 </instance>
-<instance part="C16" gate="G$1" x="86.36" y="-35.56" smashed="yes" rot="R90">
+<instance part="C17" gate="G$1" x="86.36" y="-35.56" smashed="yes" rot="R90">
 <attribute name="NAME" x="85.979" y="-34.036" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="91.059" y="-34.036" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C18" gate="G$1" x="86.36" y="-48.26" smashed="yes" rot="R90">
+<instance part="C19" gate="G$1" x="86.36" y="-48.26" smashed="yes" rot="R90">
 <attribute name="NAME" x="85.979" y="-46.736" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="91.059" y="-46.736" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C17" gate="G$1" x="78.74" y="-40.64" smashed="yes">
+<instance part="C18" gate="G$1" x="78.74" y="-40.64" smashed="yes">
 <attribute name="NAME" x="80.264" y="-40.259" size="1.778" layer="95"/>
 <attribute name="VALUE" x="80.264" y="-45.339" size="1.778" layer="96"/>
 </instance>
-<instance part="C19" gate="G$1" x="93.98" y="-53.34" smashed="yes">
+<instance part="C20" gate="G$1" x="93.98" y="-53.34" smashed="yes">
 <attribute name="NAME" x="95.504" y="-52.959" size="1.778" layer="95"/>
 <attribute name="VALUE" x="95.504" y="-58.039" size="1.778" layer="96"/>
 </instance>
-<instance part="C20" gate="G$1" x="99.06" y="-53.34" smashed="yes">
+<instance part="C21" gate="G$1" x="99.06" y="-53.34" smashed="yes">
 <attribute name="NAME" x="100.584" y="-52.959" size="1.778" layer="95"/>
 <attribute name="VALUE" x="100.584" y="-58.039" size="1.778" layer="96"/>
 </instance>
-<instance part="R23" gate="G$1" x="106.68" y="-55.88" smashed="yes" rot="R90">
+<instance part="R20" gate="G$1" x="106.68" y="-55.88" smashed="yes" rot="R90">
 <attribute name="NAME" x="105.1814" y="-59.69" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="109.982" y="-59.69" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -22174,13 +22368,36 @@ using CAN bus</text>
 <attribute name="VALUE" x="20.32" y="-53.086" size="1.778" layer="96" font="vector"/>
 <attribute name="NAME" x="20.32" y="-42.672" size="1.778" layer="95" font="vector"/>
 </instance>
+<instance part="VR3" gate="R?" x="43.18" y="22.86" smashed="yes" rot="MR90">
+<attribute name="NAME" x="45.72" y="21.336" size="1.778" layer="95" font="vector" rot="MR180"/>
+<attribute name="VALUE" x="45.72" y="24.384" size="1.778" layer="96" font="vector" rot="MR180" align="top-left"/>
+</instance>
+<instance part="VR4" gate="R?" x="76.2" y="20.32" smashed="yes" rot="MR180">
+<attribute name="NAME" x="74.676" y="17.78" size="1.778" layer="95" font="vector" rot="MR270"/>
+<attribute name="VALUE" x="77.724" y="17.78" size="1.778" layer="96" font="vector" rot="MR270" align="top-left"/>
+</instance>
+<instance part="VR1" gate="R?" x="43.18" y="50.8" smashed="yes" rot="MR90">
+<attribute name="NAME" x="45.72" y="49.276" size="1.778" layer="95" font="vector" rot="MR180"/>
+<attribute name="VALUE" x="45.72" y="52.324" size="1.778" layer="96" font="vector" rot="MR180" align="top-left"/>
+</instance>
+<instance part="VR2" gate="R?" x="76.2" y="48.26" smashed="yes" rot="MR180">
+<attribute name="NAME" x="74.676" y="45.72" size="1.778" layer="95" font="vector" rot="MR270"/>
+<attribute name="VALUE" x="77.724" y="45.72" size="1.778" layer="96" font="vector" rot="MR270" align="top-left"/>
+</instance>
+<instance part="R6" gate="G$1" x="137.16" y="45.72" smashed="yes" rot="R90">
+<attribute name="NAME" x="135.6614" y="41.91" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="140.462" y="41.91" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND23" gate="1" x="137.16" y="35.56" smashed="yes">
+<attribute name="VALUE" x="134.62" y="33.02" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="R2" class="0">
 <segment>
-<pinref part="R8" gate="G$1" pin="1"/>
+<pinref part="R7" gate="G$1" pin="1"/>
 <pinref part="C6" gate="G$1" pin="2"/>
 <wire x1="38.1" y1="43.18" x2="35.56" y2="43.18" width="0.1524" layer="91"/>
 </segment>
@@ -22188,7 +22405,7 @@ using CAN bus</text>
 <net name="R3" class="0">
 <segment>
 <pinref part="C8" gate="G$1" pin="2"/>
-<pinref part="R9" gate="G$1" pin="1"/>
+<pinref part="R8" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="35.56" x2="38.1" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -22196,7 +22413,6 @@ using CAN bus</text>
 <segment>
 <pinref part="C11" gate="G$1" pin="2"/>
 <wire x1="71.12" y1="25.4" x2="71.12" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="R13" gate="G$1" pin="2"/>
 <wire x1="71.12" y1="27.94" x2="76.2" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="27.94" x2="76.2" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="27.94" x2="96.52" y2="27.94" width="0.1524" layer="91"/>
@@ -22208,6 +22424,7 @@ using CAN bus</text>
 <wire x1="93.98" y1="10.16" x2="96.52" y2="10.16" width="0.1524" layer="91"/>
 <junction x="96.52" y="10.16"/>
 <label x="88.9" y="27.94" size="1.778" layer="95"/>
+<pinref part="VR4" gate="R?" pin="CW"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -22259,7 +22476,7 @@ using CAN bus</text>
 <wire x1="228.6" y1="96.52" x2="226.06" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="R20" gate="G$1" pin="1"/>
+<pinref part="R17" gate="G$1" pin="1"/>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="149.86" y1="0" x2="149.86" y2="-2.54" width="0.1524" layer="91"/>
 </segment>
@@ -22307,12 +22524,12 @@ using CAN bus</text>
 <pinref part="GND17" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="R17" gate="G$1" pin="1"/>
+<pinref part="R14" gate="G$1" pin="1"/>
 <wire x1="226.06" y1="5.08" x2="226.06" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="GND18" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="R18" gate="G$1" pin="1"/>
+<pinref part="R15" gate="G$1" pin="1"/>
 <wire x1="243.84" y1="5.08" x2="243.84" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="GND19" gate="1" pin="GND"/>
 </segment>
@@ -22328,17 +22545,22 @@ using CAN bus</text>
 <wire x1="35.56" y1="-33.02" x2="38.1" y2="-33.02" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C20" gate="G$1" pin="2"/>
+<pinref part="C21" gate="G$1" pin="2"/>
 <wire x1="99.06" y1="-58.42" x2="99.06" y2="-63.5" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="-63.5" x2="99.06" y2="-66.04" width="0.1524" layer="91"/>
-<pinref part="C19" gate="G$1" pin="2"/>
+<pinref part="C20" gate="G$1" pin="2"/>
 <wire x1="93.98" y1="-63.5" x2="93.98" y2="-58.42" width="0.1524" layer="91"/>
-<pinref part="R23" gate="G$1" pin="1"/>
+<pinref part="R20" gate="G$1" pin="1"/>
 <wire x1="106.68" y1="-63.5" x2="106.68" y2="-60.96" width="0.1524" layer="91"/>
 <pinref part="GND22" gate="1" pin="GND"/>
 <wire x1="93.98" y1="-63.5" x2="99.06" y2="-63.5" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="-63.5" x2="106.68" y2="-63.5" width="0.1524" layer="91"/>
 <junction x="99.06" y="-63.5"/>
+</segment>
+<segment>
+<pinref part="R6" gate="G$1" pin="1"/>
+<pinref part="GND23" gate="1" pin="GND"/>
+<wire x1="137.16" y1="38.1" x2="137.16" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RX" class="0">
@@ -22377,7 +22599,7 @@ using CAN bus</text>
 </net>
 <net name="+12V" class="0">
 <segment>
-<pinref part="R14" gate="G$1" pin="2"/>
+<pinref part="R11" gate="G$1" pin="2"/>
 <pinref part="P+1" gate="1" pin="+12V"/>
 <wire x1="149.86" y1="27.94" x2="149.86" y2="25.4" width="0.1524" layer="91"/>
 </segment>
@@ -22444,8 +22666,12 @@ using CAN bus</text>
 <net name="R1" class="0">
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
-<pinref part="R6" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="50.8" x2="38.1" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="VR1" gate="R?" pin="CW"/>
+<wire x1="38.1" y1="50.8" x2="38.1" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="VR1" gate="R?" pin="WIPER"/>
+<wire x1="38.1" y1="55.88" x2="43.18" y2="55.88" width="0.1524" layer="91"/>
+<junction x="38.1" y="50.8"/>
 </segment>
 </net>
 <net name="AUX_L" class="0">
@@ -22484,18 +22710,18 @@ using CAN bus</text>
 </net>
 <net name="AGND" class="0">
 <segment>
-<pinref part="R10" gate="G$1" pin="1"/>
+<pinref part="R9" gate="G$1" pin="1"/>
 <pinref part="AGND1" gate="VR1" pin="AGND"/>
 <wire x1="60.96" y1="20.32" x2="60.96" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="AGND2" gate="VR1" pin="AGND"/>
-<pinref part="R21" gate="G$1" pin="1"/>
+<pinref part="R18" gate="G$1" pin="1"/>
 <wire x1="60.96" y1="-7.62" x2="60.96" y2="-5.08" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="R20" gate="G$1" pin="2"/>
-<pinref part="R14" gate="G$1" pin="1"/>
+<pinref part="R17" gate="G$1" pin="2"/>
+<pinref part="R11" gate="G$1" pin="1"/>
 <wire x1="149.86" y1="15.24" x2="149.86" y2="12.7" width="0.1524" layer="91"/>
 <wire x1="149.86" y1="12.7" x2="149.86" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="149.86" y1="12.7" x2="142.24" y2="12.7" width="0.1524" layer="91"/>
@@ -22507,8 +22733,10 @@ using CAN bus</text>
 <net name="CTRL" class="0">
 <segment>
 <pinref part="J1" gate="J1" pin="3"/>
-<wire x1="147.32" y1="53.34" x2="139.7" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="53.34" x2="137.16" y2="53.34" width="0.1524" layer="91"/>
 <label x="139.7" y="53.34" size="1.778" layer="95"/>
+<pinref part="R6" gate="G$1" pin="2"/>
+<wire x1="137.16" y1="50.8" x2="137.16" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="Q6" gate="G$1" pin="C"/>
@@ -22563,7 +22791,7 @@ using CAN bus</text>
 <label x="38.1" y="88.9" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R16" gate="G$1" pin="1"/>
+<pinref part="R13" gate="G$1" pin="1"/>
 <wire x1="187.96" y1="10.16" x2="182.88" y2="10.16" width="0.1524" layer="91"/>
 <label x="182.88" y="10.16" size="1.778" layer="95"/>
 </segment>
@@ -22575,7 +22803,7 @@ using CAN bus</text>
 <label x="38.1" y="91.44" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R12" gate="G$1" pin="1"/>
+<pinref part="R10" gate="G$1" pin="1"/>
 <wire x1="187.96" y1="22.86" x2="182.88" y2="22.86" width="0.1524" layer="91"/>
 <label x="182.88" y="22.86" size="1.778" layer="95"/>
 </segment>
@@ -22598,11 +22826,11 @@ using CAN bus</text>
 <segment>
 <pinref part="C9" gate="G$1" pin="2"/>
 <wire x1="55.88" y1="35.56" x2="55.88" y2="33.02" width="0.1524" layer="91"/>
-<pinref part="R9" gate="G$1" pin="2"/>
+<pinref part="R8" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="35.56" x2="55.88" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="U3" gate="B" pin="+IN"/>
 <wire x1="55.88" y1="35.56" x2="60.96" y2="35.56" width="0.1524" layer="91"/>
-<pinref part="R10" gate="G$1" pin="2"/>
+<pinref part="R9" gate="G$1" pin="2"/>
 <wire x1="60.96" y1="35.56" x2="78.74" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="60.96" y1="33.02" x2="60.96" y2="35.56" width="0.1524" layer="91"/>
 <junction x="60.96" y="35.56"/>
@@ -22612,13 +22840,11 @@ using CAN bus</text>
 </net>
 <net name="R-" class="0">
 <segment>
-<pinref part="R8" gate="G$1" pin="2"/>
+<pinref part="R7" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="43.18" x2="50.8" y2="43.18" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="43.18" x2="50.8" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="50.8" x2="48.26" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="R6" gate="G$1" pin="2"/>
 <wire x1="50.8" y1="43.18" x2="50.8" y2="40.64" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="1"/>
 <wire x1="76.2" y1="43.18" x2="76.2" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="40.64" x2="76.2" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="C5" gate="G$1" pin="1"/>
@@ -22630,6 +22856,12 @@ using CAN bus</text>
 <wire x1="76.2" y1="40.64" x2="78.74" y2="40.64" width="0.1524" layer="91"/>
 <junction x="76.2" y="40.64"/>
 <label x="66.04" y="40.64" size="1.778" layer="95"/>
+<pinref part="VR1" gate="R?" pin="CCW"/>
+<pinref part="VR2" gate="R?" pin="CCW"/>
+<wire x1="76.2" y1="43.18" x2="81.28" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="VR2" gate="R?" pin="WIPER"/>
+<wire x1="81.28" y1="43.18" x2="81.28" y2="48.26" width="0.1524" layer="91"/>
+<junction x="76.2" y="43.18"/>
 </segment>
 </net>
 <net name="3.7V" class="0">
@@ -22703,10 +22935,8 @@ using CAN bus</text>
 </net>
 <net name="L-" class="0">
 <segment>
-<pinref part="R11" gate="G$1" pin="2"/>
 <wire x1="50.8" y1="22.86" x2="48.26" y2="22.86" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="12.7" x2="50.8" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="R13" gate="G$1" pin="1"/>
 <wire x1="50.8" y1="15.24" x2="50.8" y2="22.86" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="12.7" x2="76.2" y2="12.7" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="15.24" x2="76.2" y2="12.7" width="0.1524" layer="91"/>
@@ -22718,20 +22948,26 @@ using CAN bus</text>
 <wire x1="76.2" y1="12.7" x2="78.74" y2="12.7" width="0.1524" layer="91"/>
 <junction x="76.2" y="12.7"/>
 <label x="66.04" y="12.7" size="1.778" layer="95"/>
-<pinref part="R15" gate="G$1" pin="2"/>
+<pinref part="R12" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="15.24" x2="50.8" y2="15.24" width="0.1524" layer="91"/>
 <junction x="50.8" y="15.24"/>
+<pinref part="VR3" gate="R?" pin="CCW"/>
+<pinref part="VR4" gate="R?" pin="CCW"/>
+<wire x1="76.2" y1="15.24" x2="81.28" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="VR4" gate="R?" pin="WIPER"/>
+<wire x1="81.28" y1="15.24" x2="81.28" y2="20.32" width="0.1524" layer="91"/>
+<junction x="76.2" y="15.24"/>
 </segment>
 </net>
 <net name="L+" class="0">
 <segment>
 <pinref part="C15" gate="G$1" pin="2"/>
 <wire x1="55.88" y1="7.62" x2="55.88" y2="5.08" width="0.1524" layer="91"/>
-<pinref part="R19" gate="G$1" pin="2"/>
+<pinref part="R16" gate="G$1" pin="2"/>
 <wire x1="48.26" y1="7.62" x2="55.88" y2="7.62" width="0.1524" layer="91"/>
 <pinref part="U3" gate="A" pin="+IN"/>
 <wire x1="55.88" y1="7.62" x2="60.96" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="R21" gate="G$1" pin="2"/>
+<pinref part="R18" gate="G$1" pin="2"/>
 <wire x1="60.96" y1="7.62" x2="78.74" y2="7.62" width="0.1524" layer="91"/>
 <wire x1="60.96" y1="5.08" x2="60.96" y2="7.62" width="0.1524" layer="91"/>
 <junction x="60.96" y="7.62"/>
@@ -22746,7 +22982,6 @@ using CAN bus</text>
 <wire x1="71.12" y1="55.88" x2="76.2" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="55.88" x2="96.52" y2="55.88" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="55.88" x2="96.52" y2="38.1" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="2"/>
 <wire x1="76.2" y1="53.34" x2="76.2" y2="55.88" width="0.1524" layer="91"/>
 <junction x="76.2" y="55.88"/>
 <pinref part="C7" gate="G$1" pin="1"/>
@@ -22755,6 +22990,7 @@ using CAN bus</text>
 <wire x1="93.98" y1="38.1" x2="96.52" y2="38.1" width="0.1524" layer="91"/>
 <junction x="96.52" y="38.1"/>
 <label x="88.9" y="55.88" size="1.778" layer="95"/>
+<pinref part="VR2" gate="R?" pin="CW"/>
 </segment>
 </net>
 <net name="L" class="0">
@@ -22770,20 +23006,24 @@ using CAN bus</text>
 <net name="L1" class="0">
 <segment>
 <pinref part="C10" gate="G$1" pin="2"/>
-<pinref part="R11" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="22.86" x2="38.1" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="VR3" gate="R?" pin="CW"/>
+<wire x1="38.1" y1="22.86" x2="38.1" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="VR3" gate="R?" pin="WIPER"/>
+<wire x1="38.1" y1="27.94" x2="43.18" y2="27.94" width="0.1524" layer="91"/>
+<junction x="38.1" y="22.86"/>
 </segment>
 </net>
 <net name="L2" class="0">
 <segment>
 <pinref part="C12" gate="G$1" pin="2"/>
-<pinref part="R15" gate="G$1" pin="1"/>
+<pinref part="R12" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="15.24" x2="38.1" y2="15.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="L3" class="0">
 <segment>
-<pinref part="R19" gate="G$1" pin="1"/>
+<pinref part="R16" gate="G$1" pin="1"/>
 <pinref part="C14" gate="G$1" pin="2"/>
 <wire x1="38.1" y1="7.62" x2="35.56" y2="7.62" width="0.1524" layer="91"/>
 </segment>
@@ -22865,7 +23105,7 @@ using CAN bus</text>
 </net>
 <net name="Q7E" class="0">
 <segment>
-<pinref part="R17" gate="G$1" pin="2"/>
+<pinref part="R14" gate="G$1" pin="2"/>
 <pinref part="Q7" gate="G$1" pin="E"/>
 <wire x1="226.06" y1="15.24" x2="226.06" y2="17.78" width="0.1524" layer="91"/>
 </segment>
@@ -22873,13 +23113,13 @@ using CAN bus</text>
 <net name="Q8E" class="0">
 <segment>
 <pinref part="Q8" gate="G$1" pin="E"/>
-<pinref part="R18" gate="G$1" pin="2"/>
+<pinref part="R15" gate="G$1" pin="2"/>
 <wire x1="243.84" y1="17.78" x2="243.84" y2="15.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="P7B" class="0">
 <segment>
-<pinref part="R16" gate="G$1" pin="2"/>
+<pinref part="R13" gate="G$1" pin="2"/>
 <pinref part="Q9" gate="G$1" pin="B"/>
 <wire x1="198.12" y1="10.16" x2="203.2" y2="10.16" width="0.1524" layer="91"/>
 <label x="198.12" y="10.16" size="1.778" layer="95"/>
@@ -22893,7 +23133,7 @@ using CAN bus</text>
 <net name="P3B" class="0">
 <segment>
 <pinref part="Q6" gate="G$1" pin="B"/>
-<pinref part="R12" gate="G$1" pin="2"/>
+<pinref part="R10" gate="G$1" pin="2"/>
 <wire x1="198.12" y1="22.86" x2="203.2" y2="22.86" width="0.1524" layer="91"/>
 <label x="198.12" y="22.86" size="1.778" layer="95"/>
 </segment>
@@ -22922,13 +23162,13 @@ using CAN bus</text>
 <label x="25.4" y="-58.42" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R22" gate="G$1" pin="2"/>
+<pinref part="R19" gate="G$1" pin="2"/>
 <wire x1="111.76" y1="-30.48" x2="114.3" y2="-30.48" width="0.1524" layer="91"/>
 <wire x1="114.3" y1="-30.48" x2="114.3" y2="-35.56" width="0.1524" layer="91"/>
 <wire x1="114.3" y1="-35.56" x2="114.3" y2="-38.1" width="0.1524" layer="91"/>
 <wire x1="114.3" y1="-38.1" x2="129.54" y2="-38.1" width="0.1524" layer="91"/>
 <wire x1="114.3" y1="-35.56" x2="91.44" y2="-35.56" width="0.1524" layer="91"/>
-<pinref part="C16" gate="G$1" pin="2"/>
+<pinref part="C17" gate="G$1" pin="2"/>
 <junction x="114.3" y="-35.56"/>
 <label x="116.84" y="-38.1" size="1.778" layer="95"/>
 </segment>
@@ -22953,9 +23193,9 @@ using CAN bus</text>
 <segment>
 <wire x1="114.3" y1="-40.64" x2="129.54" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="114.3" y1="-40.64" x2="114.3" y2="-48.26" width="0.1524" layer="91"/>
-<pinref part="C18" gate="G$1" pin="2"/>
+<pinref part="C19" gate="G$1" pin="2"/>
 <label x="116.84" y="-40.64" size="1.778" layer="95"/>
-<pinref part="R23" gate="G$1" pin="2"/>
+<pinref part="R20" gate="G$1" pin="2"/>
 <wire x1="91.44" y1="-48.26" x2="106.68" y2="-48.26" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="-50.8" x2="106.68" y2="-48.26" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="-48.26" x2="114.3" y2="-48.26" width="0.1524" layer="91"/>
@@ -22970,14 +23210,14 @@ using CAN bus</text>
 </segment>
 <segment>
 <wire x1="71.12" y1="-30.48" x2="93.98" y2="-30.48" width="0.1524" layer="91"/>
-<pinref part="R22" gate="G$1" pin="1"/>
+<pinref part="R19" gate="G$1" pin="1"/>
 <label x="71.12" y="-30.48" size="1.778" layer="95"/>
 <wire x1="93.98" y1="-30.48" x2="99.06" y2="-30.48" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="-30.48" x2="101.6" y2="-30.48" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="-30.48" x2="99.06" y2="-50.8" width="0.1524" layer="91"/>
 <wire x1="93.98" y1="-30.48" x2="93.98" y2="-50.8" width="0.1524" layer="91"/>
-<pinref part="C19" gate="G$1" pin="1"/>
 <pinref part="C20" gate="G$1" pin="1"/>
+<pinref part="C21" gate="G$1" pin="1"/>
 <junction x="99.06" y="-30.48"/>
 <junction x="93.98" y="-30.48"/>
 </segment>
@@ -22989,9 +23229,9 @@ using CAN bus</text>
 <label x="228.6" y="71.12" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="C17" gate="G$1" pin="1"/>
+<pinref part="C18" gate="G$1" pin="1"/>
 <wire x1="78.74" y1="-38.1" x2="78.74" y2="-35.56" width="0.1524" layer="91"/>
-<pinref part="C16" gate="G$1" pin="1"/>
+<pinref part="C17" gate="G$1" pin="1"/>
 <wire x1="78.74" y1="-35.56" x2="83.82" y2="-35.56" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="-35.56" x2="71.12" y2="-35.56" width="0.1524" layer="91"/>
 <junction x="78.74" y="-35.56"/>
@@ -23005,9 +23245,9 @@ using CAN bus</text>
 <label x="228.6" y="68.58" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="C17" gate="G$1" pin="2"/>
+<pinref part="C18" gate="G$1" pin="2"/>
 <wire x1="78.74" y1="-45.72" x2="78.74" y2="-48.26" width="0.1524" layer="91"/>
-<pinref part="C18" gate="G$1" pin="1"/>
+<pinref part="C19" gate="G$1" pin="1"/>
 <wire x1="78.74" y1="-48.26" x2="83.82" y2="-48.26" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="-48.26" x2="71.12" y2="-48.26" width="0.1524" layer="91"/>
 <junction x="78.74" y="-48.26"/>
