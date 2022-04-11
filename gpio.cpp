@@ -7,8 +7,8 @@
 #include "main.h"
 #include "timers.h"
 
-#define LED_SIZE        3
-#define LED_COUNT       4
+#define LED_DEF_SIZE 3
+#define LED_DEF_COUNT 4
 
 uint8_t led_timer = 0;
 uint8_t leds[3] = {0, 0, 0};
@@ -48,8 +48,8 @@ void led_update_all(bool force) {
 
     leds_set = 0;
 
-    for (uint8_t i = 0; i < LED_COUNT; i++) {
-        uint8_t *led = (uint8_t*)leds_meta + LED_SIZE * i;
+    for (uint8_t i = 0; i < LED_DEF_COUNT; i++) {
+        uint8_t *led = (uint8_t*)leds_meta + LED_DEF_SIZE * i;
         uint8_t meta = pgm_read_byte(&led[1]);
         uint8_t flags = pgm_read_byte(&led[2]);
 
@@ -88,15 +88,15 @@ void led_update_all(bool force) {
         uint8_t elapsed = led_timer - timer;
         // enable the led at first round
         if (timer == 0 || !t_off) {
-            led_set(pin, 1, inverted);
+            led_set(pin, true, inverted);
         }
         // disable the led when t_on elapses
-        else if (is_on && t_off && (elapsed >= t_on || is_reset)) {
-            led_set(pin, 0, inverted);
+        else if (is_on && (elapsed >= t_on || is_reset)) {
+            led_set(pin, false, inverted);
         }
         // enable the led when t_off elapses
         else if (!is_on && (elapsed >= t_off || is_reset)) {
-            led_set(pin, 1, inverted);
+            led_set(pin, true, inverted);
         }
     }
 }

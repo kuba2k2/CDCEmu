@@ -25,7 +25,7 @@ uint8_t mcp_get_rx_buf() {
 
 uint8_t mcp_get_error() {
     uint8_t error = mcp_read_reg(MCP_EFLG);
-    return error & EFLG_ERRORMASK;
+    return error & (EFLG_ERRORMASK);
 }
 
 void mcp_clear_rxb_overflow() {

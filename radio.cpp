@@ -6,7 +6,7 @@
 #include "timers.h"
 #include "can.h"
 
-void radio_ignition(bool enabled, bool powersave) {
+void radio_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
     if (enabled == data[DATA_IGNITION] && powersave == data[DATA_POWERSAVE])
         return;
     data[DATA_IGNITION] = enabled;
@@ -22,7 +22,7 @@ void radio_ignition(bool enabled, bool powersave) {
     }
 }
 
-void radio_enabled(bool radio_enabled) {
+void radio_enabled(bool radio_enabled) { // NOLINT(misc-no-recursion)
     if (radio_enabled == data[DATA_RADIO_ENABLED])
         return;
     data[DATA_RADIO_ENABLED] = radio_enabled;

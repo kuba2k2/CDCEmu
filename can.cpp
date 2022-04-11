@@ -11,7 +11,7 @@
 
 struct can_message msg;
 
-struct cdc_command {
+typedef struct cdc_command {
     bool ff_fb : 1;
     bool radio_playing : 1;
     bool intro_mode : 1;
@@ -22,7 +22,7 @@ struct cdc_command {
 
     bool random_mode : 1, : 6;
     bool repeat_mode : 1;
-};
+} cdc_command_t;
 
 /*
 0x036 - BSI ignition
@@ -161,7 +161,7 @@ void parse_bsi_ignition(const uint8_t cmd[8]) {
 }
 
 void parse_cdc_command(const uint8_t cmd[8]) {
-    struct cdc_command* cdc = (cdc_command*) cmd;
+    cdc_command_t* cdc = (cdc_command_t*) cmd;
 
     radio_enabled(cdc->radio_enabled);
     radio_playing(cdc->radio_playing || cdc->intro_mode);
