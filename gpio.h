@@ -1,5 +1,4 @@
-#ifndef GPIO_H
-#define GPIO_H
+#pragma once
 
 #include <stdint.h>
 
@@ -19,5 +18,3 @@
 #define PIN_LED_YELLOW 6
 
 void led_update_all(bool force = false);
-
-#endif

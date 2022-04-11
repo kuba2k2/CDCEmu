@@ -9,8 +9,7 @@
 //
 // Modified to use with CDCEmu by kuba2k2, 23May2021
 
-#ifndef TINYSPI_H_INCLUDED
-#define TINYSPI_H_INCLUDED
+#pragma once
 
 #include <util/atomic.h>
 
@@ -48,5 +47,3 @@ void spi_begin();
 void spi_set_data_mode(uint8_t spiDataMode);
 uint8_t spi_transfer(uint8_t spiData);
 void spi_end();
-
-#endif

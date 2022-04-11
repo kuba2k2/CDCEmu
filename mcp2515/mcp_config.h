@@ -1,5 +1,4 @@
-#ifndef MCP_CONFIG_H
-#define MCP_CONFIG_H
+#pragma once
 
 #define MCP_8MHZ            8000000
 #define MCP_16MHZ           16000000
@@ -136,6 +135,4 @@
     #elif MCP_SPEED == MCP_33K3BPS
         #define MCP_CFG     0x0B,0xFF,0x87
     #endif
-#endif
-
 #endif

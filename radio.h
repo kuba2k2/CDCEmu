@@ -1,5 +1,4 @@
-#ifndef RADIO_H
-#define RADIO_H
+#pragma once
 
 #include <stdint.h>
 
@@ -12,5 +11,3 @@ void radio_previous(uint8_t num = 0);
 void radio_to_start();
 void radio_disk(uint8_t num);
 void radio_track(uint8_t num);
-
-#endif

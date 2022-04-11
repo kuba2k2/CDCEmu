@@ -1,5 +1,4 @@
-#ifndef MCP2515_H
-#define MCP2515_H
+#pragma once
 
 #include <tinySPI.h>
 #include "mcp_config.h"
@@ -26,5 +25,3 @@ bool mcp_set_bitrate();
 void mcp_set_clk_out(const uint8_t divisor);
 bool mcp_set_filter_mask(const uint8_t mask_num, const bool extended, const uint32_t data);
 bool mcp_set_filter(const uint8_t filter_num, const bool extended, const uint32_t data);
-
-#endif

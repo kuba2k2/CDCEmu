@@ -1,5 +1,4 @@
-#ifndef TIMERS_H
-#define TIMERS_H
+#pragma once
 
 #include <stdint.h>
 
@@ -22,5 +21,3 @@ void timer_reset_all();
 uint8_t timer_read_global();
 bool timer_check(uint8_t num, uint8_t delay);
 bool timer_check(uint8_t num, uint8_t delay, uint8_t tctng);
-
-#endif

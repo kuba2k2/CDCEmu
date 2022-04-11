@@ -1,5 +1,4 @@
-#ifndef DATA_H
-#define DATA_H
+#pragma once
 
 #include <stdint.h>
 
@@ -13,5 +12,3 @@
 #define DATA_POWERSAVE	   7
 
 extern uint8_t data[8];
-
-#endif

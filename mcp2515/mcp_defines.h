@@ -1,5 +1,4 @@
-#ifndef MCP_DEFINES_H
-#define MCP_DEFINES_H
+#pragma once
 
 #define INSTRUCTION_WRITE           0x02
 #define INSTRUCTION_READ            0x03
@@ -166,5 +165,3 @@
 #define MCP_RXB1EID0                0x74
 #define MCP_RXB1DLC                 0x75
 #define MCP_RXB1DATA                0x76
-
-#endif

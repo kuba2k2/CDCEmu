@@ -1,5 +1,4 @@
-#ifndef MCP_MESSAGES_H
-#define MCP_MESSAGES_H
+#pragma once
 
 /*
  * Controller Area Network Identifier structure
@@ -27,5 +26,3 @@ struct can_message {
 bool mcp_send(const struct can_message *msg);
 bool mcp_can_receive();
 bool mcp_receive(struct can_message *msg);
-
-#endif

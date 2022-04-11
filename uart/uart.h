@@ -1,5 +1,4 @@
-#ifndef UART_H
-#define UART_H
+#pragma once
 
 #include <stdint.h>
 #include <avr/pgmspace.h>
@@ -21,5 +20,3 @@ void uart_puts(const char * str);
 void uart_puts_p(const char * str);
 
 #define uart_puts_P(str) uart_puts_p(PSTR(str))
-
-#endif

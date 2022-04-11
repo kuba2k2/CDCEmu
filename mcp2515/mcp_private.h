@@ -1,5 +1,4 @@
-#ifndef MCP_PRIVATE_H
-#define MCP_PRIVATE_H
+#pragma once
 
 void mcp_cs_set();
 void mcp_cs_unset();
@@ -13,5 +12,3 @@ void mcp_clear_interrupts();
 bool mcp_set_mode(const uint8_t mode);
 void mcp_prepare_id(uint8_t *buf, const bool extended, const uint32_t can_id);
 bool mcp_write_filter(const uint8_t reg, const bool extended, const uint32_t data);
-
-#endif

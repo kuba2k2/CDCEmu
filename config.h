@@ -1,5 +1,4 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #define DEBUG 0
 
@@ -24,5 +23,3 @@
 #define STRINGIFY(x)	   #x
 #define STRINGIFY_MACRO(x) STRINGIFY(x)
 #define VERSION_STR		   STRINGIFY_MACRO(VERSION)
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CAN_H
-#define CAN_H
+#pragma once
 
 #include <stdint.h>
 
@@ -17,5 +16,3 @@ extern struct can_message msg;
 bool can_init();
 void can_receive_all();
 void can_send_all();
-
-#endif
