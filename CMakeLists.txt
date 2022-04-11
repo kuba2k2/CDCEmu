@@ -13,7 +13,7 @@ project(CDCEmu)
 set(DIRS . i2c mcp2515 pcf8574 spi uart)
 set(SRCS "")
 set(INCLUDES "")
-set(CFLAGS "-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${CDCEMU_MCU} -DF_CPU=${CDCEMU_F_CPU} -include ${CMAKE_CURRENT_SOURCE_DIR}/config.h")
+set(CFLAGS "-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${CDCEMU_MCU} -DF_CPU=${CDCEMU_F_CPU} -DVERSION=${CDCEMU_VERSION} -include ${CMAKE_CURRENT_SOURCE_DIR}/config.h")
 set(LDFLAGS "-Wl,--gc-sections")
 enable_language(ASM)
 
