@@ -133,19 +133,19 @@ const PROGMEM uint8_t packets_meta[META_SIZE * META_COUNT] = {
 bool can_init() {
 	ensure_spi();
 
-	uart_puts_P("mcp_reset: ");
-	uart_putc(mcp_reset() ? '1' : '0');
-	uart_puts_P(" mcp_set_bitrate: ");
-	uart_putc(mcp_set_bitrate() ? '1' : '0');
+	debug_puts_P("mcp_reset: ");
+	debug_putc(mcp_reset() ? '1' : '0');
+	debug_puts_P(" mcp_set_bitrate: ");
+	debug_putc(mcp_set_bitrate() ? '1' : '0');
 
 	mcp_set_filter_mask(0, false, 0x7FF); // enable both filter masks
 	mcp_set_filter_mask(1, false, 0x7FF);
 	mcp_set_filter(0, false, 0x131); // accept CDC command message
 	mcp_set_filter(1, false, 0x036);
 
-	uart_puts_P(" mcp_mode_normal: ");
-	uart_putc(mcp_mode_normal() ? '1' : '0');
-	uart_putc('\n');
+	debug_puts_P(" mcp_mode_normal: ");
+	debug_putc(mcp_mode_normal() ? '1' : '0');
+	debug_nl();
 	return true;
 }
 

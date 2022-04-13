@@ -13,11 +13,11 @@ void radio_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
 	data[DATA_POWERSAVE] = powersave;
 
 	if (enabled) {
-		uart_puts_P("ignition enabled\n");
+		debug_puts_P("ignition enabled\r\n");
 	} else {
 		radio_playing(false);
 		radio_enabled(false);
-		uart_puts_P("ignition disabled\n");
+		debug_puts_P("ignition disabled\r\n");
 	}
 }
 
@@ -29,9 +29,9 @@ void radio_enabled(bool radio_enabled) { // NOLINT(misc-no-recursion)
 
 	if (radio_enabled) {
 		radio_ignition(true, false);
-		uart_puts_P("radio enabled\n");
+		debug_puts_P("radio enabled\r\n");
 	} else {
-		uart_puts_P("radio disabled\n");
+		debug_puts_P("radio disabled\r\n");
 	}
 }
 
@@ -42,9 +42,9 @@ void radio_playing(bool radio_playing) {
 	timer_reset(TIMER_PACKET_100MS);
 
 	if (radio_playing)
-		uart_puts_P("radio playing\n");
+		debug_puts_P("radio playing\r\n");
 	else
-		uart_puts_P("radio paused\n");
+		debug_puts_P("radio paused\r\n");
 }
 
 void radio_tick() {
@@ -67,7 +67,7 @@ void radio_next(uint8_t num) {
 		data[DATA_TRACK_NUM]++;
 	radio_to_start();
 
-	uart_puts_P("radio_next\n");
+	debug_puts_P("radio_next\r\n");
 }
 
 void radio_previous(uint8_t num) {
@@ -79,7 +79,7 @@ void radio_previous(uint8_t num) {
 		data[DATA_TRACK_NUM]--;
 	radio_to_start();
 
-	uart_puts_P("radio_previous\n");
+	debug_puts_P("radio_previous\r\n");
 }
 
 void radio_to_start() {

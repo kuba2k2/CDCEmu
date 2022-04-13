@@ -48,13 +48,16 @@ void enter_sleep() {
 	led_update_all(true);
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
 int main() {
 	uart_enable();
-	uart_puts_P("CDCEmu v" VERSION_STR "\n");
+	uart_puts_P("CDCEmu v" VERSION_STR);
+	uart_nl();
 	timer_start();
 	can_init();
 
-	while (1) {
+	while (true) {
 		can_receive_all();
 		can_send_all();
 
@@ -69,9 +72,9 @@ int main() {
 			uart_gets(command, 2);
 			command[2] = 0;
 			if (!strcmp_P(command, PSTR("MA"))) {
-				uart_puts_P("bt paused");
+				debug_puts_P("bt paused\r\n");
 			} else if (!strcmp_P(command, PSTR("MB"))) {
-				uart_puts_P("bt playing");
+				debug_puts_P("bt playing\r\n");
 			}
 		}
 
@@ -90,5 +93,5 @@ int main() {
 
 		_delay_ms(1);
 	}
-	return 0;
 }
+#pragma clang diagnostic pop

@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define MCP_CS_DDR	DDRB
 #define MCP_CS_PORT PORTB

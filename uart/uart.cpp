@@ -134,3 +134,8 @@ void uart_puts_p(const char * str) {
         uart_putc(c);
     }
 }
+
+void uart_nl() {
+	uart_putc('\r');
+	uart_putc('\n');
+}
