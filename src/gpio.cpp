@@ -2,10 +2,10 @@
 
 #include <avr/pgmspace.h>
 #include <pcf8574.h>
-//#include <uart.h>
+
 #include "data.h"
-#include "main.h"
 #include "timers.h"
+#include "utils.h"
 
 #define LED_DEF_SIZE  3 // led def size in bytes
 #define LED_DEF_COUNT 8 // number of led defs

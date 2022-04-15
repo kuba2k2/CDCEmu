@@ -1,52 +1,15 @@
 #include "main.h"
-#include <avr/io.h>
+
+#include <uart.h>
 #include <util/delay.h>
 
-#include <mcp2515.h>
-#include <pcf8574.h>
-#include <uart.h>
-
 #include "can.h"
-#include "data.h"
 #include "gpio.h"
 #include "radio.h"
 #include "timers.h"
+#include "bluetooth.h"
 
 uint8_t uart_rx_count = 0;
-
-#define IO_SPI 1
-#define IO_I2C 2
-
-uint8_t io_mode = 0;
-
-void ensure_spi() {
-	if (io_mode != IO_SPI) {
-		mcp_init();
-		spi_begin();
-		io_mode = IO_SPI;
-	}
-}
-
-void ensure_i2c() {
-	if (io_mode != IO_I2C) {
-		spi_end();
-		i2c_init();
-		io_mode = IO_I2C;
-	}
-}
-
-void enter_sleep() {
-	led_update_all(true);
-
-	// ensure_spi();
-	// mcp_sleep_wait();
-	while (!data[DATA_IGNITION]) {
-		can_receive_all();
-		_delay_ms(100);
-	}
-
-	led_update_all(true);
-}
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
@@ -57,25 +20,27 @@ int main() {
 	timer_start();
 	can_init();
 
+	// main application loop
 	while (true) {
+		// process incoming & outgoing CAN frames
 		can_receive_all();
 		can_send_all();
 
+		// tick the track timer
 		radio_tick();
 
+		// update LED states
 		led_update_all();
 
+#if CONFIG_FEAT_BT
+		// check UART availability
 		uint8_t readable = uart_readable();
-
 		if (readable >= 2) {
+			timer_reset(TIMER_BUFFER_FLUSH); // keep the buffer for a bit more time
 			char command[3];
 			uart_gets(command, 2);
 			command[2] = 0;
-			if (!strcmp_P(command, PSTR("MA"))) {
-				debug_puts_P("bt paused\r\n");
-			} else if (!strcmp_P(command, PSTR("MB"))) {
-				debug_puts_P("bt playing\r\n");
-			}
+			bt_parse_data(command);
 		}
 
 		// discard any newline characters
@@ -90,7 +55,9 @@ int main() {
 			}
 			uart_rx_count = readable;
 		}
+#endif
 
+		// give the CPU some time
 		_delay_ms(1);
 	}
 }

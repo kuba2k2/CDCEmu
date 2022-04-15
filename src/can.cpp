@@ -1,13 +1,14 @@
 #include "can.h"
 
-#include "data.h"
-#include "main.h"
-#include "radio.h"
-#include "timers.h"
 #include <avr/pgmspace.h>
 #include <mcp2515.h>
 #include <uart.h>
 #include <util/delay.h>
+
+#include "data.h"
+#include "radio.h"
+#include "timers.h"
+#include "utils.h"
 
 struct can_message msg;
 

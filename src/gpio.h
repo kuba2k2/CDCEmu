@@ -17,4 +17,23 @@
 extern bool analog_power;
 
 void led_update_all(bool force = false);
+
+#if CONFIG_FEAT_ANALOG
 void analog_enable(bool enable);
+#endif
+
+#if CONFIG_FEAT_AUXDET
+bool auxdet_read();
+#endif
+
+#if CONFIG_PAUSE_AUX_ON_RADIO || CONFIG_PAUSE_AUX_ON_BT
+void aux_btn_play_pause();
+#endif
+
+#if CONFIG_FEAT_AUX_RADIO_CONTROLS
+void aux_btn_next();
+void aux_btn_prev();
+#endif
+
+// void aux_btn_vol_up();
+// void aux_btn_vol_down();

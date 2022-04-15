@@ -1,10 +1,9 @@
 #include "radio.h"
 
-#include "can.h"
-#include "data.h"
-#include "main.h"
-#include "timers.h"
 #include <uart.h>
+
+#include "data.h"
+#include "timers.h"
 
 void radio_set_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
 	if (enabled == data[DATA_IGNITION] && powersave == data[DATA_POWERSAVE])

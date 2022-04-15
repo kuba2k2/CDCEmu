@@ -34,18 +34,14 @@ config FEAT_BT
 	depends on FEAT_ANALOG
 	default y
 
-config FEAT_CAN_CDC
-	bool "Use CAN bus for CDC emulation"
-	default y
-
 config FEAT_BT_RADIO_CONTROLS
 	bool "Support changing tracks on Bluetooth with radio panel"
-	depends on FEAT_CAN_CDC && FEAT_BT
+	depends on FEAT_BT
 	default y
 
 config FEAT_AUX_RADIO_CONTROLS
 	bool "Support changing tracks on AUX with radio panel"
-	depends on FEAT_CAN_CDC && FEAT_AUXDET && FEAT_HS_BTN
+	depends on FEAT_AUXDET && FEAT_HS_BTN
 	default y
 
 comment "Protocol settings"
@@ -252,14 +248,13 @@ menu "GPIO config"
 
 	config PIN_LED_RED
 		int "Red LED pin"
-		depends on FEAT_CAN_CDC
 		default 6
 		help
 			LED for signalling ignition and radio status.
 
 	config PIN_LED_GREEN
 		int "Green LED pin"
-		depends on FEAT_CAN_CDC || FEAT_AUXDET
+		depends on FEAT_AUXDET
 		default 5
 		help
 			LED for signalling audio signal playback status.
@@ -293,8 +288,6 @@ menu "GPIO config"
 endmenu
 
 menu "CAN config"
-	depends on FEAT_CAN_CDC
-
 	choice
 		prompt "Bus speed"
 		default MCP_125K
@@ -469,12 +462,12 @@ comment "Behavior options"
 
 config PAUSE_AUX_ON_RADIO
 	bool "Pause AUX input when radio not playing"
-	depends on FEAT_AUXDET && FEAT_HS_BTN && FEAT_CAN_CDC
+	depends on FEAT_AUXDET && FEAT_HS_BTN
 	default y
 
 config PAUSE_BT_ON_RADIO
 	bool "Pause Bluetooth input when radio not playing"
-	depends on FEAT_BT && FEAT_CAN_CDC
+	depends on FEAT_BT
 	default y
 
 config PAUSE_AUX_ON_BT
