@@ -206,3 +206,5 @@ fabric.properties
 
 !.vscode/c_cpp_properties.json
 build/
+.config
+.config.old

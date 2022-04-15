@@ -4,7 +4,7 @@ uint8_t pcf_input = 0x00;
 uint8_t pcf_output = 0xff;
 
 void pcf_transfer(uint8_t read) {
-    i2c_start_wait((PCF_ADDR<<1) | read);
+    i2c_start_wait((CONFIG_PCF_ADDR<<1) | read);
     if (read)
         pcf_input = i2c_readNak();
     else

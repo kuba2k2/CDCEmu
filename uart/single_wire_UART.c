@@ -58,10 +58,10 @@ static volatile uint8_t UART_counter;     //!< Holds the counter used in the tim
 /* Communication parameters. */
 static volatile uint8_t   UART_Tx_data;     //!< Byte holding data being transmitted.
 static volatile uint8_t   UART_Rx_data;     //!< Byte holding data being received.
-volatile uint8_t    UART_Tx_buffer[UART_TX_BUFFER_SIZE];    //!< Transmission buffer.
+volatile uint8_t    UART_Tx_buffer[CONFIG_UART_TXBUF_SIZE];    //!< Transmission buffer.
 volatile uint8_t    UART_Tx_head;           //!< TX buffer writing head
 volatile uint8_t    UART_Tx_tail;           //!< TX buffer reading tail
-volatile uint8_t    UART_Rx_buffer[UART_RX_BUFFER_SIZE];    //!< Reception buffer.
+volatile uint8_t    UART_Rx_buffer[CONFIG_UART_RXBUF_SIZE];    //!< Reception buffer.
 volatile uint8_t    UART_Rx_head;           //!< RX buffer writing head
 volatile uint8_t    UART_Rx_tail;           //!< RX buffer reading tail
 
@@ -146,7 +146,7 @@ void uart_tx_buffer()
 {
   //Copy byte from the buffer and move the tail.
   UART_Tx_data = UART_Tx_buffer[UART_Tx_tail];
-  UART_Tx_tail = (UART_Tx_tail + 1) % UART_TX_BUFFER_SIZE;
+  UART_Tx_tail = (UART_Tx_tail + 1) % CONFIG_UART_TXBUF_SIZE;
 }
 
 
@@ -224,7 +224,7 @@ ISR(SW_UART_TIMER_COMPARE_INTERRUPT_VECTOR)
       }
       else
       {
-        uint8_t i = (UART_Rx_head + 1) % UART_RX_BUFFER_SIZE;
+        uint8_t i = (UART_Rx_head + 1) % CONFIG_UART_RXBUF_SIZE;
 
         if (i != UART_Rx_tail)
         {

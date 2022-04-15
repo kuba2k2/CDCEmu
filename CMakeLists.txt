@@ -13,7 +13,7 @@ project(CDCEmu)
 set(DIRS . i2c mcp2515 pcf8574 spi uart)
 set(SRCS "")
 set(INCLUDES "")
-set(CFLAGS "-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${CDCEMU_MCU} -DF_CPU=${CDCEMU_F_CPU} -DVERSION=${CDCEMU_VERSION} -include ${CMAKE_CURRENT_SOURCE_DIR}/config.h")
+set(CFLAGS "-Wall -g -Os -fdata-sections -ffunction-sections -flto -mmcu=${CDCEMU_MCU} -DF_CPU=${CDCEMU_F_CPU} -DVERSION=${CDCEMU_VERSION} -include ${CMAKE_CURRENT_BINARY_DIR}/autoconf.h -include ${CMAKE_CURRENT_SOURCE_DIR}/config.h")
 set(LDFLAGS "-Wl,--gc-sections")
 enable_language(ASM)
 
@@ -32,14 +32,20 @@ set(TARGET "CDCEmu_v${CDCEMU_VERSION}_${CDCEMU_MCU}")
 set(ELF "${TARGET}.elf")
 set(HEX "${TARGET}.hex")
 set(SIZE "${TARGET}_size")
+set(CONFIG "${CMAKE_CURRENT_SOURCE_DIR}/.config")
+set(AUTOCONF "${CMAKE_CURRENT_BINARY_DIR}/autoconf.h")
 
 add_executable(${ELF} ${SRCS})
 target_include_directories(${ELF} PUBLIC ${INCLUDES})
 
+execute_process(
+        COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/kconfig_to_h.py ${CONFIG} ${AUTOCONF}
+)
+
 add_custom_command(
         OUTPUT ${HEX}
         COMMAND ${CMAKE_OBJCOPY} -j .text -j .data -O ihex ${ELF} ${HEX}
-        DEPENDS ${ELF}
+        DEPENDS ${ELF} ${AUTOCONF}
 )
 
 add_custom_command(

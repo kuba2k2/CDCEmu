@@ -12,7 +12,7 @@ extern "C" {
  *  \return Number of characters available.
  */
 uint8_t uart_readable() {
-    return (UART_RX_BUFFER_SIZE + UART_Rx_head - UART_Rx_tail) % UART_RX_BUFFER_SIZE;
+    return (CONFIG_UART_RXBUF_SIZE + UART_Rx_head - UART_Rx_tail) % CONFIG_UART_RXBUF_SIZE;
 }
 
 
@@ -24,7 +24,7 @@ uint8_t uart_readable() {
  *  \return Number of characters in the Tx buffer.
  */
 uint8_t uart_writable() {
-    return (UART_TX_BUFFER_SIZE + UART_Tx_head - UART_Tx_tail) % UART_TX_BUFFER_SIZE;
+    return (CONFIG_UART_TXBUF_SIZE + UART_Tx_head - UART_Tx_tail) % CONFIG_UART_TXBUF_SIZE;
 }
 
 
@@ -70,7 +70,7 @@ char uart_getc() {
     while (UART_Rx_head == UART_Rx_tail);
 
     char c = UART_Rx_buffer[UART_Rx_tail];
-    UART_Rx_tail = (UART_Rx_tail + 1) % UART_RX_BUFFER_SIZE;
+    UART_Rx_tail = (UART_Rx_tail + 1) % CONFIG_UART_RXBUF_SIZE;
     return c;
 }
 
@@ -82,7 +82,7 @@ char uart_getc() {
  *  is then initiated to start the interrupt handlers.
  */
 void uart_putc(const char c) {
-    uint8_t i = (UART_Tx_head + 1) % UART_TX_BUFFER_SIZE;
+    uint8_t i = (UART_Tx_head + 1) % CONFIG_UART_TXBUF_SIZE;
 
     // wait for space in the Tx buffer
     while (i == UART_Tx_tail);

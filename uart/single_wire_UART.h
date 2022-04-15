@@ -35,13 +35,6 @@
   #define TRUE !FALSE
 #endif
 
-#ifndef UART_RX_BUFFER_SIZE
-#define UART_RX_BUFFER_SIZE     4
-#endif
-#ifndef UART_TX_BUFFER_SIZE
-#define UART_TX_BUFFER_SIZE     4
-#endif
-
 // Baud rate settings (WAIT_ONE - PRESCALER):
 //  Baud Rate     1MHz      2Mhz      4MHz      8MHz
 //     4800     207 - 1    51 - 8   103 - 8   (207 - 8)
@@ -52,14 +45,16 @@
 // Please note that the UART consumes about all CPU resources when WAIT_ONE*PRESCALER<100.
 
 /* Communication parameters. The WAIT_ONE definiton has to be changed according to equation 2-1 in the application note. */
-#define WAIT_ONE              26      //!< Half bit period compare setting. See the application note for calculation of this value. Make sure timer prescaler is set to the intended value.
-#define PRESCALER             64      //!< Prescaler setting. Must be set according to the baud rate setting.
-
-/* Port and pin settings. */
-#define SW_UART_PIN_NUMBER    4       //!< Set pin number for communication.
-#define SW_UART_PORT          PORTB   //!< Set port for communication.
-#define SW_UART_PIN           PINB    //!< Set pin for communication.
-#define SW_UART_DDR           DDRB    //!< Data direction register. Not available for high voltage ports.
+#define WAIT_ONE              CONFIG_SWU_WAIT_ONE      //!< Half bit period compare setting. See the application note for calculation of this value. Make sure timer prescaler is set to the intended value.
+#if CONFIG_SWU_PRESCALER_1                             //!< Prescaler setting. Must be set according to the baud rate setting.
+#define PRESCALER 1
+#elif CONFIG_SWU_PRESCALER_8
+#define PRESCALER 8
+#elif CONFIG_SWU_PRESCALER_64
+#define PRESCALER 64
+#else
+#error "Invalid prescaler value"
+#endif
 
 #define TRANSMIT_DELAY        70    //!< Cycles from the start bit is sent (from UART_transmit) to the timer is started plus cycles in the timer interrupt before first data bit is sent.
 #define RECEIVE_DELAY         76    //!< Cycles from the start bit is detected to the timer is started plus cycles in timer interrupt before first data bit is received.

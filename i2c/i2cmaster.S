@@ -32,22 +32,6 @@
 
 #include <avr/io.h>
 
-
-;******----- Adapt these SDA and SCL port and pin definition to your target !!
-;
-#ifndef SDA_PIN
-#define SDA_PIN             4       // SDA_PIN Port D, Pin 4
-#endif
-#ifndef SCL_PIN
-#define SCL_PIN             5       // SCL_PIN Port D, Pin 5
-#endif
-#ifndef SDA_PORT
-#define SDA_PORT        PORTD       // SDA_PIN Port D
-#endif
-#ifndef SCL_PORT
-#define SCL_PORT        PORTD       // SCL_PIN Port D
-#endif
-
 ;******----------------------------------------------------------------------
 
 

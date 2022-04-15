@@ -1,0 +1,486 @@
+choice
+	prompt "AVR MCU selection"
+	default MCU_T85
+	config MCU_T25
+		bool "ATtiny25"
+	config MCU_T45
+		bool "ATtiny45"
+	config MCU_T85
+		bool "ATtiny85"
+endchoice
+
+config F_CPU
+	int "MCU clock frequency (Hz)"
+	default 16000000
+
+comment "Feature selection"
+
+config FEAT_ANALOG
+	bool "Use Analog PCB"
+	default y
+
+config FEAT_AUXDET
+	bool "Enable AUX input signal detection"
+	depends on FEAT_ANALOG
+	default y
+
+config FEAT_HS_BTN
+	bool "Enable headset button emulation"
+	depends on FEAT_ANALOG
+	default y
+
+config FEAT_BT
+	bool "Enable Bluetooth module support"
+	depends on FEAT_ANALOG
+	default y
+
+config FEAT_CAN_CDC
+	bool "Use CAN bus for CDC emulation"
+	default y
+
+config FEAT_BT_RADIO_CONTROLS
+	bool "Support changing tracks on Bluetooth with radio panel"
+	depends on FEAT_CAN_CDC && FEAT_BT
+	default y
+
+config FEAT_AUX_RADIO_CONTROLS
+	bool "Support changing tracks on AUX with radio panel"
+	depends on FEAT_CAN_CDC && FEAT_AUXDET && FEAT_HS_BTN
+	default y
+
+comment "Protocol settings"
+
+menu "UART config"
+	config DEBUG
+		bool "Enable debugging output"
+		default y
+		help
+			Enable printing various debugging messages to the UART port.
+			Will increase flash memory footprint and may confuse the Bluetooth module.
+
+	config UART_RXBUF_SIZE
+		int "RX buffer size"
+		default 16
+		help
+			RX buffer size to use for UART messages (bytes).
+
+	config UART_TXBUF_SIZE
+		int "TX buffer size"
+		default 16
+		help
+			TX buffer size to use for UART messages (bytes).
+
+	comment "Single-wire UART config"
+
+	choice
+		prompt "Port number"
+		default SWU_PORTB
+		help
+			MCU port number for communication.
+		config SWU_PORTA
+			bool "Port A"
+		config SWU_PORTB
+			bool "Port B"
+		config SWU_PORTC
+			bool "Port C"
+		config SWU_PORTD
+			bool "Port D"
+	endchoice
+
+	config SWU_PIN
+		int "Pin number"
+		range 0 7
+		default 4
+		help
+			Pin number within the port.
+
+	config SWU_WAIT_ONE
+		int "WAIT_ONE value"
+		range 0 255
+		default 26
+		help
+			Half bit period compare setting. See the [AVR274] application note for calculation of this value. Make sure timer prescaler is set to the intended value.
+
+	choice
+		prompt "Prescaler value"
+		default SWU_PRESCALER_64
+		help
+			Prescaler setting. Must be set according to the baud rate setting.
+		config SWU_PRESCALER_1
+			bool "1"
+		config SWU_PRESCALER_8
+			bool "8"
+		config SWU_PRESCALER_64
+			bool "64"
+	endchoice
+
+	# choice
+	# 	prompt "Prescaler control register"
+	# 	default SWU_TCCR0B
+	# 	help
+	# 		Define the timer control register according to the timer used for the UART.
+	# 	config SWU_TCCR0B
+	# 		bool "TCCR0B"
+	# endchoice
+
+	# choice
+	# 	prompt "Timer compare vector"
+	# 	default SWU_TIMER0_COMPA
+	# 	help
+	# 		UART compare interrupt vector.
+	# 	config SWU_TIMER0_COMPA
+	# 		bool "TIMER0_COMPA_vect"
+	# endchoice
+
+	# choice
+	# 	prompt "External interrupt vector"
+	# 	default SWU_PCINT0
+	# 	help
+	# 		UART external interrupt vector. Make sure this is in accordance to the defined UART pin.
+	# 	config SWU_PCINT0
+	# 		bool "PCINT0_vect"
+	# endchoice
+endmenu
+
+menu "I2C config"
+	comment "SDA pin"
+
+	choice
+		prompt "I2C SDA port number"
+		default I2C_SDA_PORTB
+		help
+			Port number for I2C SDA line.
+		config I2C_SDA_PORTA
+			bool "Port A"
+		config I2C_SDA_PORTB
+			bool "Port B"
+		config I2C_SDA_PORTC
+			bool "Port C"
+		config I2C_SDA_PORTD
+			bool "Port D"
+	endchoice
+
+	config I2C_SDA_PIN
+		int "I2C SDA pin number"
+		range 0 7
+		default 1
+		help
+			Pin number within the port.
+
+	comment "SCL pin"
+
+	choice
+		prompt "I2C SCL port number"
+		default I2C_SCL_PORTB
+		help
+			Port number for I2C SCL line.
+		config I2C_SCL_PORTA
+			bool "Port A"
+		config I2C_SCL_PORTB
+			bool "Port B"
+		config I2C_SCL_PORTC
+			bool "Port C"
+		config I2C_SCL_PORTD
+			bool "Port D"
+	endchoice
+
+	config I2C_SCL_PIN
+		int "I2C SCL pin number"
+		range 0 7
+		default 3
+		help
+			Pin number within the port.
+endmenu
+
+menu "SPI config"
+	comment "Options for tinySPI"
+
+	choice
+		prompt "SPI port number"
+		default SPI_PORTB
+		help
+			Port number for all SPI lines.
+		config SPI_PORTA
+			bool "Port A"
+		config SPI_PORTB
+			bool "Port B"
+		config SPI_PORTC
+			bool "Port C"
+		config SPI_PORTD
+			bool "Port D"
+	endchoice
+
+	config SPI_SCK_PIN
+		int "SCK pin number"
+		range 0 7
+		default 2
+		help
+			Pin number within the port.
+
+	config SPI_DO_PIN
+		int "DO/MOSI pin number"
+		range 0 7
+		default 1
+		help
+			Pin number within the port.
+
+	config SPI_DI_PIN
+		int "DI/MISO pin number"
+		range 0 7
+		default 0
+		help
+			Pin number within the port.
+endmenu
+
+comment "Feature settings"
+
+menu "GPIO config"
+	comment "PCF8574 options"
+
+	config PCF_SCAN
+		bool "Auto scan for PCF8574 on I2C bus"
+		help
+			Auto scan the I2C bus to detect whether the I/O expander is a PCF8574 or a PCF8574A.
+			Will increase flash memory footprint.
+
+	config PCF_ADDR
+		hex "PCF8574 address on I2C bus"
+		depends on !PCF_SCAN
+		default 0x22
+
+	comment "Pin assignments"
+
+	config PIN_LED_RED
+		int "Red LED pin"
+		depends on FEAT_CAN_CDC
+		default 6
+		help
+			LED for signalling ignition and radio status.
+
+	config PIN_LED_GREEN
+		int "Green LED pin"
+		depends on FEAT_CAN_CDC || FEAT_AUXDET
+		default 5
+		help
+			LED for signalling audio signal playback status.
+
+	config PIN_LED_BLUE
+		int "Blue LED pin"
+		depends on FEAT_BT
+		default 4
+		help
+			LED for signalling Bluetooth connection/playback status.
+
+	config PIN_ANALOG_PWR
+		int "Analog PCB power pin"
+		depends on FEAT_ANALOG
+		default 0
+
+	config PIN_AUXDET
+		int "Audio signal detection pin"
+		depends on FEAT_AUXDET
+		default 1
+
+	config PIN_BTN1
+		int "Headset button 1 pin"
+		depends on FEAT_HS_BTN
+		default 3
+
+	config PIN_BTN2
+		int "Headset button 2 pin"
+		depends on FEAT_HS_BTN
+		default 7
+endmenu
+
+menu "CAN config"
+	depends on FEAT_CAN_CDC
+
+	choice
+		prompt "Bus speed"
+		default MCP_125K
+		config MCP_5K
+			bool "5 kbps"
+			depends on !MCP_20M
+		config MCP_10K
+			bool "10 kbps"
+			depends on !MCP_20M
+		config MCP_20K
+			bool "20 kbps"
+			depends on !MCP_20M
+		config MCP_31K25
+			bool "31.25 kbps"
+			depends on MCP_8M
+		config MCP_33K
+			bool "33 kbps"
+		config MCP_40K
+			bool "40 kbps"
+		config MCP_50K
+			bool "50 kbps"
+		config MCP_80K
+			bool "80 kbps"
+		config MCP_83K3
+			bool "83.3 kbps"
+			depends on !MCP_8M
+		config MCP_100K
+			bool "100 kbps"
+		config MCP_125K
+			bool "125 kbps"
+		config MCP_200K
+			bool "200 kbps"
+		config MCP_250K
+			bool "250 kbps"
+		config MCP_500K
+			bool "500 kbps"
+		config MCP_1000K
+			bool "1000 kbps"
+	endchoice
+
+	choice
+		prompt "MCP2515 clock frequency"
+		default MCP_8M
+		config MCP_8M
+			bool "8 MHz"
+		config MCP_16M
+			bool "16 MHz"
+		config MCP_20M
+			bool "20 MHz"
+	endchoice
+
+	choice
+		prompt "MCP2515 CS port number"
+		default MCP_CS_PORTB
+		help
+			Port number for MCP2515 chip select.
+		config MCP_CS_PORTA
+			bool "Port A"
+		config MCP_CS_PORTB
+			bool "Port B"
+		config MCP_CS_PORTC
+			bool "Port C"
+		config MCP_CS_PORTD
+			bool "Port D"
+	endchoice
+
+	config MCP_CS_PIN
+		int "MCP2515 CS pin number"
+		range 0 7
+		default 3
+		help
+			Pin number within the port.
+
+
+endmenu
+
+menu "Bluetooth module config"
+	depends on FEAT_BT
+
+	choice
+		prompt "Automatic reconnection"
+		default BT_RECONNECT_SOURCE
+		config BT_RECONNECT_DISABLED
+			bool "Disabled"
+		config BT_RECONNECT_IGNITION
+			bool "At BSI ignition"
+		config BT_RECONNECT_RADIO
+			bool "At Radio power on"
+		config BT_RECONNECT_SOURCE
+			bool "At Radio source selected"
+	endchoice
+
+	config BT_PAIRING_RECONNECTION
+		bool "Pairing before automatic reconnection"
+		default y
+
+	config BT_PAIRING_DISCONNECTED
+		bool "Pairing after device disconnected"
+		default y
+
+	comment "AT commands"
+
+	config BT_AT_PAIR_ON
+		string "Enter pairing mode"
+		default "AT+CA"
+	config BT_AT_PAIR_OFF
+		string "Exit pairing mode"
+		default "AT+CB"
+	config BT_AT_CONNECT
+		string "Connect to last remembered device"
+		default "AT+CC"
+	config BT_AT_DISCONNECT
+		string "Disconnect"
+		default "AT+CD"
+	config BT_AT_PLAY
+		string "Play/pause music playback"
+		default "AT+MA"
+	config BT_AT_STOP
+		string "Stop music playback"
+		default "AT+MC"
+	config BT_AT_NEXT
+		string "Play next track"
+		default "AT+MD"
+	config BT_AT_PREV
+		string "Play previous track"
+		default "AT+ME"
+	config BT_AT_FF
+		string "Seek forward"
+		default "AT+MF"
+	config BT_AT_REW
+		string "Seek backward"
+		default "AT+MH"
+	config BT_AT_CONN_STATUS
+		string "Read connection status"
+		default "AT+MO"
+	config BT_AT_PLAY_STATUS
+		string "Read playback status"
+		default "AT+MV"
+
+	comment "Response commands"
+
+	config BT_AT_CONN_START
+		string "Event: connection started"
+		default "II"
+	config BT_AT_CONN_END
+		string "Event: connection ended"
+		default "IA"
+	config BT_AT_PLAY_START
+		string "Event: playback started"
+		default "MB"
+	config BT_AT_PLAY_END
+		string "Event: playback ended"
+		default "MA"
+	config BT_AT_CONN_YES
+		string "Status: connection established"
+		default "C1"
+	config BT_AT_CONN_NO
+		string "Status: no connection"
+		default "C0"
+	config BT_AT_PLAY_YES
+		string "Status: playback"
+		default "MB"
+	config BT_AT_PLAY_NO
+		string "Status: no playback, connected"
+		default "MA"
+	config BT_AT_PLAY_DISCONN
+		string "Status: no playback, disconnected"
+		default "M0"
+endmenu
+
+comment "Behavior options"
+
+config PAUSE_AUX_ON_RADIO
+	bool "Pause AUX input when radio not playing"
+	depends on FEAT_AUXDET && FEAT_HS_BTN && FEAT_CAN_CDC
+	default y
+
+config PAUSE_BT_ON_RADIO
+	bool "Pause Bluetooth input when radio not playing"
+	depends on FEAT_BT && FEAT_CAN_CDC
+	default y
+
+config PAUSE_AUX_ON_BT
+	bool "Pause AUX input when Bluetooth playback started"
+	depends on FEAT_BT && FEAT_HS_BTN && FEAT_AUXDET
+
+config PAUSE_BT_ON_AUX
+	bool "Pause Bluetooth when AUX playback started"
+	depends on FEAT_BT && FEAT_AUXDET
