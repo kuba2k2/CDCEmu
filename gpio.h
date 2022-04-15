@@ -22,3 +22,4 @@
 #define PIN_BTN2	   7
 
 void led_update_all(bool force = false);
+void analog_enable(bool enable);

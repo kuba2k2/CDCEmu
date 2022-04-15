@@ -6,7 +6,7 @@
 #include "timers.h"
 #include <uart.h>
 
-void radio_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
+void radio_set_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
 	if (enabled == data[DATA_IGNITION] && powersave == data[DATA_POWERSAVE])
 		return;
 	data[DATA_IGNITION] = enabled;
@@ -15,27 +15,27 @@ void radio_ignition(bool enabled, bool powersave) { // NOLINT(misc-no-recursion)
 	if (enabled) {
 		debug_puts_P("ignition enabled\r\n");
 	} else {
-		radio_playing(false);
-		radio_enabled(false);
+		radio_set_playing(false);
+		radio_set_enabled(false);
 		debug_puts_P("ignition disabled\r\n");
 	}
 }
 
-void radio_enabled(bool radio_enabled) { // NOLINT(misc-no-recursion)
+void radio_set_enabled(bool radio_enabled) { // NOLINT(misc-no-recursion)
 	if (radio_enabled == data[DATA_RADIO_ENABLED])
 		return;
 	data[DATA_RADIO_ENABLED] = radio_enabled;
 	timer_reset(TIMER_PACKET_100MS);
 
 	if (radio_enabled) {
-		radio_ignition(true, false);
+		radio_set_ignition(true, false);
 		debug_puts_P("radio enabled\r\n");
 	} else {
 		debug_puts_P("radio disabled\r\n");
 	}
 }
 
-void radio_playing(bool radio_playing) {
+void radio_set_playing(bool radio_playing) {
 	if (radio_playing == data[DATA_RADIO_PLAYING])
 		return;
 	data[DATA_RADIO_PLAYING] = radio_playing;
@@ -88,7 +88,7 @@ void radio_to_start() {
 	timer_reset(TIMER_PACKET_500MS);
 }
 
-void radio_disk(uint8_t num) {
+void radio_set_disk(uint8_t num) {
 	if (num == data[DATA_DISK_NUM])
 		return;
 	data[DATA_DISK_NUM] = num;
@@ -96,7 +96,7 @@ void radio_disk(uint8_t num) {
 	radio_to_start();
 }
 
-void radio_track(uint8_t num) {
+void radio_set_track(uint8_t num) {
 	if (num > data[DATA_TRACK_NUM])
 		radio_next(num);
 	else if (num < data[DATA_TRACK_NUM])

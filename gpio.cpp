@@ -7,12 +7,14 @@
 #include "main.h"
 #include "timers.h"
 
-#define LED_DEF_SIZE  3
-#define LED_DEF_COUNT 4
+#define LED_DEF_SIZE  3 // led def size in bytes
+#define LED_DEF_COUNT 8 // number of led defs
 
 uint8_t led_timer = 0;
 uint8_t leds[3] = {0, 0, 0};
 uint8_t leds_set = 0;
+
+bool analog_power = false;
 
 const PROGMEM uint8_t leds_meta[] = {
 	// Red LED - radio enabled: 2000ms, 5%
@@ -22,11 +24,17 @@ const PROGMEM uint8_t leds_meta[] = {
 	// Red LED - ignition ON (Power Save): 600ms, 50%
 	LED_DEF(PIN_LED_RED, LED_NORMAL, 600, 300, DATA_POWERSAVE, LED_NORMAL, LED_DEFAULT_OFF),
 
-	// Green LED - audio playing TODO: 1000ms, 50%
-	// LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_AUDIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
-	// Green LED - radio playing TODO: 100%
-	// LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
-	LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_RADIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
+	// Green LED - radio source set: 100%
+	LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
+	// Green LED - audio playing: 1000ms, 50%
+	LED_DEF(PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_AUDIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
+
+	// Blue LED - BT pairing mode: 600ms, 50%
+	LED_DEF(PIN_LED_BLUE, LED_NORMAL, 600, 300, DATA_BT_PAIRING, LED_NORMAL, LED_NO_DEFAULT),
+	// Blue LED - BT connected: 100%
+	LED_DEF(PIN_LED_BLUE, LED_NORMAL, 1000, 0, DATA_BT_CONNECTED, LED_NORMAL, LED_NO_DEFAULT),
+	// Blue LED - BT playing: 1000ms, 50%
+	LED_DEF(PIN_LED_BLUE, LED_NORMAL, 1000, 500, DATA_BT_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
 };
 
 void led_set(uint8_t pin, bool state, bool inverted) {
@@ -99,4 +107,10 @@ void led_update_all(bool force) {
 			led_set(pin, true, inverted);
 		}
 	}
+}
+
+void analog_enable(bool enable) {
+	ensure_i2c();
+	analog_power = enable;
+	pcf_write(CONFIG_PIN_ANALOG_PWR, !enable);
 }

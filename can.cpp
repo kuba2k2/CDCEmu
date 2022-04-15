@@ -155,7 +155,7 @@ void parse_bsi_ignition(const uint8_t cmd[8]) {
 	bool powersave = mode == IGNITION_POWERSAVE;
 	bool sleep = mode == IGNITION_OFF;
 	bool economy = cmd[2] >> 7;
-	radio_ignition(!economy && ignition, powersave);
+	radio_set_ignition(!economy && ignition, powersave);
 	if (sleep)
 		enter_sleep();
 }
@@ -163,8 +163,8 @@ void parse_bsi_ignition(const uint8_t cmd[8]) {
 void parse_cdc_command(const uint8_t cmd[8]) {
 	cdc_command_t *cdc = (cdc_command_t *)cmd;
 
-	radio_enabled(cdc->radio_enabled);
-	radio_playing(cdc->radio_playing || cdc->intro_mode);
+	radio_set_enabled(cdc->radio_enabled);
+	radio_set_playing(cdc->radio_playing || cdc->intro_mode);
 
 	// radio_repeat_mode(cdc->repeat_mode);
 	// radio_random_mode(cdc->random_mode);
@@ -180,9 +180,9 @@ void parse_cdc_command(const uint8_t cmd[8]) {
 		radio_to_start();
 
 	if (cmd[2])
-		radio_disk(cmd[2]);
+		radio_set_disk(cmd[2]);
 	if (cmd[4])
-		radio_track(cmd[4]);
+		radio_set_track(cmd[4]);
 }
 
 void can_receive_all() {
