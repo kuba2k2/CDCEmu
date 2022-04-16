@@ -7,69 +7,155 @@
 #include <avr/pgmspace.h>
 #include <uart.h>
 
+#include "data.h"
 #include "events.h"
+#include "timers.h"
 
-bool connected = false;
-bool playing = false;
+uint8_t bt_tick_count = 0;
 
-void bt_parse_data(char cmd[3]) {
-	if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_CONN_START))) {
-		bt_set_connected(true);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_CONN_END))) {
-		bt_set_connected(false);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_PLAY_START))) {
-		bt_set_playing(true);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_PLAY_END))) {
-		bt_set_playing(false);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_CONN_YES))) {
-		bt_set_connected(true);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_CONN_NO))) {
-		bt_set_connected(false);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_PLAY_YES))) {
-		bt_set_playing(true);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_PLAY_NO))) {
-		bt_set_playing(false);
-	} else if (!strcmp_P(cmd, PSTR(CONFIG_BT_AT_PLAY_DISCONN))) {
-		bt_set_connected(false);
+void bt_status_tick() {
+	if (timer_check(TIMER_BT_TICK, T_MS(1000)))
+		bt_tick_count++; // tick count can't be zero after this
+	else
+		return;
+
+	// actions here run every 1 second
+	bt_queue_clear();
+
+#if CONFIG_BT_POLL_CONN_STATE
+	if ((bt_tick_count + CONFIG_BT_POLL_CONN_STATE / 2) % CONFIG_BT_POLL_CONN_STATE == 0) {
+		bt_request_connection_state();
+	}
+#endif
+
+#if CONFIG_BT_POLL_PLAY_STATE
+	if ((bt_tick_count + CONFIG_BT_POLL_PLAY_STATE / 3) % CONFIG_BT_POLL_PLAY_STATE == 0) {
+		bt_request_playback_state();
+	}
+#endif
+
+#if CONFIG_BSI_ON_BT_CONNECT
+#define RECONNECT_ITEM DATA(IGNITION)
+#elif CONFIG_RADIO_ON_BT_CONNECT
+#define RECONNECT_ITEM DATA(RADIO_ENABLED)
+#elif CONFIG_RADIO_PLAY_BT_CONNECT
+#define RECONNECT_ITEM DATA(RADIO_PLAYING)
+#endif
+
+#if CONFIG_BT_RECONNECT_INTERVAL && defined(RECONNECT_ITEM)
+	if (bt_tick_count % CONFIG_BT_RECONNECT_INTERVAL == 0 && !DATA(BT_CONNECTED)) {
+		if (RECONNECT_ITEM) {
+			bt_reconnect();
+		}
+	}
+#endif
+
+	if (bt_tick_count > 60) {
+		bt_tick_count %= 60;
 	}
 }
 
 void bt_set_connected(bool state) {
-	if (connected == state)
+	DATA(BT_PAIRING) = false;
+	if (DATA(BT_CONNECTED) == state)
 		return;
-	connected = state;
-	//	on_bt_connected(state);
+	DATA(BT_CONNECTED) = state;
+	DATA(BT_PLAYING) &= state;
+	on_bt_connected(state);
 }
 
 void bt_set_playing(bool state) {
-	if (playing == state)
+	if (state)
+		DATA(BT_PAIRING) = false;
+	if (DATA(BT_PLAYING) == state)
 		return;
-	playing = state;
-	//	on_bt_playing(state);
+	DATA(BT_PLAYING) = state;
+	on_bt_playing(state);
 }
 
-void bt_request_connection_state() {}
+void bt_request_connection_state() {
+	uart_puts_P(CONFIG_BT_AT_CONN_STATUS);
+	uart_nl();
+}
 
-void bt_request_playback_state() {}
+void bt_request_playback_state() {
+	uart_puts_P(CONFIG_BT_AT_PLAY_STATUS);
+	uart_nl();
+}
 
-void bt_connect_last_device() {}
+void bt_reconnect() {
+	if (DATA(BT_CONNECTED))
+		return;
+	bt_disconnect();
+	bt_pairing_enable(); // for some reason it needs pairing mode to reconnect...
+	bt_connect_last_device();
+}
 
-void bt_disconnect() {}
+void bt_connect_last_device() {
+	bt_queue_append(CONNECT_LAST_DEVICE);
+}
 
-void bt_pairing_enable() {}
+void bt_disconnect() {
+	bt_queue_append(DISCONNECT);
+}
 
-void bt_pairing_disable() {}
+void bt_shutdown() {
+	bt_queue_append(SHUTDOWN);
+	bt_queue_append(ANALOG_POWER_OFF);
+}
 
-void bt_music_play_pause() {}
+void bt_pairing_enable() {
+	if (DATA(BT_CONNECTED))
+		return;
+	bt_queue_append(PAIRING_ON);
+	bt_queue_append((ok_action)((uint8_t)DATA_TRUE | (uint8_t)DATA_BT_PAIRING));
+}
 
-void bt_music_stop() {}
+void bt_pairing_disable() {
+	if (DATA(BT_CONNECTED))
+		return;
+	bt_queue_append(PAIRING_OFF);
+	bt_queue_append((ok_action)((uint8_t)DATA_FALSE | (uint8_t)DATA_BT_PAIRING));
+}
 
-void bt_track_next() {}
+void bt_music_play() {
+	if (DATA(BT_PLAYING))
+		return;
+	// WHY doesn't BK8000L return OK after this command ...
+	// this command is useless, but the error can probably be ignored
+	bt_queue_append(MUSIC_PLAY);
+}
 
-void bt_track_prev() {}
+void bt_music_stop() {
+	if (!DATA(BT_PLAYING))
+		return;
+	// set playing=false after OK, as the event comes delayed
+	bt_queue_append(MUSIC_STOP);
+	bt_queue_append((ok_action)((uint8_t)DATA_FALSE | (uint8_t)DATA_BT_PLAYING));
+}
 
-void bt_track_ff() {}
+void bt_track_next() {
+	if (!DATA(BT_PLAYING))
+		return;
+	bt_queue_append(TRACK_NEXT);
+}
 
-void bt_track_rew() {}
+void bt_track_prev() {
+	if (!DATA(BT_PLAYING))
+		return;
+	bt_queue_append(TRACK_PREV);
+}
+
+void bt_track_ff() {
+	if (!DATA(BT_PLAYING))
+		return;
+	bt_queue_append(TRACK_FF);
+}
+
+void bt_track_rew() {
+	if (!DATA(BT_PLAYING))
+		return;
+	bt_queue_append(TRACK_REW);
+}
 
 #endif

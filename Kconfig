@@ -27,6 +27,7 @@ config FEAT_AUXDET
 config FEAT_HS_BTN
 	bool "Enable headset button emulation"
 	depends on FEAT_ANALOG
+	select FEAT_AUXDET
 	default y
 
 config FEAT_BT
@@ -41,7 +42,7 @@ config FEAT_BT_RADIO_CONTROLS
 
 config FEAT_AUX_RADIO_CONTROLS
 	bool "Support changing tracks on AUX with radio panel"
-	depends on FEAT_AUXDET && FEAT_HS_BTN
+	depends on FEAT_ANALOG && FEAT_HS_BTN
 	default y
 
 comment "Protocol settings"
@@ -228,65 +229,6 @@ menu "SPI config"
 			Pin number within the port.
 endmenu
 
-comment "Feature settings"
-
-menu "GPIO config"
-	comment "PCF8574 options"
-
-	config PCF_SCAN
-		bool "Auto scan for PCF8574 on I2C bus"
-		help
-			Auto scan the I2C bus to detect whether the I/O expander is a PCF8574 or a PCF8574A.
-			Will increase flash memory footprint.
-
-	config PCF_ADDR
-		hex "PCF8574 address on I2C bus"
-		depends on !PCF_SCAN
-		default 0x22
-
-	comment "Pin assignments"
-
-	config PIN_LED_RED
-		int "Red LED pin"
-		default 6
-		help
-			LED for signalling ignition and radio status.
-
-	config PIN_LED_GREEN
-		int "Green LED pin"
-		depends on FEAT_AUXDET
-		default 5
-		help
-			LED for signalling audio signal playback status.
-
-	config PIN_LED_BLUE
-		int "Blue LED pin"
-		depends on FEAT_BT
-		default 4
-		help
-			LED for signalling Bluetooth connection/playback status.
-
-	config PIN_ANALOG_PWR
-		int "Analog PCB power pin"
-		depends on FEAT_ANALOG
-		default 0
-
-	config PIN_AUXDET
-		int "Audio signal detection pin"
-		depends on FEAT_AUXDET
-		default 1
-
-	config PIN_BTN1
-		int "Headset button 1 pin"
-		depends on FEAT_HS_BTN
-		default 3
-
-	config PIN_BTN2
-		int "Headset button 2 pin"
-		depends on FEAT_HS_BTN
-		default 7
-endmenu
-
 menu "CAN config"
 	choice
 		prompt "Bus speed"
@@ -360,33 +302,81 @@ menu "CAN config"
 		default 3
 		help
 			Pin number within the port.
+endmenu
 
+comment "Feature settings"
 
+menu "GPIO config"
+	comment "PCF8574 options"
+
+	config PCF_SCAN
+		bool "Auto scan for PCF8574 on I2C bus"
+		help
+			Auto scan the I2C bus to detect whether the I/O expander is a PCF8574 or a PCF8574A.
+			Will increase flash memory footprint.
+
+	config PCF_ADDR
+		hex "PCF8574 address on I2C bus"
+		depends on !PCF_SCAN
+		default 0x22
+
+	comment "Pin assignments"
+
+	config PIN_LED_RED
+		int "Red LED pin"
+		default 6
+		help
+			LED for signalling ignition and radio status.
+
+	config PIN_LED_GREEN
+		int "Green LED pin"
+		default 5
+		help
+			LED for signalling audio signal playback status.
+
+	config PIN_LED_BLUE
+		int "Blue LED pin"
+		default 4
+		help
+			LED for signalling Bluetooth connection/playback status.
+
+	config PIN_ANALOG_PWR
+		int "Analog PCB power pin"
+		depends on FEAT_ANALOG
+		default 0
+
+	config PIN_AUXDET
+		int "Audio signal detection pin"
+		depends on FEAT_AUXDET
+		default 1
+
+	config PIN_BTN1
+		int "Headset button 1 pin"
+		depends on FEAT_HS_BTN
+		default 3
+
+	config PIN_BTN2
+		int "Headset button 2 pin"
+		depends on FEAT_HS_BTN
+		default 7
 endmenu
 
 menu "Bluetooth module config"
 	depends on FEAT_BT
 
-	choice
-		prompt "Automatic reconnection"
-		default BT_RECONNECT_SOURCE
-		config BT_RECONNECT_DISABLED
-			bool "Disabled"
-		config BT_RECONNECT_IGNITION
-			bool "At BSI ignition"
-		config BT_RECONNECT_RADIO
-			bool "At Radio power on"
-		config BT_RECONNECT_SOURCE
-			bool "At Radio source selected"
-	endchoice
+	comment "Intervals (in seconds; 0 to disable)"
 
-	config BT_PAIRING_RECONNECTION
-		bool "Pairing before automatic reconnection"
-		default y
+	config BT_POLL_CONN_STATE
+		int "Connection state polling interval"
+		default 10
 
-	config BT_PAIRING_DISCONNECTED
-		bool "Pairing after device disconnected"
-		default y
+	config BT_POLL_PLAY_STATE
+		int "Playback state polling interval"
+		default 10
+
+	config BT_RECONNECT_INTERVAL
+		int "Automatic reconnection interval"
+		default 20
 
 	comment "AT commands"
 
@@ -402,6 +392,9 @@ menu "Bluetooth module config"
 	config BT_AT_DISCONNECT
 		string "Disconnect"
 		default "AT+CD"
+	config BT_AT_SHUTDOWN
+        string "Shutdown"
+        default "AT+CP"
 	config BT_AT_PLAY
 		string "Play/pause music playback"
 		default "AT+MA"
@@ -458,22 +451,140 @@ menu "Bluetooth module config"
 		default "M0"
 endmenu
 
-comment "Behavior options"
+menu "Behavior options"
+	depends on FEAT_ANALOG
 
-config PAUSE_AUX_ON_RADIO
-	bool "Pause AUX input when radio not playing"
-	depends on FEAT_AUXDET && FEAT_HS_BTN
-	default y
+	comment "BSI Ignition enabled"
 
-config PAUSE_BT_ON_RADIO
-	bool "Pause Bluetooth input when radio not playing"
-	depends on FEAT_BT
-	default y
+	config BSI_ON_ANALOG_PWR
+		bool "Power on Analog PCB"
+		select RADIO_ON_ANALOG_PWR
 
-config PAUSE_AUX_ON_BT
-	bool "Pause AUX input when Bluetooth playback started"
-	depends on FEAT_BT && FEAT_HS_BTN && FEAT_AUXDET
+	config BSI_ON_BT_PAIRING
+		bool "Enable pairing mode"
+		depends on FEAT_BT && BSI_ON_ANALOG_PWR
 
-config PAUSE_BT_ON_AUX
-	bool "Pause Bluetooth when AUX playback started"
-	depends on FEAT_BT && FEAT_AUXDET
+	config BSI_ON_BT_CONNECT
+		bool "Connect to last Bluetooth device"
+		depends on FEAT_BT && BSI_ON_ANALOG_PWR
+
+	comment "Radio enabled"
+
+	config RADIO_ON_ANALOG_PWR
+		bool "Power on Analog PCB"
+		select RADIO_PLAY_ANALOG_PWR
+
+	config RADIO_ON_BT_PAIRING
+		bool "Enable pairing mode"
+		depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR)
+
+	config RADIO_ON_BT_CONNECT
+		bool "Connect to last Bluetooth device"
+		depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR) && !BSI_ON_BT_CONNECT
+
+	# config RADIO_ON_BT_PLAY
+	# 	bool "Play Bluetooth music (if connected)"
+	# 	depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR)
+
+	config RADIO_ON_AUX_PLAY
+		bool "Play AUX music"
+		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR)
+
+	comment "Radio playing (source changed to CDC)"
+
+	config RADIO_PLAY_ANALOG_PWR
+		bool "Power on Analog PCB"
+
+	config RADIO_PLAY_BT_PAIRING
+		bool "Enable pairing mode"
+		depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR)
+
+	config RADIO_PLAY_BT_CONNECT
+		bool "Connect to last Bluetooth device"
+		depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR) && !BSI_ON_BT_CONNECT && !RADIO_ON_BT_CONNECT
+
+	# config RADIO_PLAY_BT_PLAY
+	# 	bool "Play Bluetooth music (if connected)"
+	# 	depends on FEAT_BT && (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR)
+
+	config RADIO_PLAY_AUX_PLAY
+		bool "Play AUX music"
+		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR)
+
+	comment "Bluetooth device connected"
+
+	config BT_CONN_RADIO_EN_PLAY
+		bool "Play music if radio enabled"
+		depends on FEAT_BT
+
+	config BT_CONN_RADIO_SRC_PLAY
+		bool "Play music if radio playing"
+		depends on FEAT_BT
+
+	comment "Bluetooth device disconnected"
+
+	config BT_DISCONN_PAIRING
+		bool "Enable pairing mode"
+		depends on FEAT_BT
+
+	comment "Bluetooth music playing"
+
+	config BT_PLAY_AUX_PAUSE
+		bool "Pause AUX music"
+		depends on FEAT_BT && FEAT_HS_BTN
+
+	comment "AUX music playing"
+
+	config AUX_PLAY_BT_PAUSE
+		bool "Pause Bluetooth music"
+		depends on FEAT_BT && FEAT_AUXDET
+
+	comment "Radio paused (source changed to FM/CD)"
+
+	config RADIO_PAUSE_BT_PAUSE
+		bool "Pause Bluetooth music"
+		depends on FEAT_BT
+
+	config RADIO_PAUSE_AUX_PAUSE
+		bool "Pause AUX music"
+		depends on FEAT_HS_BTN
+
+	config RADIO_PAUSE_BT_DISCONNECT
+		bool "Disconnect Bluetooth device"
+		depends on FEAT_BT
+
+	config RADIO_PAUSE_BT_PAIRING_OFF
+		bool "Disable pairing mode"
+		depends on FEAT_BT
+
+	config RADIO_PAUSE_ANALOG_PWR
+		bool "Power off Analog PCB"
+		select RADIO_OFF_ANALOG_PWR
+
+	comment "Radio disabled"
+
+	config RADIO_OFF_BT_PAUSE
+		bool "Pause Bluetooth music"
+		depends on FEAT_BT
+
+	config RADIO_OFF_AUX_PAUSE
+		bool "Pause AUX music"
+		depends on FEAT_HS_BTN
+
+	config RADIO_OFF_BT_DISCONNECT
+		bool "Disconnect Bluetooth device"
+		depends on FEAT_BT
+
+	config RADIO_OFF_BT_PAIRING_OFF
+		bool "Disable pairing mode"
+		depends on FEAT_BT
+
+	config RADIO_OFF_ANALOG_PWR
+		bool "Power off Analog PCB"
+		select BSI_OFF_ANALOG_PWR
+
+	comment "BSI Ignition disabled"
+
+	config BSI_OFF_ANALOG_PWR
+		bool "Power off Analog PCB"
+endmenu

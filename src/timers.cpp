@@ -32,7 +32,7 @@ void timer_start() {
 }
 
 void timer_reset(uint8_t num) {
-	timers[num] = 0;
+	timers[num] = TCNTG;
 }
 
 void timer_reset_all() {
@@ -53,7 +53,10 @@ bool timer_check(uint8_t num, uint8_t delay) {
 }
 
 bool timer_check(uint8_t num, uint8_t delay, uint8_t tcntg) {
-	if (tcntg - timers[num] >= delay || tcntg < timers[num]) {
+	int16_t time = tcntg - timers[num];
+	if (time < 0)
+		time += 255;
+	if (time >= delay) {
 		timers[num] = tcntg;
 		return true;
 	}

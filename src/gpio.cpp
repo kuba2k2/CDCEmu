@@ -2,6 +2,7 @@
 
 #include <avr/pgmspace.h>
 #include <pcf8574.h>
+#include <uart.h>
 
 #include "data.h"
 #include "timers.h"
@@ -14,8 +15,6 @@ uint8_t led_timer = 0;
 uint8_t leds[3] = {0, 0, 0};
 uint8_t leds_set = 0;
 
-bool analog_power = false;
-
 const PROGMEM uint8_t leds_meta[] = {
 	// Red LED - radio enabled: 2000ms, 5%
 	LED_DEF(CONFIG_PIN_LED_RED, LED_INVERTED, 2000, 100, DATA_RADIO_ENABLED, LED_NORMAL, LED_NO_DEFAULT),
@@ -24,17 +23,17 @@ const PROGMEM uint8_t leds_meta[] = {
 	// Red LED - ignition ON (Power Save): 600ms, 50%
 	LED_DEF(CONFIG_PIN_LED_RED, LED_NORMAL, 600, 300, DATA_POWERSAVE, LED_NORMAL, LED_DEFAULT_OFF),
 
-	// Green LED - radio source set: 100%
-	LED_DEF(CONFIG_PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
 	// Green LED - audio playing: 1000ms, 50%
-	LED_DEF(CONFIG_PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_AUDIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
+	LED_DEF(CONFIG_PIN_LED_GREEN, LED_NORMAL, 1000, 500, DATA_AUDIO_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
+	// Green LED - radio source set: 100%
+	LED_DEF(CONFIG_PIN_LED_GREEN, LED_NORMAL, 1000, 0, DATA_RADIO_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
 
 	// Blue LED - BT pairing mode: 600ms, 50%
 	LED_DEF(CONFIG_PIN_LED_BLUE, LED_NORMAL, 600, 300, DATA_BT_PAIRING, LED_NORMAL, LED_NO_DEFAULT),
-	// Blue LED - BT connected: 100%
-	LED_DEF(CONFIG_PIN_LED_BLUE, LED_NORMAL, 1000, 0, DATA_BT_CONNECTED, LED_NORMAL, LED_NO_DEFAULT),
 	// Blue LED - BT playing: 1000ms, 50%
-	LED_DEF(CONFIG_PIN_LED_BLUE, LED_NORMAL, 1000, 500, DATA_BT_PLAYING, LED_NORMAL, LED_DEFAULT_OFF),
+	LED_DEF(CONFIG_PIN_LED_BLUE, LED_NORMAL, 1000, 500, DATA_BT_PLAYING, LED_NORMAL, LED_NO_DEFAULT),
+	// Blue LED - BT connected: 100%
+	LED_DEF(CONFIG_PIN_LED_BLUE, LED_NORMAL, 1000, 0, DATA_BT_CONNECTED, LED_NORMAL, LED_DEFAULT_OFF),
 };
 
 void led_set(uint8_t pin, bool state, bool inverted) {
@@ -110,7 +109,17 @@ void led_update_all(bool force) {
 }
 
 void analog_enable(bool enable) {
+	if (DATA(ANALOG_POWER) == enable)
+		return;
 	ensure_i2c();
-	analog_power = enable;
+	if (!enable) {
+		DATA(BT_PAIRING) = false;
+		DATA(BT_CONNECTED) = false;
+		DATA(BT_PLAYING) = false;
+	}
+	debug_puts_P("analog pwr ");
+	debug_putc(enable + '0');
+	debug_nl();
 	pcf_write(CONFIG_PIN_ANALOG_PWR, !enable);
+	DATA(ANALOG_POWER) = enable;
 }

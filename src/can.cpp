@@ -6,6 +6,7 @@
 #include <util/delay.h>
 
 #include "data.h"
+#include "events.h"
 #include "radio.h"
 #include "timers.h"
 #include "utils.h"
@@ -158,7 +159,7 @@ void parse_bsi_ignition(const uint8_t cmd[8]) {
 	bool economy = cmd[2] >> 7;
 	radio_set_ignition(!economy && ignition, powersave);
 	if (sleep)
-		enter_sleep();
+		on_sleep_mode();
 }
 
 void parse_cdc_command(const uint8_t cmd[8]) {

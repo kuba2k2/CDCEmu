@@ -4,6 +4,7 @@
 
 // CAN events
 void on_bsi_ignition(bool state);
+void on_sleep_mode();
 void on_radio_enabled(bool state);
 void on_radio_playing(bool state);
 
@@ -14,7 +15,7 @@ void on_bt_playing(bool state);
 #endif
 
 // User requested events
-#if CONFIG_FEAT_AUX_RADIO_CONTROLS || CONFIG_FEAT_BT_RADIO_CONTROLS
+#if CONFIG_FEAT_RADIO_CONTROLS
 void on_req_track_next();
 void on_req_track_previous();
 void on_req_track_ff();

@@ -1,6 +1,6 @@
 #include "data.h"
 
-uint8_t data[12] = {
+uint8_t data[13] = {
 	false, // DATA_RADIO_ENABLED
 	false, // DATA_RADIO_PLAYING
 	1,	   // DATA_DISK_NUM
@@ -9,6 +9,7 @@ uint8_t data[12] = {
 	0,	   // DATA_TRACK_SECOND
 	false, // DATA_IGNITION
 	false, // DATA_POWERSAVE
+	false, // DATA_BT_POWER
 	false, // DATA_BT_PAIRING
 	false, // DATA_BT_CONNECTED
 	false, // DATA_BT_PLAYING

@@ -1,15 +1,12 @@
-#include "main.h"
-
 #include <uart.h>
 #include <util/delay.h>
 
+#include "bluetooth.h"
 #include "can.h"
+#include "data.h"
 #include "gpio.h"
 #include "radio.h"
 #include "timers.h"
-#include "bluetooth.h"
-
-uint8_t uart_rx_count = 0;
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
@@ -19,6 +16,18 @@ int main() {
 	uart_nl();
 	timer_start();
 	can_init();
+
+#if CONFIG_FEAT_BT
+	// check if Analog is powered on
+	_delay_ms(500);
+	bt_request_connection_state();
+	timer_reset(TIMER_BT_TICK);
+	while (!timer_check(TIMER_BT_TICK, T_MS(500))) {
+		// give BT 500ms to respond
+	}
+	// force writing known pin states, disable Analog if BT absent
+	analog_enable(uart_readable());
+#endif
 
 	// main application loop
 	while (true) {
@@ -33,27 +42,29 @@ int main() {
 		led_update_all();
 
 #if CONFIG_FEAT_BT
+		// allow BT to do its stuff
+		if (DATA(ANALOG_POWER))
+			bt_status_tick();
+
 		// check UART availability
-		uint8_t readable = uart_readable();
-		if (readable >= 2) {
-			timer_reset(TIMER_BUFFER_FLUSH); // keep the buffer for a bit more time
+		if (uart_readable() >= 2) {
+			timer_reset(TIMER_BUFFER_FLUSH); // keep the buffer a bit longer
 			char command[3];
 			uart_gets(command, 2);
 			command[2] = 0;
 			bt_parse_data(command);
 		}
 
-		// discard any newline characters
-		if (uart_peek() == '\r' || uart_peek() == '\n')
+		// discard all newline characters
+		while (uart_peek() == '\r' || uart_peek() == '\n')
 			uart_getc();
 
 		// flush any leftover bytes
 		if (timer_check(TIMER_BUFFER_FLUSH, T_MS(1000))) {
-			if (readable && uart_rx_count) {
-				uart_rx_flush();
-				readable = 0;
-			}
-			uart_rx_count = readable;
+			/*if (uart_readable()) {
+				debug_puts_P("f\r\n");
+			}*/
+			uart_rx_flush();
 		}
 #endif
 

@@ -14,8 +14,6 @@
 
 #define PIN_LED_MIN 4
 
-extern bool analog_power;
-
 void led_update_all(bool force = false);
 
 #if CONFIG_FEAT_ANALOG
