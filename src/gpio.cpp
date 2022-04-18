@@ -7,6 +7,7 @@
 #include "data.h"
 #include "timers.h"
 #include "utils.h"
+#include "events.h"
 
 #define LED_DEF_SIZE  3 // led def size in bytes
 #define LED_DEF_COUNT 8 // number of led defs
@@ -14,6 +15,10 @@
 uint8_t led_timer = 0;
 uint8_t leds[3] = {0, 0, 0};
 uint8_t leds_set = 0;
+
+btn_action_e btn_action = NONE; // the currently performed action
+uint8_t btn_action_length = 0;	// elapsed time of this action, in ticks
+uint8_t gpio_tick_cnt = 0;
 
 const PROGMEM uint8_t leds_meta[] = {
 	// Red LED - radio enabled: 2000ms, 5%
@@ -47,8 +52,13 @@ void led_set(uint8_t pin, bool state, bool inverted) {
 	// uart_putc('\n');
 }
 
+void button_set(uint8_t pins, uint8_t value) {
+	ensure_i2c();
+	pcf_write_mask(pins, value);
+}
+
 void led_update_all(bool force) {
-	if (!timer_check(TIMER_LEDS, 1) && !force)
+	if (!timer_check(TIMER_LEDS, T_MS(100)) && !force)
 		return;
 	if (++led_timer >= 100)
 		led_timer = 0;
@@ -108,6 +118,64 @@ void led_update_all(bool force) {
 	}
 }
 
+void gpio_update(bool force) {
+	if (!timer_check(TIMER_GPIO, T_MS(CONFIG_GPIO_TICK_MS)) && !force)
+		return;
+#if CONFIG_FEAT_AUXDET
+	gpio_tick_cnt++;
+	if (gpio_tick_cnt % 6 == 0 && !btn_action) {
+		// check audio state only if no action is running
+		if (DATA(AUDIO_PLAYING) != auxdet_read()) {
+			DATA(AUDIO_PLAYING) ^= 1;
+			on_aux_playing(DATA(AUDIO_PLAYING));
+		}
+		// release all buttons periodically, just in case
+		button_set(BTN_A_MASK, 0x00);
+		gpio_tick_cnt = 1;
+	}
+#endif
+#if CONFIG_FEAT_HS_BTN
+	switch (btn_action) {
+		case NONE:
+			break;
+		case PLAY_PAUSE:
+			if (btn_action_length == 0) {
+				button_set(BTN_A_MASK, 0xff); // press the A button
+			} else {
+				button_set(BTN_A_MASK, 0x00); // release the A button
+				btn_action = NONE;
+			}
+			gpio_tick_cnt = 0; // delay auxdet by 500ms more
+			break;
+		case NEXT_TRACK:
+			if (btn_action_length & 1) {
+				// 1, 3
+				button_set(BTN_A_MASK, 0x00); // release the A button
+			} else if (btn_action_length < 4) {
+				// 0, 2
+				button_set(BTN_A_MASK, 0xff); // press the A button
+			} else {
+				// any other value
+				btn_action = NONE;
+			}
+			break;
+		case VOLUME_UP:
+		case VOLUME_DOWN:
+		case NEXT_TRACK_VOL_UP:
+		case PREV_TRACK_VOL_DN:
+			break;
+	}
+	btn_action_length++;
+#endif
+}
+
+void hs_btn_run(btn_action_e action) {
+	btn_action = action;
+	btn_action_length = 0;
+	gpio_update(true);
+	timer_reset(TIMER_GPIO);
+}
+
 void analog_enable(bool enable) {
 	if (DATA(ANALOG_POWER) == enable)
 		return;
@@ -122,4 +190,29 @@ void analog_enable(bool enable) {
 	debug_nl();
 	pcf_write(CONFIG_PIN_ANALOG_PWR, !enable);
 	DATA(ANALOG_POWER) = enable;
+}
+
+bool auxdet_read() {
+	ensure_i2c();
+	return !pcf_read(CONFIG_PIN_AUXDET);
+}
+
+void aux_play() {
+	if (DATA(AUDIO_PLAYING) || btn_action)
+		return;
+	DATA(AUDIO_PLAYING) = true;
+	hs_btn_run(PLAY_PAUSE);
+}
+
+void aux_pause() {
+	if (!DATA(AUDIO_PLAYING) || btn_action)
+		return;
+	DATA(AUDIO_PLAYING) = false;
+	hs_btn_run(PLAY_PAUSE);
+}
+
+void aux_next() {
+	if (!DATA(AUDIO_PLAYING) || btn_action)
+		return;
+	hs_btn_run(NEXT_TRACK);
 }

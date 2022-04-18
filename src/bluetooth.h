@@ -27,6 +27,9 @@ void bt_queue_append(ok_action action);
 void bt_queue_next();
 void bt_queue_clear();
 void bt_status_tick();
+// forget the previous connection, causing automatic reconnection
+// to (re)enable
+void bt_reset_previous_connection();
 
 // state request functions
 void bt_request_connection_state();

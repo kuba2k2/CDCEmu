@@ -14,7 +14,22 @@
 
 #define PIN_LED_MIN 4
 
+#define BTN_A_MASK ((1 << CONFIG_PIN_BTN1) | (1 << CONFIG_PIN_BTN2))
+
+enum btn_action_e {
+	NONE = 0,
+	PLAY_PAUSE,
+	NEXT_TRACK,
+	VOLUME_UP,
+	VOLUME_DOWN,
+	NEXT_TRACK_VOL_UP,
+	PREV_TRACK_VOL_DN,
+};
+
+void button_set(uint8_t pins, uint8_t value);
 void led_update_all(bool force = false);
+void gpio_update(bool force = false);
+void hs_btn_run(btn_action_e action);
 
 #if CONFIG_FEAT_ANALOG
 void analog_enable(bool enable);
@@ -24,14 +39,9 @@ void analog_enable(bool enable);
 bool auxdet_read();
 #endif
 
-#if CONFIG_PAUSE_AUX_ON_RADIO || CONFIG_PAUSE_AUX_ON_BT
-void aux_btn_play_pause();
+#if CONFIG_FEAT_HS_BTN
+void aux_play();
+void aux_pause();
+void aux_next();
+// void aux_prev();
 #endif
-
-#if CONFIG_FEAT_AUX_RADIO_CONTROLS
-void aux_btn_next();
-void aux_btn_prev();
-#endif
-
-// void aux_btn_vol_up();
-// void aux_btn_vol_down();

@@ -9,6 +9,7 @@
 #define TIMER_TRACK_TIME	4
 #define TIMER_LEDS			5
 #define TIMER_BT_TICK		6
+#define TIMER_GPIO			7
 
 #define TIMERS		   8
 #define TIMER_OVF_CNT  24 // total 6250 ticks, 100ms

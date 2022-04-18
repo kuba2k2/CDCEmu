@@ -29,6 +29,11 @@ int main() {
 	analog_enable(uart_readable());
 #endif
 
+#if CONFIG_FEAT_HS_BTN
+	// release all buttons
+	button_set(BTN_A_MASK, 0x00);
+#endif
+
 	// main application loop
 	while (true) {
 		// process incoming & outgoing CAN frames
@@ -40,6 +45,11 @@ int main() {
 
 		// update LED states
 		led_update_all();
+
+#if CONFIG_FEAT_AUXDET || CONFIG_FEAT_HS_BTN
+		// perform headset button actions and AUX signal detection
+		gpio_update();
+#endif
 
 #if CONFIG_FEAT_BT
 		// allow BT to do its stuff

@@ -12,6 +12,11 @@
 #include "timers.h"
 
 uint8_t bt_tick_count = 0;
+bool was_connected = false;
+// value between 0 and CONFIG_BT_RECONNECT_AUX_WAIT
+// if 0, AUX is playing
+// if CONFIG_BT_RECONNECT_AUX_WAIT, AUX is not playing for a safe period
+uint8_t aux_unused_ticks = 0;
 
 void bt_status_tick() {
 	if (timer_check(TIMER_BT_TICK, T_MS(1000)))
@@ -21,6 +26,14 @@ void bt_status_tick() {
 
 	// actions here run every 1 second
 	bt_queue_clear();
+
+#if CONFIG_FEAT_AUXDET && CONFIG_BT_RECONNECT_AUX_WAIT
+	if (DATA(AUDIO_PLAYING)) {
+		aux_unused_ticks = 0;
+	} else if (aux_unused_ticks < CONFIG_BT_RECONNECT_AUX_WAIT) {
+		aux_unused_ticks++;
+	}
+#endif
 
 #if CONFIG_BT_POLL_CONN_STATE
 	if ((bt_tick_count + CONFIG_BT_POLL_CONN_STATE / 2) % CONFIG_BT_POLL_CONN_STATE == 0) {
@@ -43,16 +56,18 @@ void bt_status_tick() {
 #endif
 
 #if CONFIG_BT_RECONNECT_INTERVAL && defined(RECONNECT_ITEM)
-	if (bt_tick_count % CONFIG_BT_RECONNECT_INTERVAL == 0 && !DATA(BT_CONNECTED)) {
-		if (RECONNECT_ITEM) {
-			bt_reconnect();
-		}
+	if (bt_tick_count % CONFIG_BT_RECONNECT_INTERVAL == 0 && RECONNECT_ITEM) {
+		bt_reconnect();
 	}
 #endif
 
 	if (bt_tick_count > 60) {
 		bt_tick_count %= 60;
 	}
+}
+
+void bt_reset_previous_connection() {
+	was_connected = false;
 }
 
 void bt_set_connected(bool state) {
@@ -62,6 +77,8 @@ void bt_set_connected(bool state) {
 	DATA(BT_CONNECTED) = state;
 	DATA(BT_PLAYING) &= state;
 	on_bt_connected(state);
+	// disable automatic reconnection, not to perform it after manual disconnection
+	was_connected |= state;
 }
 
 void bt_set_playing(bool state) {
@@ -84,8 +101,8 @@ void bt_request_playback_state() {
 }
 
 void bt_reconnect() {
-	if (DATA(BT_CONNECTED))
-		return;
+	if (DATA(BT_CONNECTED) || aux_unused_ticks < CONFIG_BT_RECONNECT_AUX_WAIT || was_connected)
+		return; // refuse if BT connected, AUX is playing or disconnected manually
 	bt_disconnect();
 	bt_pairing_enable(); // for some reason it needs pairing mode to reconnect...
 	bt_connect_last_device();

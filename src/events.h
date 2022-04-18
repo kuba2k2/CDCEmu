@@ -14,6 +14,10 @@ void on_bt_connected(bool state);
 void on_bt_playing(bool state);
 #endif
 
+#if CONFIG_FEAT_AUXDET
+void on_aux_playing(bool state);
+#endif
+
 // User requested events
 #if CONFIG_FEAT_RADIO_CONTROLS
 void on_req_track_next();

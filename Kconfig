@@ -361,22 +361,8 @@ menu "GPIO config"
 		default 7
 endmenu
 
-menu "Bluetooth module config"
+menu "Bluetooth module AT commands"
 	depends on FEAT_BT
-
-	comment "Intervals (in seconds; 0 to disable)"
-
-	config BT_POLL_CONN_STATE
-		int "Connection state polling interval"
-		default 10
-
-	config BT_POLL_PLAY_STATE
-		int "Playback state polling interval"
-		default 10
-
-	config BT_RECONNECT_INTERVAL
-		int "Automatic reconnection interval"
-		default 20
 
 	comment "AT commands"
 
@@ -451,7 +437,7 @@ menu "Bluetooth module config"
 		default "M0"
 endmenu
 
-menu "Behavior options"
+menu "Events & actions"
 	depends on FEAT_ANALOG
 
 	comment "BSI Ignition enabled"
@@ -488,7 +474,7 @@ menu "Behavior options"
 
 	config RADIO_ON_AUX_PLAY
 		bool "Play AUX music"
-		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR)
+		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR) && FEAT_HS_BTN
 
 	comment "Radio playing (source changed to CDC)"
 
@@ -509,7 +495,7 @@ menu "Behavior options"
 
 	config RADIO_PLAY_AUX_PLAY
 		bool "Play AUX music"
-		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR)
+		depends on (BSI_ON_ANALOG_PWR || RADIO_ON_ANALOG_PWR || RADIO_PLAY_ANALOG_PWR) && FEAT_HS_BTN
 
 	comment "Bluetooth device connected"
 
@@ -588,3 +574,40 @@ menu "Behavior options"
 	config BSI_OFF_ANALOG_PWR
 		bool "Power off Analog PCB"
 endmenu
+
+comment "Bluetooth connection (intervals in seconds; 0 to disable)"
+
+config BT_POLL_CONN_STATE
+	int "Connection state polling interval"
+	default 10
+
+config BT_POLL_PLAY_STATE
+	int "Playback state polling interval"
+	default 10
+
+config BT_RECONNECT_INTERVAL
+	int "Automatic reconnection interval"
+	default 20
+
+config BT_RECONNECT_AUX_WAIT
+	int "Wait for Bluetooth reconnection when using AUX"
+	depends on FEAT_BT && FEAT_AUXDET && (BSI_ON_BT_CONNECT || RADIO_ON_BT_CONNECT || RADIO_PLAY_BT_CONNECT)
+	default 10
+	help
+		When playing music on AUX, delay automatic Bluetooth reconnection.
+
+		If disabled, even a 1-second silence in AUX input can cause a BT reconnection attempt, which
+		will probably play "pairing mode" sound, which may be undesired.
+
+comment "Miscellaneous options"
+
+config GPIO_TICK_MS
+	int "Headset emulation & AUX detection base interval (ms)"
+	depends on FEAT_AUXDET || FEAT_HS_BTN
+	default 200
+	help
+		Base interval for a GPIO tick.
+
+		Headset buttons will be pressed for this period.
+
+		AUX signal detection will be performed every 5th tick.
