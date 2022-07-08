@@ -22428,13 +22428,13 @@ using CAN bus</text>
 <attribute name="NAME" x="208.28" y="10.16" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="208.28" y="7.874" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="Q8" gate="G$1" x="223.52" y="22.86" smashed="yes">
-<attribute name="NAME" x="226.06" y="22.86" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="226.06" y="20.574" size="1.778" layer="96" font="vector"/>
+<instance part="Q8" gate="G$1" x="223.52" y="10.16" smashed="yes">
+<attribute name="NAME" x="226.06" y="10.16" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="226.06" y="7.874" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="Q9" gate="G$1" x="241.3" y="22.86" smashed="yes">
-<attribute name="NAME" x="243.84" y="22.86" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="243.84" y="20.574" size="1.778" layer="96" font="vector"/>
+<instance part="Q9" gate="G$1" x="241.3" y="10.16" smashed="yes">
+<attribute name="NAME" x="243.84" y="10.16" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="243.84" y="7.874" size="1.778" layer="96" font="vector"/>
 </instance>
 <instance part="R18" gate="G$1" x="193.04" y="10.16" smashed="yes">
 <attribute name="NAME" x="189.23" y="11.6586" size="1.778" layer="95"/>
@@ -22444,13 +22444,13 @@ using CAN bus</text>
 <attribute name="NAME" x="189.23" y="24.3586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="189.23" y="19.558" size="1.778" layer="96"/>
 </instance>
-<instance part="R19" gate="G$1" x="226.06" y="10.16" smashed="yes" rot="R90">
-<attribute name="NAME" x="224.5614" y="6.35" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="229.362" y="6.35" size="1.778" layer="96" rot="R90"/>
+<instance part="R19" gate="G$1" x="226.06" y="22.86" smashed="yes" rot="R90">
+<attribute name="NAME" x="224.5614" y="19.05" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="229.362" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R20" gate="G$1" x="243.84" y="10.16" smashed="yes" rot="R90">
-<attribute name="NAME" x="242.3414" y="6.35" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="247.142" y="6.35" size="1.778" layer="96" rot="R90"/>
+<instance part="R20" gate="G$1" x="243.84" y="22.86" smashed="yes" rot="R90">
+<attribute name="NAME" x="242.3414" y="19.05" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="247.142" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND17" gate="1" x="208.28" y="0" smashed="yes">
 <attribute name="VALUE" x="205.74" y="-2.54" size="1.778" layer="96"/>
@@ -22740,16 +22740,6 @@ using CAN bus</text>
 <pinref part="GND17" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="R19" gate="G$1" pin="1"/>
-<wire x1="226.06" y1="5.08" x2="226.06" y2="2.54" width="0.1524" layer="91"/>
-<pinref part="GND18" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="R20" gate="G$1" pin="1"/>
-<wire x1="243.84" y1="5.08" x2="243.84" y2="2.54" width="0.1524" layer="91"/>
-<pinref part="GND19" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="C2" gate="G$1" pin="-"/>
 <wire x1="165.1" y1="86.36" x2="165.1" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="GND20" gate="1" pin="GND"/>
@@ -22808,6 +22798,16 @@ using CAN bus</text>
 <pinref part="R14" gate="G$1" pin="1"/>
 <wire x1="274.32" y1="20.32" x2="274.32" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="GND28" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="Q8" gate="G$1" pin="E"/>
+<pinref part="GND18" gate="1" pin="GND"/>
+<wire x1="226.06" y1="5.08" x2="226.06" y2="2.54" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="Q9" gate="G$1" pin="E"/>
+<pinref part="GND19" gate="1" pin="GND"/>
+<wire x1="243.84" y1="5.08" x2="243.84" y2="2.54" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RX" class="0">
@@ -23011,13 +23011,14 @@ using CAN bus</text>
 <wire x1="208.28" y1="30.48" x2="182.88" y2="30.48" width="0.1524" layer="91"/>
 <label x="182.88" y="30.48" size="1.778" layer="95"/>
 <wire x1="208.28" y1="30.48" x2="226.06" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="Q8" gate="G$1" pin="C"/>
-<wire x1="226.06" y1="30.48" x2="226.06" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="30.48" x2="243.84" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="Q9" gate="G$1" pin="C"/>
-<wire x1="243.84" y1="30.48" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
 <junction x="208.28" y="30.48"/>
 <junction x="226.06" y="30.48"/>
+<wire x1="226.06" y1="30.48" x2="226.06" y2="28.0924" width="0.1524" layer="91"/>
+<pinref part="R19" gate="G$1" pin="2"/>
+<wire x1="226.06" y1="27.94" x2="226.06" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="R20" gate="G$1" pin="2"/>
+<wire x1="243.84" y1="30.48" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="SJ2" gate="G$1" pin="3"/>
@@ -23383,20 +23384,6 @@ using CAN bus</text>
 <wire x1="208.28" y1="15.24" x2="208.28" y2="17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="Q7E" class="0">
-<segment>
-<pinref part="R19" gate="G$1" pin="2"/>
-<pinref part="Q8" gate="G$1" pin="E"/>
-<wire x1="226.06" y1="15.24" x2="226.06" y2="17.78" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="Q8E" class="0">
-<segment>
-<pinref part="Q9" gate="G$1" pin="E"/>
-<pinref part="R20" gate="G$1" pin="2"/>
-<wire x1="243.84" y1="17.78" x2="243.84" y2="15.24" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="P7B" class="0">
 <segment>
 <pinref part="R18" gate="G$1" pin="2"/>
@@ -23406,8 +23393,8 @@ using CAN bus</text>
 </segment>
 <segment>
 <pinref part="Q9" gate="G$1" pin="B"/>
-<wire x1="233.68" y1="22.86" x2="238.76" y2="22.86" width="0.1524" layer="91"/>
-<label x="233.68" y="22.86" size="1.778" layer="95"/>
+<wire x1="233.68" y1="10.16" x2="238.76" y2="10.16" width="0.1524" layer="91"/>
+<label x="233.68" y="10.16" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="P3B" class="0">
@@ -23419,8 +23406,8 @@ using CAN bus</text>
 </segment>
 <segment>
 <pinref part="Q8" gate="G$1" pin="B"/>
-<wire x1="215.9" y1="22.86" x2="220.98" y2="22.86" width="0.1524" layer="91"/>
-<label x="215.9" y="22.86" size="1.778" layer="95"/>
+<wire x1="215.9" y1="10.16" x2="220.98" y2="10.16" width="0.1524" layer="91"/>
+<label x="215.9" y="10.16" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="MIC" class="0">
@@ -23590,6 +23577,20 @@ using CAN bus</text>
 <wire x1="309.88" y1="10.16" x2="309.88" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="U3" gate="B" pin="OUT"/>
 <wire x1="309.88" y1="2.54" x2="307.34" y2="2.54" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="Q8C" class="0">
+<segment>
+<pinref part="R19" gate="G$1" pin="1"/>
+<pinref part="Q8" gate="G$1" pin="C"/>
+<wire x1="226.06" y1="17.78" x2="226.06" y2="15.24" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="Q9C" class="0">
+<segment>
+<pinref part="R20" gate="G$1" pin="1"/>
+<pinref part="Q9" gate="G$1" pin="C"/>
+<wire x1="243.84" y1="17.78" x2="243.84" y2="15.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
