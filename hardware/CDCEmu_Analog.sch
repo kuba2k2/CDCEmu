@@ -23336,9 +23336,9 @@ using CAN bus</text>
 <wire x1="289.56" y1="99.06" x2="292.1" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="RX/GPIO0"/>
-<wire x1="190.5" y1="73.66" x2="182.88" y2="73.66" width="0.1524" layer="91"/>
-<label x="182.88" y="73.66" size="1.778" layer="95"/>
+<pinref part="U2" gate="G$1" pin="TX/GPIO1"/>
+<wire x1="190.5" y1="71.12" x2="182.88" y2="71.12" width="0.1524" layer="91"/>
+<label x="182.88" y="71.12" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="BT_TX" class="0">
@@ -23348,9 +23348,9 @@ using CAN bus</text>
 <label x="264.16" y="68.58" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="TX/GPIO1"/>
-<wire x1="190.5" y1="71.12" x2="182.88" y2="71.12" width="0.1524" layer="91"/>
-<label x="182.88" y="71.12" size="1.778" layer="95"/>
+<pinref part="U2" gate="G$1" pin="RX/GPIO0"/>
+<wire x1="190.5" y1="73.66" x2="182.88" y2="73.66" width="0.1524" layer="91"/>
+<label x="182.88" y="73.66" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
