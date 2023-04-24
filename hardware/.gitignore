@@ -61,3 +61,7 @@ eagle.epf
 *.xls
 *.xlsx
 *.pdf
+*-cam.zip
+*.html
+*.json
+*.eeda
